@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, redirect } from "react-router-dom";
 
 export const ProtectedRoute = () => {
 	const { isAuthenticated, isLoading } = useAuth0();
@@ -8,5 +8,5 @@ export const ProtectedRoute = () => {
 
 	// If authorized, return an outlet that will render child elements
 	// If not, return element that will navigate to login page
-	return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+	return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };

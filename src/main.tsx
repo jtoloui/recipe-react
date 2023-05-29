@@ -5,7 +5,8 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import { App } from "./App";
 
 import "./styles/main.scss"; // Import main.scss
-import RenewToken from "./components/RenewToken/RenewToken";
+
+// import RenewToken from "./components/RenewToken/RenewToken";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
@@ -20,7 +21,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 			useRefreshTokens
 			// useCookiesForTransactions
 		>
-			<RenewToken />
+			{/* <RenewToken /> */}
 			<App />
 		</Auth0Provider>
 	</React.StrictMode>

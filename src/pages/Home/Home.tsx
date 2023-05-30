@@ -7,7 +7,7 @@ export const Home = () => {
 		<div>
 			Home
 			<Button
-				text="logout"
+				text="Logout"
 				onClick={() =>
 					logout({
 						logoutParams: {

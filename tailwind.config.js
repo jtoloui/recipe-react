@@ -43,6 +43,8 @@ export default {
 
   },
   plugins: [],
+  
 }
 
 
+console.log(JSON.stringify(module.exports))

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Link, useLocation } from 'react-router-dom';
+import { useWindowSize } from "usehooks-ts";
 
 import Logo from '@/assets/Logo';
 import { BurgerMenu } from './BurgerMenu';
@@ -9,6 +10,8 @@ import { MenuLink } from './MenuLink';
 
 export const Menu = () => {
 	const [isOpen, setIsOpen] = useState(false);
+	const size = useWindowSize();
+
 
 	const { user } = useAuth0();
 	const location = useLocation();
@@ -16,9 +19,14 @@ export const Menu = () => {
 
 	const initials = user?.name?.split(' ').map((n) => n[0]).join('');
 
-	if (location.pathname === '/login') return null;
 
-	// uef
+	useEffect(() => {
+		if (size.width >= 768 && isOpen) {
+			setIsOpen(false);
+		}
+	}, [size.width, isOpen]);
+
+	if (location.pathname === '/login') return null;
 
 	return (
 		<nav className="bg-white shadow">
@@ -62,10 +70,13 @@ export const Menu = () => {
 
 						{/* // profile circle icon */}
 						<div className="flex justify-center mt-6 md:flex md:mt-0 md:-mx-2">
-							<button className="p-1 rounded-full w-10 h-10 bg-green max-w-xs" >
-								{/* Profile Circle Icon Here */}
+							<button type="button" className="flex items-center focus:outline-none" aria-label="toggle profile dropdown">
+								<div className="w-10 h-10 overflow-hidden border-2 border-white rounded-full bg-green max-w-xs">
+									{/* <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=334&q=80" className="object-cover w-full h-full" alt="avatar" /> */}
+									<p className="flex justify-center items-center h-full text-white font-bold uppercase">{initials}</p>
+								</div>
 
-								<span className="text-white font-bold uppercase">{initials}</span>
+								<h3 className="mx-2 text-gray-700 md:hidden">{user?.nickname}</h3>
 							</button>
 							{/* <a href="#" className="mx-2 text-gray-600 transition-colors duration-300 transform dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-300" aria-label="Reddit">
 								<svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

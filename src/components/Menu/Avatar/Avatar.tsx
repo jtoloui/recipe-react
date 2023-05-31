@@ -52,7 +52,7 @@ export const Avatar = ({ isOpen, setIsOpen, isSideMenuVersion = false }: AvatarP
 
 	return (
 		<>
-			<div ref={node} className={`relative ${isSideMenuVersion ? 'hidden md:inline-block' : ''}`}>
+			<div ref={node} className={`relative ${isSideMenuVersion ? 'hidden md:inline-block' : ' inline-block'}`}>
 				<div className="flex justify-center md:flex md:mt-0 md:-mx-2 flex-col md:flex-row" onClick={() => setIsOpen(!isOpen)}>
 					<button type="button" className="flex items-center focus:outline-none" aria-label="toggle profile dropdown">
 						<div className="w-10 h-10 overflow-hidden border-2 border-white rounded-full bg-green max-w-xs">

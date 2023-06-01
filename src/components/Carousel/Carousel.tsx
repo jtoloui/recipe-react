@@ -70,10 +70,38 @@ export const Carousel = ({ data }: CarouselProps) => {
               d="M9 5l7 7-7 7"
               className="stroke-charcoal"
             />
+
+            {/* // if the selected card is not the first card and not in view, show the green line */}
+            {selected > 0 && selected < current && (
+              <line
+                x1="4"
+                y1="1"
+                x2="20"
+                y2="1"
+                className="stroke-green"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+            )}
+
+            {/* // if the selected card is the first card and not in view, show the green line */}
+            {selected === 0 &&
+              current > 0 &&
+              current + cardsToShow <= data.length && (
+                <line
+                  x1="4"
+                  y1="1"
+                  x2="20"
+                  y2="1"
+                  className="stroke-green"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+              )}
           </svg>
         </button>
       )}
-      <div className="relative px-6 py-4">
+      <div className="relative py-4">
         <AnimatePresence>
           <motion.div
             className="flex space-x-4"
@@ -94,19 +122,21 @@ export const Carousel = ({ data }: CarouselProps) => {
             ))}
           </motion.div>
         </AnimatePresence>
+        {/* // if selected is the current card, don't show the gradient or else show the gradient */}
         <div
           className={
-            selected === 0
+            current === 0 && selected === 0
               ? ''
-              : 'absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-white to-transparent'
+              : 'absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-lightBg to-transparent'
           }
           style={{ pointerEvents: 'none' }}
         ></div>
         <div
           className={
-            selected === data.length - 1
+            selected === data.length - 1 &&
+            current === data.length - cardsToShow
               ? ''
-              : 'absolute inset-y-0 right-0 w-36 bg-gradient-to-l from-white to-transparent'
+              : 'absolute inset-y-0 right-0 w-48 bg-gradient-to-l from-lightBg to-transparent'
           }
           style={{ pointerEvents: 'none' }}
         ></div>
@@ -129,6 +159,21 @@ export const Carousel = ({ data }: CarouselProps) => {
               d="M9 5l7 7-7 7"
               className="stroke-charcoal"
             />
+
+            {/* // if the selected card is or is not the last card and not in view, show the green line */}
+            {selected !== data.length + 1 &&
+              selected >= current + cardsToShow && (
+                <line
+                  x1="4"
+                  y1="23"
+                  x2="20"
+                  y2="23"
+                  className="stroke-green"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  onClick={() => centerCard(selected)}
+                />
+              )}
           </svg>
         </button>
       )}

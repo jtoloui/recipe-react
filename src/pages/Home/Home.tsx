@@ -45,7 +45,8 @@ const data = [
 
 export const Home = () => {
   return (
-    <div className="py-4 mx-auto">
+    <div className="py-4 px-6 mx-auto bg-lightBg h-screen">
+      <h1 className="text-2xl font-bold text-black">Welcome</h1>
       <Carousel data={data} />
     </div>
   );

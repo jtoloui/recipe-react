@@ -13,8 +13,8 @@ export const BurgerMenu = ({ isOpen }: BurgerMenuProps) => {
         strokeWidth="2"
       >
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           d="M4 8h16M4 16h16"
         />
       </svg>
@@ -30,8 +30,8 @@ export const BurgerMenu = ({ isOpen }: BurgerMenuProps) => {
         strokeWidth="2"
       >
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
           d="M6 18L18 6M6 6l12 12"
         />
       </svg>

@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 const Card = ({ image, title }: { image: string; title: string }) => {
   return (
     <motion.div
-      className="rounded-lg max-w-[25.125rem] max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100"
+      className="border-b rounded-lg max-w-[25.125rem] max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100"
       whileHover={{ scale: 1.05 }}
       initial={{ opacity: 0.7 }}
     >
@@ -28,9 +28,9 @@ const Carousel = ({
   const [current, setCurrent] = useState(0);
 
   const variants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-    exit: { opacity: 0 },
+    hidden: { opacity: 0, x: -100 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: 100 },
   };
 
   return (
@@ -56,20 +56,24 @@ const Carousel = ({
           </svg>
         </button>
       )}
-      <AnimatePresence>
-        <motion.div
-          className="flex space-x-4"
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          variants={variants}
-          transition={{ duration: 0.5 }}
-        >
-          {data.slice(current, current + 8).map((card) => (
-            <Card key={card.title} image={card.image} title={card.title} />
-          ))}
-        </motion.div>
-      </AnimatePresence>
+      <div className="relative px-6 py-4">
+        <AnimatePresence>
+          <motion.div
+            className="flex space-x-4"
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={variants}
+            transition={{ duration: 0.5 }}
+          >
+            {data.slice(current, current + 8).map((card) => (
+              <Card key={card.title} image={card.image} title={card.title} />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+        <div className="absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-white to-transparent"></div>
+        <div className="absolute inset-y-0 right-0 w-36 bg-gradient-to-l from-white to-transparent"></div>
+      </div>
       {current < data.length - 8 && (
         <button
           onClick={() => setCurrent((old) => old + 1)}
@@ -140,7 +144,7 @@ const data = [
 
 export const Home = () => {
   return (
-    <div className="px-6 py-4 mx-auto">
+    <div className="py-4 mx-auto">
       <Carousel data={data} />
     </div>
   );

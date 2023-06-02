@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useWindowSize } from 'usehooks-ts';
 import { Card } from './Card';
@@ -35,7 +35,6 @@ export const Carousel = ({ data }: CarouselProps) => {
   const variants = {
     hidden: { opacity: 0, x: -100 },
     visible: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 100 },
   };
 
   useEffect(() => {
@@ -102,26 +101,26 @@ export const Carousel = ({ data }: CarouselProps) => {
         </button>
       )}
       <div className="relative py-4">
-        <AnimatePresence>
-          <motion.div
-            className="flex space-x-4"
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={variants}
-            transition={{ duration: 0.5 }}
-          >
-            {data.slice(current, current + cardsToShow).map((card, index) => (
-              <Card
-                key={card.title}
-                image={card.image}
-                title={card.title}
-                onClick={() => centerCard(current + index)}
-                isSelected={index + current === selected}
-              />
-            ))}
-          </motion.div>
-        </AnimatePresence>
+        <motion.div
+          className="flex space-x-4"
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={variants}
+          transition={{ duration: 0.5 }}
+        >
+          {data.map((card, index) => (
+            <Card
+              key={`${card.title}-${index}`}
+              image={card.image}
+              title={card.title}
+              onClick={() => centerCard(index)}
+              isSelected={index === selected}
+              offset={index - current}
+              cardsToShow={cardsToShow}
+            />
+          ))}
+        </motion.div>
         {/* // if selected is the current card, don't show the gradient or else show the gradient */}
         <div
           className={
@@ -141,42 +140,44 @@ export const Carousel = ({ data }: CarouselProps) => {
           style={{ pointerEvents: 'none' }}
         ></div>
       </div>
-      {current < data.length - cardsToShow && (
-        <button
-          onClick={() => setCurrent((old) => old + 1)}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
+      <button
+        onClick={() =>
+          current < data.length - cardsToShow
+            ? setCurrent((old) => old + 1)
+            : setCurrent(0)
+        }
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          className="w-24 h-24 p-6"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="w-24 h-24 p-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1}
-              d="M9 5l7 7-7 7"
-              className="stroke-charcoal"
-            />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={1}
+            d="M9 5l7 7-7 7"
+            className="stroke-charcoal"
+          />
 
-            {/* // if the selected card is or is not the last card and not in view, show the green line */}
-            {selected !== data.length + 1 &&
-              selected >= current + cardsToShow && (
-                <line
-                  x1="4"
-                  y1="23"
-                  x2="20"
-                  y2="23"
-                  className="stroke-green"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  onClick={() => centerCard(selected)}
-                />
-              )}
-          </svg>
-        </button>
-      )}
+          {/* // if the selected card is or is not the last card and not in view, show the green line */}
+          {selected !== data.length + 1 &&
+            selected >= current + cardsToShow && (
+              <line
+                x1="4"
+                y1="23"
+                x2="20"
+                y2="23"
+                className="stroke-green"
+                strokeWidth="2"
+                strokeLinecap="round"
+                onClick={() => centerCard(selected)}
+              />
+            )}
+        </svg>
+      </button>
     </div>
   );
 };

@@ -12,7 +12,7 @@ type CarouselProps = {
 
 export const Carousel = ({ data }: CarouselProps) => {
   const [current, setCurrent] = useState(0);
-  const [cardsToShow, setCardsToShow] = useState(8); // default value
+  const [cardsToShow, setCardsToShow] = useState(6); // default value
   const [selected, setSelected] = useState(0); // Add this line
 
   const size = useWindowSize();
@@ -46,7 +46,7 @@ export const Carousel = ({ data }: CarouselProps) => {
       setCardsToShow(4);
     }
     if (size.width >= 1024) {
-      setCardsToShow(8);
+      setCardsToShow(6);
     }
   }, [size.width]);
 

@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Auth0Provider } from '@auth0/auth0-react';
-
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { App } from './App';
 
 import './styles/main.scss'; // Import main.scss
 
-// import RenewToken from "./components/RenewToken/RenewToken";
+// Create a client
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
@@ -21,8 +22,9 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       useRefreshTokens
       // useCookiesForTransactions
     >
-      {/* <RenewToken /> */}
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </Auth0Provider>
   </React.StrictMode>
 );

@@ -29,11 +29,11 @@ export const Card = ({
 
         <div className="mt-4 flex w-full">
           <div className="flex items-center w-2/4">
-            <div className="flex items-center text-sm text-brownishGrey">
+            <div className="flex items-center text-sm text-brownishGrey dark:text-white">
               ± 5 mins
             </div>
             <div className="mx-2 opacity-50 bg-brownishGrey max-w-xs w-1 h-1 rounded"></div>
-            <span className="flex items-center text-sm text-brownishGrey">
+            <span className="flex items-center text-sm text-brownishGrey dark:text-white">
               4 ingredients
             </span>
           </div>

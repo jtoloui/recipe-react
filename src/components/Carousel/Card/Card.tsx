@@ -30,8 +30,8 @@ export const Card = ({
       tabIndex={0}
     >
       <img src={image} alt={title} className="w-full h-2/3 object-cover" />
-      <div className="bg-white w-full h-1/3 p-4">
-        <h2 className="leading-tight text-center text-black text-base font-thin">
+      <div className="bg-white w-full h-1/3 p-4 dark:bg-gray-800">
+        <h2 className="leading-tight text-center text-black text-base font-thin dark:text-white">
           {title}
         </h2>
       </div>

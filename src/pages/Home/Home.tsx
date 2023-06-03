@@ -58,7 +58,16 @@ export const Home = () => {
   return (
     <Layout>
       <div>
-        <h1 className="text-2xl font-bold text-black">Welcome</h1>
+        <div className="flex w-full">
+          <h1 className="text-2xl font-bold text-black flex-1 ">Welcome</h1>
+          <div className="flex justify-end items-center  flex-auto">
+            <button className=" border-green  border-2 py-1 px-[0.625rem] rounded">
+              <span className="text-green text-sm font-semibold">
+                + Create Recipe
+              </span>
+            </button>
+          </div>
+        </div>
         <Carousel data={data} />
       </div>
       <div className="w-full rounded-lg bg-white p-5 flex gap-7 flex-wrap ">

@@ -1,6 +1,5 @@
-import { Image } from '@/components/Image';
+import { Image } from '@/components/Elements';
 import { motion } from 'framer-motion';
-import Skeleton from 'react-loading-skeleton';
 
 type CardProps = {
   image: string;

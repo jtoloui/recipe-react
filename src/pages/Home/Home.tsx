@@ -4,7 +4,6 @@ import { Card } from '@/components/Card';
 import { Carousel, CarouselData } from '@/components/Carousel';
 import { Layout } from '@/components/Layout';
 import { useRecipeLabels, useRecipesByLabel } from '@/queries';
-import Skeleton from 'react-loading-skeleton';
 
 export const Home = () => {
   const [selectedCarouselCard, setSelectedCarouselCard] =
@@ -30,7 +29,7 @@ export const Home = () => {
         title: label.label,
         count: label.count,
       }));
-      setCarouselData((prevData) => [
+      setCarouselData(() => [
         {
           image: 'https://source.unsplash.com/random/800x800?food',
           title: 'All',

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 type ImageProps = {
@@ -30,9 +30,9 @@ export const Image = ({
           props.onLoad && props.onLoad(event);
         }}
         className={` ${isLoading || hasError ? 'hidden' : ''} ${className}`}
-        onError={(evemt) => {
+        onError={(event) => {
           setHasError(true);
-          props.onError && props.onError(evemt);
+          props.onError && props.onError(event);
         }}
         {...props}
       />

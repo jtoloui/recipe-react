@@ -13,17 +13,18 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
 
   const centerCard = (index: number) => {
     setSelected(index); // Add this line
-    let newIndex = index - Math.floor(cardsToShow / 2);
+    // unsure about centering the card
+    // let newIndex = index - Math.floor(cardsToShow / 2);
 
-    if (newIndex < 0) {
-      newIndex = 0;
-    }
+    // if (newIndex < 0) {
+    //   newIndex = 0;
+    // }
 
-    if (newIndex > data.length - cardsToShow) {
-      newIndex = data.length - cardsToShow;
-    }
+    // if (newIndex > data.length - cardsToShow) {
+    //   newIndex = data.length - cardsToShow;
+    // }
 
-    setCurrent(newIndex);
+    // setCurrent(newIndex);
   };
 
   const variants = {

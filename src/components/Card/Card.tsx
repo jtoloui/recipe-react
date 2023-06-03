@@ -15,7 +15,7 @@ export const Card = ({
   to = '/hello',
 }: CardProps) => {
   return (
-    <div className=" flex-grow overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-80.0">
+    <div className=" flex-grow overflow-hidden bg-white rounded-lg shadow-md dark:bg-slate-700">
       <Image
         src={image}
         fallbackSrc={`https://source.unsplash.com/random/800x800/?${title}-food`}

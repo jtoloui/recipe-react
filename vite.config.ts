@@ -28,6 +28,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/auth': {
+        target: 'https://localhost:3001',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
 });

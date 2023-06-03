@@ -18,7 +18,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         redirect_uri: window.location.origin,
         audience: 'https://toloui-eu.eu.auth0.com/api/v2/',
       }}
-      cacheLocation="localstorage"
+      // cacheLocation="localstorage"
       useRefreshTokens
       // useCookiesForTransactions
     >

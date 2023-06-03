@@ -3,9 +3,38 @@ import { useAuth0 } from '@auth0/auth0-react';
 import Logo from '@/assets/Logo';
 import { Button } from '@/components/Button/Button';
 import cookieImg from '@/assets/images/joanie-simon-2r8BzVYZIeo-unsplash.jpg';
+import axios from 'axios';
 
 export const Login = () => {
   const { loginWithRedirect } = useAuth0();
+
+  // Call an endpoint on the server that checks if the jwt cookie is present
+  const login = () => {
+    window.location.href = 'http://localhost:3001/auth/login';
+
+    // try {
+    //   const response = await axios.get('/login', {
+    //     withCredentials: true,
+    //   });
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.error('Error checking authentication state:', error);
+    // }
+  };
+
+  const logout = () => {
+    console.log(import.meta.env.VITE_AUTH0_DOMAIN);
+
+    window.location.href = 'http://localhost:3001/auth/logout';
+    // axios.get(
+    //   `https://${
+    //     import.meta.env.VITE_AUTH0_DOMAIN
+    //   }/v2/logout?returnTo=https://localhost:3001/auth/logout&client_id=${
+    //     import.meta.env.VITE_AUTH0_CLIENT_ID
+    //   }`
+    // );
+  };
+
   return (
     <div className="relative">
       <div className="lg:mx-20 md:mx-16 sm:mx-8 mx-4 mt-16 z-10 relative flex flex-col lg:absolute lg:left-0 lg:top-0 lg:w-1/2">
@@ -22,16 +51,8 @@ export const Login = () => {
           </p>
         </div>
         <div className="flex gap-5 flex-wrap">
-          <Button
-            text="Login"
-            variant="primary"
-            onClick={() => loginWithRedirect()}
-          />
-          <Button
-            text="Sign Up"
-            variant="secondary"
-            onClick={() => loginWithRedirect()}
-          />
+          <Button text="Login" variant="primary" onClick={() => login()} />
+          <Button text="Sign Up" variant="secondary" onClick={() => login()} />
         </div>
       </div>
       <div className="relative overflow-hidden lg:ml-auto lg:w-3/5 lg:-mr-16 opacity-30 mt-8 lg:mt-0 max-h-screen">

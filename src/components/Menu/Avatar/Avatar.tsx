@@ -15,9 +15,9 @@ export const Avatar = ({
 }: AvatarProps) => {
   const node = useRef<null | HTMLDivElement>(null);
 
-  const { logout, user } = useAuth0();
+  // const { logout, user } = useAuth0();
 
-  const initials = user?.name
+  const initials = 'jamie'
     ?.split(' ')
     .map((n) => n[0])
     .join('');
@@ -42,7 +42,8 @@ export const Avatar = ({
     {
       to: '/',
       text: 'Sign Out',
-      onClick: () => logout(),
+      onClick: () =>
+        (window.location.href = 'http://localhost:3001/auth/logout'),
     },
   ];
 

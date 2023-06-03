@@ -63,7 +63,6 @@ export const Home = () => {
       cardRecipeDataCallback();
     }
   }, [cardRecipeDataCallback, recipeByLabel]);
-  console.log(carouselData);
 
   return (
     <Layout>
@@ -83,7 +82,7 @@ export const Home = () => {
           onCardClick={(title) => setSelectedCarouselCard(title)}
         />
       </div>
-      <div className="w-full rounded-lg bg-white p-5 flex gap-7 flex-wrap ">
+      <div className="w-full rounded-lg bg-white p-5 flex gap-7 flex-wrap dark:bg-slate-400 ">
         {recipeCardData.map((recipe) => (
           <Card
             key={recipe.to}

@@ -2,15 +2,9 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useWindowSize } from 'usehooks-ts';
 import { Card } from './Card';
+import { CarouselProps } from '.';
 
-type CarouselProps = {
-  data: {
-    image: string;
-    title: string;
-  }[];
-};
-
-export const Carousel = ({ data }: CarouselProps) => {
+export const Carousel = ({ data, onCardClick }: CarouselProps) => {
   const [current, setCurrent] = useState(0);
   const [cardsToShow, setCardsToShow] = useState(6); // default value
   const [selected, setSelected] = useState(0); // Add this line
@@ -113,8 +107,11 @@ export const Carousel = ({ data }: CarouselProps) => {
             <Card
               key={`${card.title}-${index}`}
               image={card.image}
-              title={card.title}
-              onClick={() => centerCard(index)}
+              title={`${card.title} (${card.count})`}
+              onClick={() => {
+                centerCard(index);
+                onCardClick(card.title);
+              }}
               isSelected={index === selected}
               offset={index - current}
               cardsToShow={cardsToShow}

@@ -1,4 +1,9 @@
 import { NavLink } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import { useState } from 'react';
+
+import { Image } from '@/components/Image';
 
 type CardProps = {
   image: string;
@@ -12,8 +17,12 @@ export const Card = ({
   to = '/hello',
 }: CardProps) => {
   return (
-    <div className=" flex-grow overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
-      <img className="object-cover w-full h-64" src={image} alt="Article" />
+    <div className=" flex-grow overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-80.0">
+      <Image
+        src={image}
+        fallbackSrc={`https://source.unsplash.com/random/800x800/?${title}-food`}
+        className="object-cover w-full h-64"
+      />
 
       <div className="p-6">
         <div>
@@ -37,6 +46,7 @@ export const Card = ({
               4 ingredients
             </span>
           </div>
+
           <NavLink to={to} className="flex justify-end items-center w-2/4">
             <div className=" border-green border py-1 px-[0.625rem] rounded">
               <span className="text-green text-sm font-semibold">+ Cook</span>

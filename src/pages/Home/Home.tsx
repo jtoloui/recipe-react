@@ -1,60 +1,71 @@
-import { Card } from '@/components/Card';
-import { Carousel } from '@/components/Carousel';
-import { Layout } from '@/components/Layout';
-import { NavLink } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 
-const data = [
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=1',
-    title: 'All (12)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=2',
-    title: 'Curry (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=3',
-    title: 'Rice (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=4',
-    title: 'Noodles (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=5',
-    title: 'Beverages (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=6',
-    title: 'Indian (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=7',
-    title: 'Below 400kcal (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=8',
-    title: 'Mexican (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=9',
-    title: 'Italian (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=10',
-    title: 'Japanese (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=10',
-    title: 'Japanese (3)',
-  },
-  {
-    image: 'https://source.unsplash.com/random/800x800?sig=10',
-    title: 'Japanese (3)',
-  },
-];
+import { Card } from '@/components/Card';
+import { Carousel, CarouselData } from '@/components/Carousel';
+import { Layout } from '@/components/Layout';
+import { useRecipeLabels, useRecipesByLabel } from '@/queries';
+import Skeleton from 'react-loading-skeleton';
 
 export const Home = () => {
+  const [selectedCarouselCard, setSelectedCarouselCard] =
+    useState<string>('All');
+  const { data: recipeLabels } = useRecipeLabels();
+  const { data: recipeByLabel } = useRecipesByLabel(selectedCarouselCard);
+
+  const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
+
+  const [recipeCardData, setRecipeCardData] = useState<
+    | []
+    | {
+        image: string;
+        title: string;
+        to: string;
+      }[]
+  >([]);
+
+  const carouselDataCallback = useCallback(() => {
+    if (recipeLabels) {
+      const newData = recipeLabels.labelCounts.map((label) => ({
+        image: `https://source.unsplash.com/random/800x800/?${label.label}-food`,
+        title: label.label,
+        count: label.count,
+      }));
+      setCarouselData((prevData) => [
+        {
+          image: 'https://source.unsplash.com/random/800x800?food',
+          title: 'All',
+          count: recipeLabels.totalRecipes,
+        }, // Ensure the default object is always the first item
+        ...newData,
+      ]);
+    }
+  }, [recipeLabels]);
+
+  useEffect(() => {
+    if (recipeLabels) {
+      carouselDataCallback();
+    }
+  }, [carouselDataCallback, recipeLabels]);
+
+  const cardRecipeDataCallback = useCallback(() => {
+    if (recipeByLabel) {
+      const newData = recipeByLabel.map((recipe) => ({
+        image: recipe.imageSrc,
+        title: recipe.name,
+        to: `/recipe/${recipe._id}`,
+      }));
+      setRecipeCardData(newData);
+    }
+    return;
+  }, [recipeByLabel]);
+
+  useEffect(() => {
+    if (recipeByLabel) {
+      cardRecipeDataCallback();
+    }
+  }, [cardRecipeDataCallback, recipeByLabel]);
+  console.log(carouselData);
+
   return (
     <Layout>
       <div>
@@ -68,12 +79,20 @@ export const Home = () => {
             </button>
           </div>
         </div>
-        <Carousel data={data} />
+        <Carousel
+          data={carouselData}
+          onCardClick={(title) => setSelectedCarouselCard(title)}
+        />
       </div>
       <div className="w-full rounded-lg bg-white p-5 flex gap-7 flex-wrap ">
-        <Card />
-        <Card />
-        <Card />
+        {recipeCardData.map((recipe) => (
+          <Card
+            key={recipe.to}
+            image={recipe.image}
+            title={recipe.title}
+            to={recipe.to}
+          />
+        ))}
       </div>
     </Layout>
   );

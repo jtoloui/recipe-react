@@ -52,8 +52,8 @@ const RecipeById = () => {
                   {data?.isAuthor && (
                     <div className="flex justify-end items-start flex-auto">
                       <button className="text-green text-sm font-semibold flex items-center">
-                        <EditSvg height={24} width={24} />{' '}
-                        <span className=" ml-2 ">Edit Recipe</span>
+                        <EditSvg height={24} width={24} className="sm:mr-2" />{' '}
+                        <span className="hidden sm:contents">Edit Recipe</span>
                       </button>
                     </div>
                   )}

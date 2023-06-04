@@ -1,9 +1,10 @@
 type EditSvgProps = {
   width: number;
   height: number;
+  className?: string;
 };
 
-function EditSvg({ width, height }: EditSvgProps) {
+function EditSvg({ width, height, className }: EditSvgProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,6 +14,7 @@ function EditSvg({ width, height }: EditSvgProps) {
       xmlSpace="preserve"
       width={width}
       height={height}
+      className={className}
     >
       <path
         className="fill-green"

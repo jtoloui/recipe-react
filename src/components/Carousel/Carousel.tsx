@@ -34,7 +34,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
 
   useEffect(() => {
     if (size.width <= 640) {
-      setCardsToShow(3);
+      setCardsToShow(2);
     }
     if (size.width >= 768) {
       setCardsToShow(4);

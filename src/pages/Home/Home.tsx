@@ -19,6 +19,8 @@ export const Home = () => {
         image: string;
         title: string;
         to: string;
+        totalTime: string;
+        ingredientsCount: number;
       }[]
   >([]);
 
@@ -52,6 +54,8 @@ export const Home = () => {
         image: recipe.imageSrc,
         title: recipe.name,
         to: `/recipe/${recipe._id}`,
+        totalTime: recipe.totalTime,
+        ingredientsCount: recipe.ingredients?.length || 0,
       }));
       setRecipeCardData(newData);
     }
@@ -63,7 +67,6 @@ export const Home = () => {
       cardRecipeDataCallback();
     }
   }, [cardRecipeDataCallback, recipeByLabel]);
-  console.log(carouselData);
 
   return (
     <Layout>
@@ -83,13 +86,15 @@ export const Home = () => {
           onCardClick={(title) => setSelectedCarouselCard(title)}
         />
       </div>
-      <div className="w-full rounded-lg bg-white p-5 flex gap-7 flex-wrap ">
+      <div className="w-full rounded-lg bg-white p-5 flex gap-7 flex-wrap dark:bg-slate-400 ">
         {recipeCardData.map((recipe) => (
           <Card
             key={recipe.to}
             image={recipe.image}
             title={recipe.title}
             to={recipe.to}
+            ingredientsCount={recipe.ingredientsCount}
+            totalTime={recipe.totalTime}
           />
         ))}
       </div>

@@ -45,7 +45,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
   }, [size.width]);
 
   return (
-    <div className="relative w-full overflow-x-hidden">
+    <div className="relative w-full overflow-x-hidden z-10">
       {current > 0 && (
         <button
           onClick={() => setCurrent((old) => old - 1)}

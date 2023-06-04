@@ -26,7 +26,7 @@ export const Card = ({
         isSelected ? 'border-4  border-green ' : ''
       } ${hidden ? 'hidden' : ''}`}
       whileHover={{ scale: 1.05 }}
-      initial={{ opacity: 0.7 }}
+      // initial={{ opacity: 0.7 }}
       onClick={onClick} // Add onClick function to the Card component
       tabIndex={0}
     >

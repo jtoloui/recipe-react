@@ -1,5 +1,6 @@
 import { Image } from '@/components/Elements';
 import { motion } from 'framer-motion';
+import { useWindowSize } from 'usehooks-ts';
 
 type CardProps = {
   image: string;
@@ -20,11 +21,15 @@ export const Card = ({
 }: CardProps) => {
   const hidden = offset < 0 || offset >= cardsToShow;
 
+  const { width } = useWindowSize();
+
   return (
     <motion.div
-      className={`rounded-lg flex-1 h-60 max-w-[25.125rem] max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100 ${
+      className={`rounded-lg  h-60 max-w-[25.125rem] max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100 ${
         isSelected ? 'border-4  border-green-500 ' : ''
-      } ${hidden ? 'hidden' : ''}`}
+      } ${hidden && width > 640 ? 'hidden' : ''} ${
+        width <= 640 ? ' w-52' : 'flex-1'
+      }`}
       whileHover={{ scale: 1.05 }}
       // initial={{ opacity: 0.7 }}
       onClick={onClick} // Add onClick function to the Card component

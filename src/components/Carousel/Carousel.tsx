@@ -44,9 +44,16 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
     }
   }, [size.width]);
 
+  // display: flex;
+  //  flex-wrap: nowrap;
+  //  overflow-x: auto;
   return (
-    <div className="relative w-full overflow-x-hidden z-10">
-      {current > 0 && (
+    <div
+      className={`relative w-full sm:overflow-x-hidden z-10 ${
+        size.width <= 640 ? 'flex flex-nowrap overflow-x-auto' : ''
+      }`}
+    >
+      {current > 0 && size.width > 640 && (
         <button
           onClick={() => setCurrent((old) => old - 1)}
           className="absolute left-[-2rem] md:left-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
@@ -98,7 +105,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
       <div className="relative py-4">
         <motion.div
           className="flex space-x-4"
-          initial="hidden"
+          // initial="hidden"
           animate="visible"
           exit="exit"
           variants={variants}
@@ -120,62 +127,68 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
           ))}
         </motion.div>
         {/* // if selected is the current card, don't show the gradient or else show the gradient */}
-        <div
-          className={
-            current === 0 && selected === 0
-              ? ''
-              : 'absolute inset-y-0 left-[-2rem] md:left-0 w-48 bg-gradient-to-r from-lightBg-500 to-transparent'
-          }
-          style={{ pointerEvents: 'none' }}
-        ></div>
-        <div
-          className={
-            selected === data.length - 1 &&
-            current === data.length - cardsToShow
-              ? ''
-              : 'absolute inset-y-0 right-[-2rem] md:right-0 w-48 bg-gradient-to-l from-lightBg-500 to-transparent'
-          }
-          style={{ pointerEvents: 'none' }}
-        ></div>
+        {size.width > 640 && (
+          <>
+            <div
+              className={
+                current === 0 && selected === 0
+                  ? ''
+                  : 'absolute inset-y-0 left-[-2rem] md:left-0 w-48 bg-gradient-to-r from-lightBg-500 to-transparent'
+              }
+              style={{ pointerEvents: 'none' }}
+            ></div>
+            <div
+              className={
+                selected === data.length - 1 &&
+                current === data.length - cardsToShow
+                  ? ''
+                  : 'absolute inset-y-0 right-[-2rem] md:right-0 w-48 bg-gradient-to-l from-lightBg-500 to-transparent'
+              }
+              style={{ pointerEvents: 'none' }}
+            ></div>
+          </>
+        )}
       </div>
-      <button
-        onClick={() =>
-          current < data.length - cardsToShow
-            ? setCurrent((old) => old + 1)
-            : setCurrent(0)
-        }
-        className="absolute right-[-2rem] md:right-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          className="w-24 h-24 p-6"
+      {size.width > 640 && (
+        <button
+          onClick={() =>
+            current < data.length - cardsToShow
+              ? setCurrent((old) => old + 1)
+              : setCurrent(0)
+          }
+          className="absolute right-[-2rem] md:right-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1}
-            d="M9 5l7 7-7 7"
-            className="stroke-charcoal-500"
-          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            className="w-24 h-24 p-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={1}
+              d="M9 5l7 7-7 7"
+              className="stroke-charcoal-500"
+            />
 
-          {/* // if the selected card is or is not the last card and not in view, show the green line */}
-          {selected !== data.length + 1 &&
-            selected >= current + cardsToShow && (
-              <line
-                x1="4"
-                y1="23"
-                x2="20"
-                y2="23"
-                className="stroke-green-500"
-                strokeWidth="2"
-                strokeLinecap="round"
-                onClick={() => centerCard(selected)}
-              />
-            )}
-        </svg>
-      </button>
+            {/* // if the selected card is or is not the last card and not in view, show the green line */}
+            {selected !== data.length + 1 &&
+              selected >= current + cardsToShow && (
+                <line
+                  x1="4"
+                  y1="23"
+                  x2="20"
+                  y2="23"
+                  className="stroke-green-500"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  onClick={() => centerCard(selected)}
+                />
+              )}
+          </svg>
+        </button>
+      )}
     </div>
   );
 };

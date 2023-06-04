@@ -49,7 +49,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
       {current > 0 && (
         <button
           onClick={() => setCurrent((old) => old - 1)}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
+          className="absolute left-[-2rem] md:left-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
               strokeLinejoin="round"
               strokeWidth={1}
               d="M9 5l7 7-7 7"
-              className="stroke-charcoal"
+              className="stroke-charcoal-500"
             />
 
             {/* // if the selected card is not the first card and not in view, show the green line */}
@@ -72,7 +72,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
                 y1="1"
                 x2="20"
                 y2="1"
-                className="stroke-green"
+                className="stroke-green-500"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
@@ -87,7 +87,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
                   y1="1"
                   x2="20"
                   y2="1"
-                  className="stroke-green"
+                  className="stroke-green-500"
                   strokeWidth="2"
                   strokeLinecap="round"
                 />
@@ -124,7 +124,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
           className={
             current === 0 && selected === 0
               ? ''
-              : 'absolute inset-y-0 left-0 w-48 bg-gradient-to-r from-lightBg to-transparent'
+              : 'absolute inset-y-0 left-[-2rem] md:left-0 w-48 bg-gradient-to-r from-lightBg-500 to-transparent'
           }
           style={{ pointerEvents: 'none' }}
         ></div>
@@ -133,7 +133,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
             selected === data.length - 1 &&
             current === data.length - cardsToShow
               ? ''
-              : 'absolute inset-y-0 right-0 w-48 bg-gradient-to-l from-lightBg to-transparent'
+              : 'absolute inset-y-0 right-[-2rem] md:right-0 w-48 bg-gradient-to-l from-lightBg-500 to-transparent'
           }
           style={{ pointerEvents: 'none' }}
         ></div>
@@ -144,7 +144,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
             ? setCurrent((old) => old + 1)
             : setCurrent(0)
         }
-        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
+        className="absolute right-[-2rem] md:right-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -157,7 +157,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
             strokeLinejoin="round"
             strokeWidth={1}
             d="M9 5l7 7-7 7"
-            className="stroke-charcoal"
+            className="stroke-charcoal-500"
           />
 
           {/* // if the selected card is or is not the last card and not in view, show the green line */}
@@ -168,7 +168,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
                 y1="23"
                 x2="20"
                 y2="23"
-                className="stroke-green"
+                className="stroke-green-500"
                 strokeWidth="2"
                 strokeLinecap="round"
                 onClick={() => centerCard(selected)}

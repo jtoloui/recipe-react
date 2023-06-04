@@ -15,10 +15,10 @@ export const Login = () => {
           <Logo />
         </div>
         <div className="max-w-lg mb-10 mt-24">
-          <p className="text-4xl font-semibold text-black mb-2.5">
+          <p className="text-4xl font-semibold text-black-500 mb-2.5">
             Welcome to toloui recipes, don't say I never created it
           </p>
-          <p className="text-brownishGrey text-sm leading-relaxed">
+          <p className="text-brownishGrey-500 text-sm leading-relaxed">
             Never run out of ideas again. Try new foods, ingredients, cooking
             style, and more
           </p>
@@ -29,7 +29,7 @@ export const Login = () => {
         </div>
       </div>
       <div className="relative overflow-hidden lg:ml-auto lg:w-3/5 lg:-mr-16 opacity-30 mt-8 lg:mt-0 max-h-screen">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white via-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white-500 via-transparent"></div>
         <img
           src={cookieImg}
           alt="Description of Image"

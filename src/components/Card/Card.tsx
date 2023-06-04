@@ -19,7 +19,7 @@ export const Card = ({
   ingredientsCount = 4,
 }: CardProps) => {
   return (
-    <div className=" flex-grow overflow-hidden bg-white rounded-lg shadow-md dark:bg-slate-700">
+    <div className=" flex-grow overflow-hidden bg-white-500 rounded-lg shadow-md dark:bg-slate-700">
       <Image
         src={image}
         fallbackSrc={`https://source.unsplash.com/random/800x800/?${title}-food`}
@@ -30,7 +30,7 @@ export const Card = ({
         <div>
           <NavLink
             to={to}
-            className="block mt-2 text-xl font-semibold text-gray-800 transition-colors duration-300 transform dark:text-white hover:text-gray-600 hover:underline"
+            className="block mt-2 text-xl font-semibold text-gray-800 transition-colors duration-300 transform dark:text-white-500 hover:text-gray-600 hover:underline"
             tabIndex={0}
             role="link"
           >
@@ -40,11 +40,11 @@ export const Card = ({
 
         <div className="mt-4 flex w-full flex-col sm:flex-row">
           <div className="flex items-center w-full sm:w-2/3">
-            <div className="flex items-center text-sm text-brownishGrey dark:text-white">
+            <div className="flex items-center text-sm text-brownishGrey-500 dark:text-white-500">
               ± {totalTime}
             </div>
-            <div className="mx-2 opacity-50 bg-brownishGrey max-w-xs w-1 h-1 rounded"></div>
-            <span className="flex items-center text-sm text-brownishGrey dark:text-white">
+            <div className="mx-2 opacity-50 bg-brownishGrey-500 max-w-xs w-1 h-1 rounded"></div>
+            <span className="flex items-center text-sm text-brownishGrey-500 dark:text-white-500">
               {ingredientsCount} ingredients
             </span>
           </div>
@@ -53,8 +53,10 @@ export const Card = ({
             to={to}
             className="flex sm:justify-end items-center w-full sm:w-1/3 mt-4 sm:mt-0"
           >
-            <div className="border-green border py-1 px-[0.625rem] rounded">
-              <span className="text-green text-sm font-semibold">+ Cook</span>
+            <div className="border-green-500 border py-1 px-[0.625rem] rounded">
+              <span className="text-green-500 text-sm font-semibold">
+                + Cook
+              </span>
             </div>
           </NavLink>
         </div>

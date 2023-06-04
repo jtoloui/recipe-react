@@ -11,10 +11,10 @@ export const MenuLink = ({
       <NavLink
         to={to}
         className={({ isActive }) =>
-          ` transition-colors duration-300 transform md:mt-0 md:mx-4 text-black  ${
+          ` transition-colors duration-300 transform md:mt-0 md:mx-4 text-black-500  ${
             isActive
-              ? 'border-b-2 border-green'
-              : 'hover:border-b hover:border-green'
+              ? 'border-b-2 border-green-500'
+              : 'hover:border-b hover:border-green-500'
           } ${className}`
         }
         {...props}

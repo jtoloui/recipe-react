@@ -15,8 +15,8 @@ export const Button: FC<ButtonProps> = ({
     'w-full sm:w-auto h-12 px-4 py-2 rounded-lg shadow-md flex items-center justify-center';
   const variantClasses =
     variant === 'primary'
-      ? 'bg-green text-white hover:bg-white hover:text-green'
-      : 'bg-white border-2 border-green text-green hover:bg-green hover:text-white';
+      ? 'bg-green-500 text-white-500 hover:bg-white-500 hover:text-green-500'
+      : 'bg-white-500 border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white-500';
 
   return (
     <button className={`${commonClasses} ${variantClasses}`} onClick={onClick}>

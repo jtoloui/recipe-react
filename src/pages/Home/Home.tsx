@@ -72,10 +72,10 @@ export const Home = () => {
     <Layout>
       <div>
         <div className="flex w-full">
-          <h1 className="text-2xl font-bold text-black flex-1 ">Welcome</h1>
+          <h1 className="text-2xl font-bold text-black-500 flex-1 ">Welcome</h1>
           <div className="flex justify-end items-center  flex-auto">
-            <button className=" border-green  border-2 py-1 px-[0.625rem] rounded">
-              <span className="text-green text-sm font-semibold">
+            <button className=" border-green-500  border-2 py-1 px-[0.625rem] rounded">
+              <span className="text-green-500 text-sm font-semibold">
                 + Create Recipe
               </span>
             </button>
@@ -86,7 +86,7 @@ export const Home = () => {
           onCardClick={(title) => setSelectedCarouselCard(title)}
         />
       </div>
-      <div className="w-full rounded-lg bg-white p-5 flex gap-7 flex-wrap dark:bg-slate-400 ">
+      <div className="w-full rounded-lg bg-white-500 p-5 flex gap-7 flex-wrap dark:bg-slate-400 ">
         {recipeCardData.map((recipe) => (
           <Card
             key={recipe.to}

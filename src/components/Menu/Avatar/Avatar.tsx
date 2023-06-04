@@ -81,8 +81,8 @@ export const Avatar = ({
             className="flex items-center focus:outline-none"
             aria-label="toggle profile dropdown"
           >
-            <div className="w-10 h-10 overflow-hidden border-2 border-white rounded-full bg-green max-w-xs">
-              <p className="flex justify-center items-center h-full text-white font-bold uppercase">
+            <div className="w-10 h-10 overflow-hidden border-2 border-white-500 rounded-full bg-green-500 max-w-xs">
+              <p className="flex justify-center items-center h-full text-white-500 font-bold uppercase">
                 {initials}
               </p>
             </div>
@@ -92,7 +92,7 @@ export const Avatar = ({
         {/* Dropdown menu */}
         {isOpen && (
           <div
-            className={`absolute right-0 z-20 w-48 py-2 mt-2 origin-top-right bg-white rounded-md shadow-xl `}
+            className={`absolute right-0 z-20 w-48 py-2 mt-2 origin-top-right bg-white-500 rounded-md shadow-xl `}
           >
             <RenderMenuItems />
           </div>

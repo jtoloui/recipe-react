@@ -19,6 +19,8 @@ export const Home = () => {
         image: string;
         title: string;
         to: string;
+        totalTime: string;
+        ingredientsCount: number;
       }[]
   >([]);
 
@@ -52,6 +54,8 @@ export const Home = () => {
         image: recipe.imageSrc,
         title: recipe.name,
         to: `/recipe/${recipe._id}`,
+        totalTime: recipe.totalTime,
+        ingredientsCount: recipe.ingredients?.length || 0,
       }));
       setRecipeCardData(newData);
     }
@@ -89,6 +93,8 @@ export const Home = () => {
             image={recipe.image}
             title={recipe.title}
             to={recipe.to}
+            ingredientsCount={recipe.ingredientsCount}
+            totalTime={recipe.totalTime}
           />
         ))}
       </div>

@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -15,8 +14,6 @@ export const Avatar = ({
 }: AvatarProps) => {
   const node = useRef<null | HTMLDivElement>(null);
 
-  // const { logout, user } = useAuth0();
-
   const initials = 'jamie'
     ?.split(' ')
     .map((n) => n[0])
@@ -27,6 +24,10 @@ export const Avatar = ({
     text: string;
     onClick?: () => void;
   }[];
+
+  const handleLogout = () => {
+    window.location.href = 'http://localhost:3001/auth/logout';
+  };
 
   const menuItems: MenuItem = [
     {
@@ -42,8 +43,7 @@ export const Avatar = ({
     {
       to: '/',
       text: 'Sign Out',
-      onClick: () =>
-        (window.location.href = 'http://localhost:3001/auth/logout'),
+      onClick: () => handleLogout(),
     },
   ];
 

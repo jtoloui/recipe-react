@@ -1,38 +1,11 @@
-import { useAuth0 } from '@auth0/auth0-react';
-
 import Logo from '@/assets/Logo';
 import { Button } from '@/components/Button/Button';
 import cookieImg from '@/assets/images/joanie-simon-2r8BzVYZIeo-unsplash.jpg';
-import axios from 'axios';
 
 export const Login = () => {
-  const { loginWithRedirect } = useAuth0();
-
   // Call an endpoint on the server that checks if the jwt cookie is present
   const login = () => {
     window.location.href = 'http://localhost:3001/auth/login';
-
-    // try {
-    //   const response = await axios.get('/login', {
-    //     withCredentials: true,
-    //   });
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.error('Error checking authentication state:', error);
-    // }
-  };
-
-  const logout = () => {
-    console.log(import.meta.env.VITE_AUTH0_DOMAIN);
-
-    window.location.href = 'http://localhost:3001/auth/logout';
-    // axios.get(
-    //   `https://${
-    //     import.meta.env.VITE_AUTH0_DOMAIN
-    //   }/v2/logout?returnTo=https://localhost:3001/auth/logout&client_id=${
-    //     import.meta.env.VITE_AUTH0_CLIENT_ID
-    //   }`
-    // );
   };
 
   return (

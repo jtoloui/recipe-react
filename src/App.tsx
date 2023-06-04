@@ -8,7 +8,7 @@ import { ProtectedRouteWithNav } from '@/components/ProtectedRouteWithNav';
 import { Login } from '@/pages/Login';
 import { Home } from '@/pages/Home';
 import { Profile } from '@/pages/Profile';
-import Recipe, { loader as recipeLoader } from './pages/Recipe';
+import RecipeById, { loader as recipeLoader } from './pages/RecipeById';
 import { QueryClient } from 'react-query';
 
 const queryClient = new QueryClient();
@@ -31,8 +31,12 @@ const routes = createBrowserRouter([
         element: <Profile />,
       },
       {
+        path: '/settings',
+        element: <div>Settings</div>,
+      },
+      {
         path: '/recipe/:recipeId',
-        element: <Recipe />,
+        element: <RecipeById />,
         loader: recipeLoader(queryClient),
       },
     ],

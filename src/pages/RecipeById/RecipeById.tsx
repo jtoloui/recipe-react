@@ -10,11 +10,11 @@ import { fetchRecipeByIdQuery } from '@/queries';
 import { formatTime } from '@/utils';
 import { type loader } from '.';
 
-type RecipeParams = {
+type RecipeByIdParams = {
   recipeId: string;
 };
-const Recipe = () => {
-  const params = useParams<RecipeParams>();
+const RecipeById = () => {
+  const params = useParams<RecipeByIdParams>();
 
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof loader>>
@@ -192,4 +192,4 @@ const Recipe = () => {
   );
 };
 
-export default Recipe;
+export default RecipeById;

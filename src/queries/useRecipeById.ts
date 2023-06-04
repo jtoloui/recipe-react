@@ -2,7 +2,9 @@ import { useQuery, UseQueryResult } from 'react-query';
 import axios from 'axios';
 import { RecipeByIdResponse } from './types';
 
-const fetchRecipeById = async (id: string): Promise<RecipeByIdResponse> => {
+export const fetchRecipeById = async (
+  id: string
+): Promise<RecipeByIdResponse> => {
   const response = await axios.get<RecipeByIdResponse>(`/api/recipes/${id}`);
   console.log(response.data);
 
@@ -16,3 +18,8 @@ export const useRecipeById = (
     fetchRecipeById(id)
   );
 };
+
+export const fetchRecipeByIdQuery = (id: string) => ({
+  queryKey: ['recipe', id],
+  queryFn: async () => fetchRecipeById(id),
+});

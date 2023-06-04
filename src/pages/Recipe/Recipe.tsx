@@ -1,34 +1,29 @@
 import { useLoaderData, useParams } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
+import { useQuery } from 'react-query';
 
 import { Image } from '@/components/Elements';
 import { Layout } from '@/components/Layout';
-import { useRecipeById } from '@/queries';
 import EditSvg from '@/assets/EditSvg';
-import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
+import { fetchRecipeByIdQuery } from '@/queries';
+import { formatTime } from '@/utils';
+import { type loader } from '.';
 
-export const Recipe = () => {
-  const data = useLoaderData();
+type RecipeParams = {
+  recipeId: string;
+};
+const Recipe = () => {
+  const params = useParams<RecipeParams>();
 
-  // will plan to build in a loader using react-query
-  // const { recipeId } = useParams<{
-  //   recipeId: string;
-  // }>();
+  const initialData = useLoaderData() as Awaited<
+    ReturnType<ReturnType<typeof loader>>
+  >;
 
-  // const { data } = useRecipeById(recipeId || '');
-
-  const formatTime = (time: number) => {
-    const hours = Math.floor(time / 60);
-    const minutes = time % 60;
-
-    if (hours > 0) {
-      return `${hours} hr${hours > 1 ? 's' : ''} ${minutes} min${
-        minutes > 1 ? 's' : ''
-      }`;
-    }
-
-    return `${minutes} min${minutes > 1 ? 's' : ''}`;
-  };
+  const { data } = useQuery({
+    ...fetchRecipeByIdQuery(params?.recipeId || ''),
+    initialData,
+  });
 
   return (
     <Layout>
@@ -196,3 +191,5 @@ export const Recipe = () => {
     </Layout>
   );
 };
+
+export default Recipe;

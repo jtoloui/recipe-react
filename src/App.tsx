@@ -1,26 +1,49 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {
+  Navigate,
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { ProtectedRouteWithNav } from '@/components/ProtectedRouteWithNav';
 import { Login } from '@/pages/Login';
 import { Home } from '@/pages/Home';
-import { Menu } from '@/components/Menu';
 import { Profile } from '@/pages/Profile';
+import { Recipe } from './pages/Recipe';
+
+const routes = createBrowserRouter([
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/',
+    element: <ProtectedRouteWithNav />,
+    children: [
+      {
+        path: '/',
+        element: <Home />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
+      },
+      {
+        path: '/recipe/:recipeId',
+        element: <Recipe />,
+        loader: async ({ params }) => {
+          const res = await fetch(`/api/recipes/${params.recipeId}`);
+          const data = await res.json();
+          return data;
+        },
+      },
+    ],
+  },
+  {
+    path: '*',
+    element: <Navigate to="/" replace />,
+  },
+]);
 
 export const App = () => {
-  return (
-    <BrowserRouter>
-      <Menu />
-      <Routes>
-        <Route path="/login" element={<Login />} index />
-        <Route path="/" element={<ProtectedRoute />}>
-          <Route path="/" element={<Home />} />
-        </Route>
-
-        <Route path="/profile" element={<ProtectedRoute />}>
-          <Route path="/profile" element={<Profile />} />
-        </Route>
-        {/* <Route path="*" element={<Navigate to="/login" replace />} /> */}
-      </Routes>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={routes} />;
 };

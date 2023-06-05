@@ -10,7 +10,10 @@ const isDev = appEnv === 'development';
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
-    alias: [{ find: '@', replacement: path.resolve(__dirname, 'src') }],
+    alias: [
+      { find: '@', replacement: path.resolve(__dirname, 'src') },
+      { find: './runtimeConfig', replacement: './runtimeConfig.browser' },
+    ],
   },
   plugins: [
     react(),
@@ -18,6 +21,7 @@ export default defineConfig({
       exportAsDefault: false,
     }),
   ],
+
   server: {
     port: 3000,
     host: true,

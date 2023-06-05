@@ -8,7 +8,9 @@ export const useIsAuthenticated = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await axios.get('/auth/authenticated');
+        const res = await axios.get(
+          'https://localhost:3001/auth/authenticated'
+        );
         setIsAuthenticated(res.data.isAuthenticated);
         setIsLoading(false);
       } catch (error) {

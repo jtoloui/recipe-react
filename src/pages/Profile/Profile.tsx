@@ -8,7 +8,7 @@ export const Profile = () => {
   return (
     <Layout>
       <h1>Profile</h1>
-      {JSON.stringify(data)}
+      <pre>{JSON.stringify(data, undefined, 2)}</pre>
     </Layout>
   );
 };

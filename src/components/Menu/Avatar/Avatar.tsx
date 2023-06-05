@@ -92,7 +92,7 @@ export const Avatar = ({
         {/* Dropdown menu */}
         {isOpen && (
           <div
-            className={`absolute right-0 z-20 w-48 py-2 mt-2 origin-top-right bg-white-500 rounded-md shadow-xl `}
+            className={`absolute right-0 z-[70] w-48 py-2 mt-2 origin-top-right bg-white-500 rounded-md shadow-xl `}
           >
             <RenderMenuItems />
           </div>

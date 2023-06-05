@@ -5,7 +5,8 @@ import cookieImg from '@/assets/images/joanie-simon-2r8BzVYZIeo-unsplash.jpg';
 export const Login = () => {
   // Call an endpoint on the server that checks if the jwt cookie is present
   const login = () => {
-    window.location.href = 'http://localhost:3001/auth/login';
+    window.location.href =
+      'https://main.d37yoiq61yljqx.amplifyapp.com/auth/login';
   };
 
   return (

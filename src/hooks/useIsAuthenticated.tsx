@@ -9,7 +9,7 @@ export const useIsAuthenticated = () => {
     const checkAuth = async () => {
       try {
         const res = await axios.get(
-          'https://api.jamietoloui.com/auth/authenticated',
+          `${import.meta.env.VITE_API_URI}/auth/authenticated`,
           {
             withCredentials: true,
           }

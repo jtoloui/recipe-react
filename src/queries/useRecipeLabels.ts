@@ -7,7 +7,7 @@ type RecipeByLabel = RecipesByLabelResponse;
 
 const fetchRecipeLabels = async (): Promise<Labels> => {
   const response = await axios.get<RecipeLabelsResponse>(
-    'https://api.jamietoloui.com/api/labels',
+    `${import.meta.env.VITE_API_URI}/api/labels`,
     {
       withCredentials: true,
     }
@@ -21,7 +21,7 @@ export const useRecipeLabels = (): UseQueryResult<Labels, Error> => {
 
 const fetchRecipesByLabel = async (label: string): Promise<RecipeByLabel> => {
   const response = await axios.get<RecipeByLabel>(
-    `https://api.jamietoloui.com/api/labels/${label}`,
+    `${import.meta.env.VITE_API_URI}/api/labels/${label}`,
     {
       withCredentials: true,
     }

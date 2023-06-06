@@ -5,8 +5,10 @@ import cookieImg from '@/assets/images/joanie-simon-2r8BzVYZIeo-unsplash.jpg';
 export const Login = () => {
   // Call an endpoint on the server that checks if the jwt cookie is present
   const login = () => {
-    window.location.href = 'https://api.jamietoloui.com/auth/login';
+    window.location.href = `${import.meta.env.VITE_API_URI}/auth/login`;
   };
+
+  console.log('login', import.meta.env.VITE_API_URI);
 
   return (
     <div className="relative">
@@ -24,8 +26,11 @@ export const Login = () => {
           </p>
         </div>
         <div className="flex gap-5 flex-wrap">
-          <Button text="Login" variant="primary" onClick={() => login()} />
-          <Button text="Sign Up" variant="secondary" onClick={() => login()} />
+          <Button
+            text="Login / Sign Up"
+            variant="primary"
+            onClick={() => login()}
+          />
         </div>
       </div>
       <div className="relative overflow-hidden lg:ml-auto lg:w-3/5 lg:-mr-16 opacity-30 mt-8 lg:mt-0 max-h-screen">

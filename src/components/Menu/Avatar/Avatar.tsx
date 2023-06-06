@@ -26,7 +26,7 @@ export const Avatar = ({
   }[];
 
   const handleLogout = () => {
-    window.location.href = 'https://api.jamietoloui.com/auth/logout';
+    window.location.href = `${import.meta.env.VITE_API_URI}/auth/logout`;
   };
 
   const menuItems: MenuItem = [

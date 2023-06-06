@@ -6,7 +6,7 @@ export const fetchRecipeById = async (
   id: string
 ): Promise<RecipeByIdResponse> => {
   const response = await axios.get<RecipeByIdResponse>(
-    `https://api.jamietoloui.com/api/recipes/${id}`,
+    `${import.meta.env.VITE_API_URI}/api/recipes/${id}`,
     { withCredentials: true }
   );
   console.log(response.data);

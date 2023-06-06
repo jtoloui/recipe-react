@@ -33,12 +33,12 @@ export default defineConfig({
       : false,
     proxy: {
       '/api': {
-        target: 'https://api.jamietoloui.com',
+        target: 'https://localhost:3001',
         changeOrigin: true,
         secure: false,
       },
       '/auth': {
-        target: 'https://api.jamietoloui.com',
+        target: 'https://localhost:3001',
         changeOrigin: true,
         secure: false,
       },

@@ -9,7 +9,7 @@ export const useIsAuthenticated = () => {
     const checkAuth = async () => {
       try {
         const res = await axios.get(
-          'https://localhost:3001/auth/authenticated',
+          'https://api.jamietoloui.com/auth/authenticated',
           {
             withCredentials: true,
           }

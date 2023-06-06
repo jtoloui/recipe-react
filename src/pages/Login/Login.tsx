@@ -5,7 +5,7 @@ import cookieImg from '@/assets/images/joanie-simon-2r8BzVYZIeo-unsplash.jpg';
 export const Login = () => {
   // Call an endpoint on the server that checks if the jwt cookie is present
   const login = () => {
-    window.location.href = 'https://localhost:3001/auth/login';
+    window.location.href = 'https://api.jamietoloui.com/auth/login';
   };
 
   return (

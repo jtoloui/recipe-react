@@ -8,8 +8,6 @@ export const Login = () => {
     window.location.href = `${import.meta.env.VITE_API_URI}/auth/login`;
   };
 
-  console.log('login', import.meta.env.VITE_API_URI);
-
   return (
     <div className="relative">
       <div className="lg:mx-20 md:mx-16 sm:mx-8 mx-4 mt-16 z-10 relative flex flex-col lg:absolute lg:left-0 lg:top-0 lg:w-1/2">

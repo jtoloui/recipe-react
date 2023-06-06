@@ -14,7 +14,6 @@ const fetchProfile = async (): Promise<Profile> => {
       withCredentials: true,
     }
   );
-  console.log(response.data);
 
   return response.data;
 };

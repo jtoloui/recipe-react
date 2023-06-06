@@ -1,3 +1,4 @@
+import { useProfile } from '@/queries';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -12,9 +13,11 @@ export const Avatar = ({
   setIsOpen,
   isSideMenuVersion = false,
 }: AvatarProps) => {
+  const { data } = useProfile();
+
   const node = useRef<null | HTMLDivElement>(null);
 
-  const initials = 'jamie'
+  const initials = data?.nickname
     ?.split(' ')
     .map((n) => n[0])
     .join('');

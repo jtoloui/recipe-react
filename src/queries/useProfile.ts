@@ -8,7 +8,12 @@ type Profile = {
   nickname: string;
 };
 const fetchProfile = async (): Promise<Profile> => {
-  const response = await axios.get<Profile>('/api/profile');
+  const response = await axios.get<Profile>(
+    `${import.meta.env.VITE_API_URI}/api/profile`,
+    {
+      withCredentials: true,
+    }
+  );
   console.log(response.data);
 
   return response.data;

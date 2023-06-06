@@ -9,7 +9,6 @@ function Logo() {
       <g fill="none" fillRule="evenodd">
         <text
           fill="#363837"
-          fontFamily="Nunito-Bold, Nunito"
           fontSize="20"
           fontWeight="bold"
           letterSpacing="0.4"

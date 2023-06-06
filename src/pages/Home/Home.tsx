@@ -86,7 +86,7 @@ export const Home = () => {
           onCardClick={(title) => setSelectedCarouselCard(title)}
         />
       </div>
-      <div className="w-full rounded-lg bg-white-500 p-5 flex gap-7 flex-wrap dark:bg-slate-400 ">
+      <div className="mt-4 w-full rounded-lg bg-white-500 p-5 flex gap-7 flex-wrap dark:bg-slate-500 ">
         {recipeCardData.map((recipe) => (
           <Card
             key={recipe.to}

@@ -31,17 +31,19 @@ export default defineConfig({
           cert: fs.readFileSync('./certs/localhost.pem'),
         }
       : false,
-    proxy: {
-      '/api': {
-        target: 'https://localhost:3001',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/auth': {
-        target: 'https://localhost:3001',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
+    proxy: isDev
+      ? {
+          '/api': {
+            target: 'https://localhost:3001',
+            changeOrigin: true,
+            secure: false,
+          },
+          '/auth': {
+            target: 'https://localhost:3001',
+            changeOrigin: true,
+            secure: false,
+          },
+        }
+      : {},
   },
 });

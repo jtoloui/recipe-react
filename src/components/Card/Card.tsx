@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 import { Image } from '@/components/Elements';
+import { useWindowSize } from 'usehooks-ts';
 
 type CardProps = {
   image: string;
@@ -19,11 +20,18 @@ export const Card = ({
   ingredientsCount = 4,
 }: CardProps) => {
   return (
-    <div className=" flex-grow overflow-hidden bg-white-500 rounded-lg shadow-md dark:bg-slate-700">
+    <div
+      className=" flex-grow overflow-hidden basis-1/2 md:basis-2/6 xl:basis-1/5 bg-white-500 rounded-lg shadow-md dark:bg-slate-700"
+      style={
+        {
+          // flexBasis: '22.3333% ',
+        }
+      }
+    >
       <Image
         src={image}
         fallbackSrc={`https://source.unsplash.com/random/800x800/?${title}-food`}
-        className="object-cover w-full h-64"
+        className="object-cover w-full h-64 "
       />
 
       <div className="p-6">

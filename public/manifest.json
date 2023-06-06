@@ -1,0 +1,26 @@
+{
+	"short_name": "Toloui Recipe",
+	"name": "Toloui cook book of recipes",
+	"description": "Toloui cook book of recipes where you can find all the recipes you need to cook your favorite food",
+	"icons": [
+		{
+			"src": "./favicon.ico",
+			"sizes": "48x48",
+			"type": "image/x-icon"
+		},
+		{
+			"src": "./android-chrome-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "./android-chrome-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"start_url": ".",
+	"theme_color": "#ffffff",
+	"background_color": "#ffffff",
+	"display": "standalone"
+}

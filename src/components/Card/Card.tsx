@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 import { Image } from '@/components/Elements';
-import { useWindowSize } from 'usehooks-ts';
+// import { useWindowSize } from 'usehooks-ts';
 
 type CardProps = {
   image: string;

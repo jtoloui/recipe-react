@@ -34,6 +34,7 @@ const RecipeById = () => {
             src={data?.imageSrc || ''}
             fallbackSrc={`https://source.unsplash.com/random/800x800/?${data?.name}-food`}
             className="w-full h-full object-cover"
+            alt={data?.name || ''}
           />
         </div>
         {/* <!-- Box 2 --> */}
@@ -152,9 +153,9 @@ const RecipeById = () => {
                     key={index}
                   >
                     <Image
-                      src="https://source.unsplash.com/random/800x800/?food"
+                      src={`https://source.unsplash.com/random/800x800/?${ingredient.item}-food`}
                       fallbackSrc="https://source.unsplash.com/random/800x800/?food"
-                      alt="food"
+                      alt={ingredient.item}
                       className="w-12 h-12 mr-2 rounded-full"
                     />
                     {`${ingredient.item} - ${ingredient.quantity} ${ingredient.measurement}`}

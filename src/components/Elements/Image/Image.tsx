@@ -21,7 +21,7 @@ export const Image = ({
 
   return (
     <>
-      {isLoading && <Skeleton className={className} />}
+      {isLoading && <Skeleton className={`dark:bg-slate-500 ${className}`} />}
       <img
         ref={imageRef}
         src={src}

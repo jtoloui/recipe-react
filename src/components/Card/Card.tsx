@@ -32,6 +32,7 @@ export const Card = ({
         src={image}
         fallbackSrc={`https://source.unsplash.com/random/800x800/?${title}-food`}
         className="object-cover w-full h-64 "
+        alt={title}
       />
 
       <div className="p-6">

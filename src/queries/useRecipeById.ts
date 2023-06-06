@@ -5,7 +5,10 @@ import { RecipeByIdResponse } from './types';
 export const fetchRecipeById = async (
   id: string
 ): Promise<RecipeByIdResponse> => {
-  const response = await axios.get<RecipeByIdResponse>(`/api/recipes/${id}`);
+  const response = await axios.get<RecipeByIdResponse>(
+    `https://api.jamietoloui.com/api/recipes/${id}`,
+    { withCredentials: true }
+  );
   console.log(response.data);
 
   return response.data;

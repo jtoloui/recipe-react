@@ -6,7 +6,12 @@ type Labels = RecipeLabelsResponse;
 type RecipeByLabel = RecipesByLabelResponse;
 
 const fetchRecipeLabels = async (): Promise<Labels> => {
-  const response = await axios.get<RecipeLabelsResponse>('/api/labels');
+  const response = await axios.get<RecipeLabelsResponse>(
+    'https://api.jamietoloui.com/api/labels',
+    {
+      withCredentials: true,
+    }
+  );
   return response.data;
 };
 
@@ -15,7 +20,12 @@ export const useRecipeLabels = (): UseQueryResult<Labels, Error> => {
 };
 
 const fetchRecipesByLabel = async (label: string): Promise<RecipeByLabel> => {
-  const response = await axios.get<RecipeByLabel>(`/api/labels/${label}`);
+  const response = await axios.get<RecipeByLabel>(
+    `https://api.jamietoloui.com/api/labels/${label}`,
+    {
+      withCredentials: true,
+    }
+  );
 
   return response.data;
 };

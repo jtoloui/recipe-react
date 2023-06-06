@@ -23,7 +23,7 @@ export const Menu = () => {
   if (location.pathname === '/login') return null;
 
   return (
-    <nav className="bg-white-500 shadow">
+    <nav className="bg-white-500 shadow dark:shadow-white-500 dark:bg-slate-600 ">
       <div className="px-6 py-4 mx-auto">
         <div className="md:flex md:items-center">
           {/* // logo and burger menu */}
@@ -46,7 +46,7 @@ export const Menu = () => {
 
           {/* // menu items */}
           <div
-            className={`absolute z-[49] inset-x-0 flex-1 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white-500  md:mt-0 md:p-0 md:top-0 md:relative md:bg-transparent md:w-auto ${
+            className={`dark:bg-slate-600 absolute z-[49] inset-x-0 flex-1 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white-500  md:mt-0 md:p-0 md:top-0 md:relative md:bg-transparent md:w-auto ${
               isBurgerMenuOpen
                 ? ' z-[99] shadow translate-x-0 opacity-100 '
                 : 'opacity-0 -translate-x-full z-20'
@@ -73,6 +73,7 @@ export const Menu = () => {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
+                      className="dark:stroke-white-500"
                     ></path>
                   </svg>
                 </span>
@@ -80,7 +81,7 @@ export const Menu = () => {
                 {/* // Search bar */}
                 <input
                   type="text"
-                  className=" text-ellipsis w-full py-1 pl-10 pr-4 text-black-500 placeholder-black-600 bg-white-500 border-b border-brownGrey-500 focus:outline-none focus:border-gray-600"
+                  className="text-ellipsis w-full py-1 pl-10 pr-4 text-black-500 dark:text-white-500 dark:placeholder-white-600 placeholder-black-600 bg-white-500  dark:bg-slate-600 border-b border-brownGrey-500 dark:border-white-500 focus:outline-none dark:focus:border-white-500 focus:border-gray-600"
                   placeholder="Search Recipe, Profile, or Ingredients"
                 />
               </div>

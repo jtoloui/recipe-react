@@ -13,8 +13,9 @@ function Logo() {
           fontWeight="bold"
           letterSpacing="0.4"
           transform="translate(28 4)"
+          className="dark:fill-white-500"
         >
-          <tspan x="0" y="20">
+          <tspan x="0" y="20" className="dark:text-whit">
             toloui
           </tspan>
         </text>

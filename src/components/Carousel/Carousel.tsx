@@ -69,7 +69,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
               strokeLinejoin="round"
               strokeWidth={1}
               d="M9 5l7 7-7 7"
-              className="stroke-charcoal-500"
+              className="stroke-charcoal-500 dark:stroke-white-500"
             />
 
             {/* // if the selected card is not the first card and not in view, show the green line */}
@@ -133,7 +133,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
               className={
                 current === 0 && selected === 0
                   ? ''
-                  : 'absolute inset-y-0 left-[-2rem] md:left-0 w-48 bg-gradient-to-r from-lightBg-500 to-transparent'
+                  : 'absolute inset-y-0 left-[-2rem] md:left-0 w-48 bg-gradient-to-r from-lightBg-500 dark:from-slate-500 to-transparent'
               }
               style={{ pointerEvents: 'none' }}
             ></div>
@@ -142,7 +142,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
                 selected === data.length - 1 &&
                 current === data.length - cardsToShow
                   ? ''
-                  : 'absolute inset-y-0 right-[-2rem] md:right-0 w-48 bg-gradient-to-l from-lightBg-500 to-transparent'
+                  : 'absolute inset-y-0 right-[-2rem] md:right-0 w-48 bg-gradient-to-l from-lightBg-500 dark:from-slate-500 to-transparent'
               }
               style={{ pointerEvents: 'none' }}
             ></div>
@@ -169,7 +169,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
               strokeLinejoin="round"
               strokeWidth={1}
               d="M9 5l7 7-7 7"
-              className="stroke-charcoal-500"
+              className="stroke-charcoal-500 dark:stroke-white-500"
             />
 
             {/* // if the selected card is or is not the last card and not in view, show the green line */}

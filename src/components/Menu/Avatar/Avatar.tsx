@@ -58,7 +58,7 @@ export const Avatar = ({
             to={item.to}
             key={item.text.replace(' ', '-')}
             onClick={item.onClick}
-            className="block px-4 py-3 text-sm text-gray-600 capitalize transition-colors duration-300 transform hover:bg-gray-100"
+            className="block px-4 py-3 text-sm text-gray-600 dark:text-white-500 capitalize transition-colors duration-300 transform hover:bg-gray-100 dark:hover:bg-slate-500 hover:text-gray-800 dark:hover:text-white-500"
           >
             {item.text}
           </Link>
@@ -95,7 +95,7 @@ export const Avatar = ({
         {/* Dropdown menu */}
         {isOpen && (
           <div
-            className={`absolute right-0 z-[70] w-48 py-2 mt-2 origin-top-right bg-white-500 rounded-md shadow-xl `}
+            className={` dark:bg-slate-600 absolute right-0 z-[70] w-48 py-2 mt-2 origin-top-right bg-white-500 rounded-md shadow-xl `}
           >
             <RenderMenuItems />
           </div>

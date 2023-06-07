@@ -48,7 +48,7 @@ export const Menu = () => {
           <div
             className={`dark:bg-slate-600 absolute z-40 inset-x-0 flex-1 w-full px-6 py-4 transition-all duration-300 ease-in-out bg-white-500  md:mt-0 md:p-0 md:top-0 md:relative md:bg-transparent md:w-auto ${
               isBurgerMenuOpen
-                ? ' z-[99] shadow translate-x-0 opacity-100 '
+                ? ' shadow translate-x-0 opacity-100 '
                 : 'opacity-0 -translate-x-full z-20'
             } md:opacity-100 md:translate-x-0 md:flex md:items-center md:justify-between`}
           >

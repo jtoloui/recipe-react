@@ -28,7 +28,7 @@ export const Menu = () => {
         <div className="md:flex md:items-center">
           {/* // logo and burger menu */}
           <div className="flex items-center justify-between">
-            <Link to="/">
+            <Link to="/" aria-label="toloui recipe menu logo">
               <Logo />
             </Link>
             <div className="flex md:hidden gap-3">

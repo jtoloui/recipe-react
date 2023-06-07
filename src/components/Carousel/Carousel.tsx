@@ -57,6 +57,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
         <button
           onClick={() => setCurrent((old) => old - 1)}
           className="absolute left-[-2rem] md:left-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
+          aria-label="Carousel left arrow"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -157,6 +158,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
               : setCurrent(0)
           }
           className="absolute right-[-2rem] md:right-0 top-1/2 transform -translate-y-1/2 z-50 p-2"
+          aria-label="Carousel right arrow"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

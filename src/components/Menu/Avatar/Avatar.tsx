@@ -1,4 +1,5 @@
 import { useProfile } from '@/queries';
+import axios from 'axios';
 import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -28,8 +29,8 @@ export const Avatar = ({
     onClick?: () => void;
   }[];
 
-  const handleLogout = () => {
-    window.location.href = `${import.meta.env.VITE_API_URI}/auth/logout`;
+  const handleLogout = async () => {
+    await axios.get('/auth/logout');
   };
 
   const menuItems: MenuItem = [

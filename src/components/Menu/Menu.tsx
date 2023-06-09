@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
-import Logo from '@/assets/Logo';
+import Logo from '@/assets/LogoWithText';
 import { BurgerMenu } from './BurgerMenu';
 import { MenuLink } from './MenuLink';
 import { Avatar } from './Avatar';

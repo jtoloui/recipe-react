@@ -1,0 +1,20 @@
+.background {
+
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)),url('../../assets/images/brooke-lark-08bOYnH_r_E-unsplash.jpg');
+  background-position: center; /* to center the background image */
+  background-repeat: no-repeat; /* to prevent the image from repeating */
+  background-size: cover; /* to cover entire container, you can also use 'contain' to ensure entire image is shown */
+	background-color: rgba(255, 255, 255, 0.3);
+
+}
+
+.gradient::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to top right, rgba(255,255,255,1), rgba(255,255,255,0.8) 30%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.4) 70%, rgba(255,255,255,0) 100%);
+  z-index: 1;
+}

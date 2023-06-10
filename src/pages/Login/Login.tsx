@@ -160,7 +160,7 @@ export const Login = () => {
                 </label>
                 <input
                   id="loggingUsername"
-                  className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                  className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
                   type="text"
                   placeholder="Username"
                   defaultValue={''}
@@ -179,7 +179,7 @@ export const Login = () => {
                     </label>
                     <input
                       id="signUpEmail"
-                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500  dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
                       type="email"
                       placeholder="Email"
                       {...register('email', { required: true })}
@@ -195,7 +195,7 @@ export const Login = () => {
                     </label>
                     <input
                       id="signUpFirstName"
-                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
                       type="text"
                       placeholder="First Name"
                       {...register('firstName', { required: true })}
@@ -211,7 +211,7 @@ export const Login = () => {
                     </label>
                     <input
                       id="signUpLastName"
-                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
                       type="text"
                       placeholder="Last Name"
                       {...register('lastName', { required: true })}
@@ -240,7 +240,7 @@ export const Login = () => {
 
                 <input
                   id="loggingPassword"
-                  className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                  className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
                   type="password"
                   placeholder="Password"
                   {...register('password', { required: true })}

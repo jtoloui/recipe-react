@@ -13,6 +13,8 @@ type FormData = {
   username: string;
   password: string;
   email?: string;
+  firstName?: string;
+  lastName?: string;
 };
 
 export const Login = () => {
@@ -47,28 +49,55 @@ export const Login = () => {
     }
   }, [location.hash, setValue]);
 
+  const signIn = (data: FormData) => {
+    axios
+      .post('/auth/login', {
+        username: data.username,
+        password: data.password,
+      })
+      .then((res) => {
+        console.log(res);
+        navigate('/');
+      })
+      .catch((err) => {
+        setError('username', {
+          type: 'manual',
+          message: 'Invalid username or password',
+        });
+        setError('password', {
+          type: 'manual',
+          message: 'Invalid username or password',
+        });
+      });
+  };
+
+  const signUp = (data: FormData) => {
+    axios
+      .post('/auth/register', {
+        username: data.username,
+        password: data.password,
+        email: data.email,
+        given_name: data.firstName,
+        family_name: data.lastName,
+      })
+      .then((res) => {
+        console.log(res);
+        navigate('/');
+      })
+      .catch((err) => {
+        setError('username', {
+          type: 'manual',
+          message: 'Invalid username or password',
+        });
+        setError('password', {
+          type: 'manual',
+          message: 'Invalid username or password',
+        });
+      });
+  };
+
   const onSubmit = handleSubmit((data) => {
-    isSignUp
-      ? console.log(data)
-      : axios
-          .post('/auth/login', {
-            username: data.username,
-            password: data.password,
-          })
-          .then((res) => {
-            console.log(res);
-            navigate('/');
-          })
-          .catch((err) => {
-            setError('username', {
-              type: 'manual',
-              message: 'Invalid username or password',
-            });
-            setError('password', {
-              type: 'manual',
-              message: 'Invalid username or password',
-            });
-          });
+    isSignUp ? signUp(data) : signIn(data);
   });
 
   const socialLogin = () => {
@@ -94,7 +123,11 @@ export const Login = () => {
       <div className="min-h-screen flex items-center">
         <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">
           <div className="relative hidden lg:block lg:w-1/2 overflow-hidden">
-            <Logo className="transform scale-[2.0] absolute top-[17%] left-[-30%] opacity-50" />
+            <Logo
+              className={`transform scale-[2.0] absolute ${
+                isSignUp ? 'top-[25%]' : 'top-[11%]'
+              } left-[-30%] opacity-50`}
+            />
             <LogoWithText className="absolute top-1/2 z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3" />
 
             <div className="absolute top-0 left-0 w-full h-full z-10 gradient"></div>
@@ -110,12 +143,9 @@ export const Login = () => {
             <div className="flex items-center justify-between mt-4">
               <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/4"></span>
 
-              <a
-                href="#"
-                className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
-              >
+              <div className="text-xs text-center text-gray-500 uppercase dark:text-gray-400">
                 or {isSignUp ? 'signup' : 'login'} with email
-              </a>
+              </div>
 
               <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
             </div>
@@ -130,7 +160,7 @@ export const Login = () => {
                 </label>
                 <input
                   id="loggingUsername"
-                  className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                  className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
                   type="text"
                   placeholder="Username"
                   defaultValue={''}
@@ -139,21 +169,55 @@ export const Login = () => {
               </div>
 
               {isSignUp && (
-                <div className="mt-4">
-                  <label
-                    className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-                    htmlFor="signUpEmail"
-                  >
-                    Email
-                  </label>
-                  <input
-                    id="signUpEmail"
-                    className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
-                    type="email"
-                    placeholder="Email"
-                    {...register('email', { required: true })}
-                  />
-                </div>
+                <>
+                  <div className="mt-4">
+                    <label
+                      className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
+                      htmlFor="signUpEmail"
+                    >
+                      Email
+                    </label>
+                    <input
+                      id="signUpEmail"
+                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500  dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                      type="email"
+                      placeholder="Email"
+                      {...register('email', { required: true })}
+                    />
+                  </div>
+
+                  <div className="mt-4">
+                    <label
+                      className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
+                      htmlFor="signUpFirstName"
+                    >
+                      First Name
+                    </label>
+                    <input
+                      id="signUpFirstName"
+                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                      type="text"
+                      placeholder="First Name"
+                      {...register('firstName', { required: true })}
+                    />
+                  </div>
+
+                  <div className="mt-4">
+                    <label
+                      className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
+                      htmlFor="signUpLastName"
+                    >
+                      Last Name
+                    </label>
+                    <input
+                      id="signUpLastName"
+                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                      type="text"
+                      placeholder="Last Name"
+                      {...register('lastName', { required: true })}
+                    />
+                  </div>
+                </>
               )}
 
               <div className="mt-4">
@@ -176,7 +240,7 @@ export const Login = () => {
 
                 <input
                   id="loggingPassword"
-                  className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                  className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
                   type="password"
                   placeholder="Password"
                   {...register('password', { required: true })}

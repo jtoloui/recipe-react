@@ -94,7 +94,7 @@ export const Login = () => {
       <div className="min-h-screen flex items-center">
         <div className="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg dark:bg-gray-800 lg:max-w-4xl">
           <div className="relative hidden lg:block lg:w-1/2 overflow-hidden">
-            <Logo className="transform scale-[2.0] absolute top-[11%] left-[-30%] opacity-50" />
+            <Logo className="transform scale-[2.0] absolute top-[17%] left-[-30%] opacity-50" />
             <LogoWithText className="absolute top-1/2 z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3" />
 
             <div className="absolute top-0 left-0 w-full h-full z-10 gradient"></div>

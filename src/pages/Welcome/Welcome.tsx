@@ -1,12 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+
 import Logo from '@/assets/LogoWithText';
-import { Button } from '@/components/Button/Button';
 import cookieImg from '@/assets/images/joanie-simon-2r8BzVYZIeo-unsplash.jpg';
+import { Button } from '@/components/Button/Button';
 
 export const Welcome = () => {
-  // Call an endpoint on the server that checks if the jwt cookie is present
-  const login = () => {
-    window.location.href = `${import.meta.env.VITE_API_URI}/auth/login`;
-  };
+  const navigate = useNavigate();
 
   return (
     <div className="relative dark:bg-slate-700 min-h-screen">
@@ -27,7 +26,7 @@ export const Welcome = () => {
           <Button
             text="Login / Sign Up"
             variant="primary"
-            onClick={() => login()}
+            onClick={() => navigate('/login')}
           />
         </div>
       </div>

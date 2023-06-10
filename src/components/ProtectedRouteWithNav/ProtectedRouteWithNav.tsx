@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import { useIsAuthenticated } from '@/hooks';
 import { Menu } from '@/components/Menu';
-import { useEffect } from 'react';
+import { useIsAuthenticated } from '@/hooks';
 
 export const ProtectedRouteWithNav = () => {
   const { isAuthenticated, isLoading } = useIsAuthenticated();

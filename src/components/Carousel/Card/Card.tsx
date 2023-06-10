@@ -1,6 +1,7 @@
-import { Image } from '@/components/Elements';
 import { motion } from 'framer-motion';
 import { useWindowSize } from 'usehooks-ts';
+
+import { Image } from '@/components/Elements';
 
 type CardProps = {
   image: string;

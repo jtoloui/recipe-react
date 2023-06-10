@@ -1,4 +1,4 @@
-import { NavLinkProps, NavLink } from 'react-router-dom';
+import { NavLink, NavLinkProps } from 'react-router-dom';
 
 export const MenuLink = ({
   to,

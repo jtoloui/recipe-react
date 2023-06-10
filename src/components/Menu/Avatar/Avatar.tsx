@@ -1,7 +1,8 @@
-import { useProfile } from '@/queries';
 import axios from 'axios';
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { useProfile } from '@/queries';
 
 type AvatarProps = {
   isOpen: boolean;
@@ -29,8 +30,11 @@ export const Avatar = ({
     onClick?: () => void;
   }[];
 
+  const navigate = useNavigate();
   const handleLogout = async () => {
-    await axios.get('/auth/logout');
+    await axios.get('/auth/logout').then(() => {
+      navigate('/welcome');
+    });
   };
 
   const menuItems: MenuItem = [

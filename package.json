@@ -23,6 +23,7 @@
     "framer-motion": "^10.12.16",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.44.3",
     "react-loading-skeleton": "^3.3.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.11.1",
@@ -30,6 +31,7 @@
     "vite-plugin-svgr": "^3.2.0"
   },
   "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/auth0-js": "^9.14.7",
     "@types/node": "^20.1.4",
     "@types/react": "^18.0.28",

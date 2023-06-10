@@ -3,9 +3,10 @@ import { Link, useLocation } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
 import Logo from '@/assets/LogoWithText';
+
+import { Avatar } from './Avatar';
 import { BurgerMenu } from './BurgerMenu';
 import { MenuLink } from './MenuLink';
-import { Avatar } from './Avatar';
 
 export const Menu = () => {
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);

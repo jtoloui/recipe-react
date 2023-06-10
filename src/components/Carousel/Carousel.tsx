@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useWindowSize } from 'usehooks-ts';
-import { Card } from './Card';
+
 import { CarouselProps } from '.';
+import { Card } from './Card';
 
 export const Carousel = ({ data, onCardClick }: CarouselProps) => {
   const [current, setCurrent] = useState(0);

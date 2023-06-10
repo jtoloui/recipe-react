@@ -1,13 +1,14 @@
-import { useLoaderData, useParams } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQuery } from 'react-query';
+import { useLoaderData, useParams } from 'react-router-dom';
 
+import EditSvg from '@/assets/EditSvg';
 import { Image } from '@/components/Elements';
 import { Layout } from '@/components/Layout';
-import EditSvg from '@/assets/EditSvg';
 import { fetchRecipeByIdQuery } from '@/queries';
 import { formatTime } from '@/utils';
+
 import { type loader } from '.';
 
 type RecipeByIdParams = {

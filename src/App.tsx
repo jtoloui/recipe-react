@@ -1,16 +1,17 @@
+import { QueryClient } from 'react-query';
 import {
   Navigate,
-  createBrowserRouter,
   RouterProvider,
+  createBrowserRouter,
 } from 'react-router-dom';
 
 import { ProtectedRouteWithNav } from '@/components/ProtectedRouteWithNav';
-import { Welcome } from '@/pages/Welcome';
 import { Home } from '@/pages/Home';
 import { Profile } from '@/pages/Profile';
-import RecipeById, { loader as recipeLoader } from './pages/RecipeById';
-import { QueryClient } from 'react-query';
+import { Welcome } from '@/pages/Welcome';
+
 import { Login } from './pages/Login';
+import RecipeById, { loader as recipeLoader } from './pages/RecipeById';
 
 const queryClient = new QueryClient();
 

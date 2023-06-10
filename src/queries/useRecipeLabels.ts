@@ -1,5 +1,6 @@
-import { useQuery, UseQueryResult } from 'react-query';
 import axios from 'axios';
+import { UseQueryResult, useQuery } from 'react-query';
+
 import { RecipeLabelsResponse, RecipesByLabelResponse } from './types';
 
 type Labels = RecipeLabelsResponse;

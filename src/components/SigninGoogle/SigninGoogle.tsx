@@ -1,7 +1,8 @@
 type SigninGoogleProps = {
   onClick: () => void;
+  isSignUp?: boolean;
 };
-export const SigninGoogle = ({ onClick }: SigninGoogleProps) => {
+export const SigninGoogle = ({ onClick, isSignUp }: SigninGoogleProps) => {
   return (
     <div
       className="flex items-center cursor-pointer justify-center mt-4 text-gray-600 transition-colors duration-300 transform border rounded-lg dark:border-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -29,7 +30,7 @@ export const SigninGoogle = ({ onClick }: SigninGoogleProps) => {
       </div>
 
       <span className="w-5/6 px-4 py-3 font-bold text-center">
-        Sign in with Google
+        {isSignUp ? 'Sign up' : 'Sign in'} with Google
       </span>
     </div>
   );

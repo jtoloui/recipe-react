@@ -24,9 +24,22 @@ export const Welcome = () => {
         </div>
         <div className="flex gap-5 flex-wrap">
           <Button
-            text="Login / Sign Up"
+            text="Sign Up"
             variant="primary"
-            onClick={() => navigate('/login')}
+            onClick={() =>
+              navigate('/login#signin', {
+                state: { isSignUp: false },
+              })
+            }
+          />
+          <Button
+            text="Sign Up"
+            variant="secondary"
+            onClick={() =>
+              navigate('/login#signup', {
+                state: { isSignUp: true },
+              })
+            }
           />
         </div>
       </div>

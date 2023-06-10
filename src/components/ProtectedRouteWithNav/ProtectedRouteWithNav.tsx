@@ -46,7 +46,7 @@ export const ProtectedRouteWithNav = () => {
         </div>
       </div>
     );
-  if (!isAuthenticated) return <Navigate to="/Welcome" replace />;
+  if (!isAuthenticated) return <Navigate to="/welcome" replace />;
 
   return (
     <div>

@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import Logo from '@/assets/Logo';
 import LogoWithText from '@/assets/LogoWithText';
@@ -11,37 +12,63 @@ import './login.scss';
 type FormData = {
   username: string;
   password: string;
+  email?: string;
 };
+
 export const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
+    setValue,
   } = useForm<FormData>();
+  const [isSignUp, setIsSignUp] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!location.hash) {
+      navigate('/login#signin', {
+        state: { isSignUp: false },
+      });
+    }
+  }, [location.hash, navigate]);
+
+  useEffect(() => {
+    if (location.hash === '#signup') {
+      setValue('username', '');
+      setValue('password', '');
+      setValue('email', '');
+      setIsSignUp(true);
+    } else if (location.hash === '#signin') {
+      setIsSignUp(false);
+    }
+  }, [location.hash, setValue]);
 
   const onSubmit = handleSubmit((data) => {
-    axios
-      .post('/auth/login', {
-        username: data.username,
-        password: data.password,
-      })
-      .then((res) => {
-        console.log(res);
-        navigate('/');
-      })
-      .catch((err) => {
-        setError('username', {
-          type: 'manual',
-          message: 'Invalid username or password',
-        });
-        setError('password', {
-          type: 'manual',
-          message: 'Invalid username or password',
-        });
-      });
+    isSignUp
+      ? console.log(data)
+      : axios
+          .post('/auth/login', {
+            username: data.username,
+            password: data.password,
+          })
+          .then((res) => {
+            console.log(res);
+            navigate('/');
+          })
+          .catch((err) => {
+            setError('username', {
+              type: 'manual',
+              message: 'Invalid username or password',
+            });
+            setError('password', {
+              type: 'manual',
+              message: 'Invalid username or password',
+            });
+          });
   });
 
   const socialLogin = () => {
@@ -75,10 +102,10 @@ export const Login = () => {
 
           <div className="w-full px-6 py-8 md:px-8 lg:w-1/2 bg-white-500">
             <p className="mt-3 text-xl text-center text-gray-600 dark:text-gray-200">
-              Welcome back!
+              {isSignUp ? "Let's get you started!" : 'Welcome back!'}
             </p>
 
-            <SigninGoogle onClick={() => socialLogin()} />
+            <SigninGoogle onClick={() => socialLogin()} isSignUp={isSignUp} />
 
             <div className="flex items-center justify-between mt-4">
               <span className="w-1/5 border-b dark:border-gray-600 lg:w-1/4"></span>
@@ -87,7 +114,7 @@ export const Login = () => {
                 href="#"
                 className="text-xs text-center text-gray-500 uppercase dark:text-gray-400 hover:underline"
               >
-                or login with email
+                or {isSignUp ? 'signup' : 'login'} with email
               </a>
 
               <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
@@ -106,9 +133,28 @@ export const Login = () => {
                   className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
                   type="text"
                   placeholder="Username"
+                  defaultValue={''}
                   {...register('username', { required: true })}
                 />
               </div>
+
+              {isSignUp && (
+                <div className="mt-4">
+                  <label
+                    className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
+                    htmlFor="signUpEmail"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="signUpEmail"
+                    className="block w-full px-4 py-2 text-gray-700 bg-white border rounded-lg dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring focus:ring-blue-300"
+                    type="email"
+                    placeholder="Email"
+                    {...register('email', { required: true })}
+                  />
+                </div>
+              )}
 
               <div className="mt-4">
                 <div className="flex justify-between">
@@ -118,12 +164,14 @@ export const Login = () => {
                   >
                     Password
                   </label>
-                  <a
-                    href="#"
-                    className="text-xs text-gray-500 dark:text-gray-300 hover:underline"
-                  >
-                    Forget Password?
-                  </a>
+                  {!isSignUp && (
+                    <a
+                      href="#"
+                      className="text-xs text-gray-500 dark:text-gray-300 hover:underline"
+                    >
+                      Forget Password?
+                    </a>
+                  )}
                 </div>
 
                 <input
@@ -145,20 +193,21 @@ export const Login = () => {
                   className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white-500 capitalize transition-colors duration-300 transform bg-green-500 rounded-lg hover:text-black-500 hover:bg-white-500 hover:border-green-500 hover:border focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
                   type="submit"
                 >
-                  Sign In
+                  {isSignUp ? 'Sign Up' : 'Sign In'}
                 </button>
               </div>
             </form>
 
             <div className="flex items-center justify-between mt-4">
               <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
-
-              <a
-                href="#"
+              <Link
+                to={`/login#${
+                  location.hash === '#signup' ? 'signin' : 'signup'
+                }`}
                 className="text-xs text-gray-500 uppercase dark:text-gray-400 hover:underline"
               >
-                or sign up
-              </a>
+                {isSignUp ? 'or sign in' : 'or sign up'}
+              </Link>
 
               <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
             </div>

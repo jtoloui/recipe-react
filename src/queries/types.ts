@@ -50,7 +50,7 @@ export interface RecipeById {
   vegan: boolean;
   vegetarian: boolean;
   cuisine: string;
-  creatorAuth0Sub: string;
+  creatorId: string;
   isAuthor: boolean;
 }
 

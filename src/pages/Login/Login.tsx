@@ -125,7 +125,7 @@ export const Login = () => {
           <div className="relative hidden lg:block lg:w-1/2 overflow-hidden">
             <Logo
               className={`transform scale-[2.0] absolute ${
-                isSignUp ? 'top-[25%]' : 'top-[11%]'
+                isSignUp ? 'top-[24.6%]' : 'top-[11%]'
               } left-[-30%] opacity-50`}
             />
             <LogoWithText className="absolute top-1/2 z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3" />

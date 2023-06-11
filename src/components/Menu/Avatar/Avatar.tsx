@@ -32,9 +32,18 @@ export const Avatar = ({
 
   const navigate = useNavigate();
   const handleLogout = async () => {
-    await axios.get('/auth/logout').then(() => {
-      navigate('/welcome');
-    });
+    await axios
+      .get('/auth/logout')
+      .then((res) => {
+        if (res.data.url) {
+          window.location.href = `https://${res.data.url}`;
+        } else {
+          navigate('/welcome');
+        }
+      })
+      .catch(() => {
+        navigate('/welcome');
+      });
   };
 
   const menuItems: MenuItem = [

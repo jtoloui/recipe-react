@@ -59,7 +59,7 @@ export const Login = () => {
         console.log(res);
         navigate('/');
       })
-      .catch((err) => {
+      .catch(() => {
         setError('username', {
           type: 'manual',
           message: 'Invalid username or password',
@@ -84,7 +84,7 @@ export const Login = () => {
         console.log(res);
         navigate('/');
       })
-      .catch((err) => {
+      .catch(() => {
         setError('username', {
           type: 'manual',
           message: 'Invalid username or password',

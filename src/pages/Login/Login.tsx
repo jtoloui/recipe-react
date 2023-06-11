@@ -51,10 +51,16 @@ export const Login = () => {
 
   const signIn = (data: FormData) => {
     axios
-      .post(`${import.meta.env.VITE_API_URI}/auth/login`, {
-        username: data.username,
-        password: data.password,
-      })
+      .post(
+        `${import.meta.env.VITE_API_URI}/auth/login`,
+        {
+          username: data.username,
+          password: data.password,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         console.log(res);
         navigate('/');
@@ -73,13 +79,19 @@ export const Login = () => {
 
   const signUp = (data: FormData) => {
     axios
-      .post(`${import.meta.env.VITE_API_URI}/auth/register`, {
-        username: data.username,
-        password: data.password,
-        email: data.email,
-        given_name: data.firstName,
-        family_name: data.lastName,
-      })
+      .post(
+        `${import.meta.env.VITE_API_URI}/auth/register`,
+        {
+          username: data.username,
+          password: data.password,
+          email: data.email,
+          given_name: data.firstName,
+          family_name: data.lastName,
+        },
+        {
+          withCredentials: true,
+        }
+      )
       .then((res) => {
         console.log(res);
         navigate('/');
@@ -102,7 +114,9 @@ export const Login = () => {
 
   const socialLogin = () => {
     axios
-      .get(`${import.meta.env.VITE_API_URI}/auth/login-social?type=Google`)
+      .get(`${import.meta.env.VITE_API_URI}/auth/login-social?type=Google`, {
+        withCredentials: true,
+      })
       .then((response) => {
         // Redirect the user to the received redirect URL
         window.location.href = response.data.redirectUrl;

@@ -51,7 +51,7 @@ export const Login = () => {
 
   const signIn = (data: FormData) => {
     axios
-      .post('/auth/login', {
+      .post(`${import.meta.env.VITE_API_URI}/auth/login`, {
         username: data.username,
         password: data.password,
       })
@@ -73,7 +73,7 @@ export const Login = () => {
 
   const signUp = (data: FormData) => {
     axios
-      .post('/auth/register', {
+      .post(`${import.meta.env.VITE_API_URI}/auth/register`, {
         username: data.username,
         password: data.password,
         email: data.email,
@@ -102,7 +102,7 @@ export const Login = () => {
 
   const socialLogin = () => {
     axios
-      .get('/auth/login-social?type=Google')
+      .get(`${import.meta.env.VITE_API_URI}/auth/login-social?type=Google`)
       .then((response) => {
         // Redirect the user to the received redirect URL
         window.location.href = response.data.redirectUrl;

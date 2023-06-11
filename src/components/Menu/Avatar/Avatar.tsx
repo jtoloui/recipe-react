@@ -33,7 +33,7 @@ export const Avatar = ({
   const navigate = useNavigate();
   const handleLogout = async () => {
     await axios
-      .get('/auth/logout')
+      .get(`${import.meta.env.VITE_API_URI}/auth/logout`)
       .then((res) => {
         if (res.data.url) {
           window.location.href = `https://${res.data.url}`;

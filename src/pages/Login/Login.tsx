@@ -92,7 +92,7 @@ export const Login = () => {
           withCredentials: true,
         }
       )
-      .then((res) => {
+      .then(() => {
         navigate('/');
       })
       .catch(() => {

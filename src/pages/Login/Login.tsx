@@ -93,7 +93,6 @@ export const Login = () => {
         }
       )
       .then((res) => {
-        console.log(res);
         navigate('/');
       })
       .catch(() => {
@@ -121,8 +120,7 @@ export const Login = () => {
           withCredentials: true,
         }
       )
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         setIsSignUp(false);
         navigate('/login#signin');
       })

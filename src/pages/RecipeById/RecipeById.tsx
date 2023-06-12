@@ -107,7 +107,7 @@ const RecipeById = () => {
             <h1 className="text-base font-bold dark:text-white-500 mb-4">
               Additional Information
             </h1>
-            <div className="flex gap-3 mb-2">
+            <div className="flex gap-3 mb-2 flex-col md:flex-row">
               <div className="flex-1">
                 <div className="mb-2 text-black-500 dark:text-white-500">
                   Nutrition Facts

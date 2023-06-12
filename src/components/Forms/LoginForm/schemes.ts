@@ -22,7 +22,7 @@ export const SignUpSchema = z.object({
       (password) => /[!@#$%^&*()_+=\\[\]{};:"\\|,.<>\\/?]+/.test(password),
       'Password must contain at least one special character'
     ),
-  email: z.string().email('Invalid email format'),
+  email: z.string().min(1, 'Email is required').email('Invalid email format'),
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
 });

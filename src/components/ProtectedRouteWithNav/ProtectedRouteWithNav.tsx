@@ -1,8 +1,8 @@
+import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
-import { useIsAuthenticated } from '@/hooks';
 import { Menu } from '@/components/Menu';
-import { useEffect } from 'react';
+import { useIsAuthenticated } from '@/hooks';
 
 export const ProtectedRouteWithNav = () => {
   const { isAuthenticated, isLoading } = useIsAuthenticated();
@@ -34,7 +34,7 @@ export const ProtectedRouteWithNav = () => {
               cy="12"
               r="10"
               stroke="currentColor"
-              stroke-width="4"
+              strokeWidth="4"
             ></circle>
             <path
               className="opacity-75"
@@ -46,7 +46,7 @@ export const ProtectedRouteWithNav = () => {
         </div>
       </div>
     );
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
+  if (!isAuthenticated) return <Navigate to="/welcome" replace />;
 
   return (
     <div>

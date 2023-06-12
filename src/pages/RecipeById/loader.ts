@@ -2,7 +2,7 @@ import { type QueryClient } from 'react-query';
 import { type LoaderFunctionArgs } from 'react-router-dom';
 
 import { fetchRecipeByIdQuery } from '@/queries';
-import { RecipeByIdResponse } from '@/queries/types';
+import { type RecipeByIdResponse } from '@/queries/types';
 
 export const loader =
   (queryClient: QueryClient) =>

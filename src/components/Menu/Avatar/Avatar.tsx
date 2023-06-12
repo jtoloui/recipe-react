@@ -1,6 +1,8 @@
-import { useProfile } from '@/queries';
+import axios from 'axios';
 import { useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+
+import { useProfile } from '@/queries';
 
 type AvatarProps = {
   isOpen: boolean;
@@ -28,8 +30,22 @@ export const Avatar = ({
     onClick?: () => void;
   }[];
 
-  const handleLogout = () => {
-    window.location.href = `${import.meta.env.VITE_API_URI}/auth/logout`;
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await axios
+      .get(`${import.meta.env.VITE_API_URI}/auth/logout`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        if (res.data.url) {
+          window.location.href = `https://${res.data.url}`;
+        } else {
+          navigate('/welcome');
+        }
+      })
+      .catch(() => {
+        navigate('/welcome');
+      });
   };
 
   const menuItems: MenuItem = [

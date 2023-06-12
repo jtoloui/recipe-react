@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { App } from './App';
 
-import './styles/main.scss'; // Import main.scss
+import { App } from './App';
+import './styles/main.scss';
+
+// Import main.scss
 
 // Create a client
 const queryClient = new QueryClient({

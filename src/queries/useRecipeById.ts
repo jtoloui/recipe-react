@@ -1,6 +1,7 @@
-import { useQuery, UseQueryResult } from 'react-query';
 import axios from 'axios';
-import { RecipeByIdResponse } from './types';
+import { UseQueryResult, useQuery } from 'react-query';
+
+import { type RecipeByIdResponse } from './types';
 
 export const fetchRecipeById = async (
   id: string

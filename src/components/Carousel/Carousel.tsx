@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useWindowSize } from 'usehooks-ts';
+
+import { type CarouselProps } from '.';
 import { Card } from './Card';
-import { CarouselProps } from '.';
 
 export const Carousel = ({ data, onCardClick }: CarouselProps) => {
   const [current, setCurrent] = useState(0);
@@ -41,6 +42,9 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
     }
     if (size.width >= 1024) {
       setCardsToShow(6);
+    }
+    if (size.width >= 2500) {
+      setCardsToShow(8);
     }
   }, [size.width]);
 

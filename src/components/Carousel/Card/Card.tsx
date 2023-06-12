@@ -1,6 +1,7 @@
-import { Image } from '@/components/Elements';
 import { motion } from 'framer-motion';
 import { useWindowSize } from 'usehooks-ts';
+
+import { Image } from '@/components/Elements';
 
 type CardProps = {
   image: string;
@@ -25,7 +26,7 @@ export const Card = ({
 
   return (
     <motion.div
-      className={`rounded-lg h-60 max-w-[25.125rem] max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100 ${
+      className={`rounded-lg h-60  max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100 ${
         isSelected ? 'border-4  border-green-500 ' : ''
       } ${hidden && width > 640 ? 'hidden' : ''} ${
         width <= 640 ? ' w-52' : 'flex-1'
@@ -36,7 +37,7 @@ export const Card = ({
       tabIndex={0}
     >
       <Image
-        src={image}
+        src={`https://source.unsplash.com/random/800x800/?${title}-food`}
         fallbackSrc={`https://source.unsplash.com/random/800x800/?${title}-food`}
         className="w-full h-2/3 object-cover"
         alt={title}

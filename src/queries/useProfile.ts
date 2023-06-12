@@ -1,5 +1,5 @@
-import { useQuery, UseQueryResult } from 'react-query';
 import axios from 'axios';
+import { UseQueryResult, useQuery } from 'react-query';
 
 type Profile = {
   name: string;

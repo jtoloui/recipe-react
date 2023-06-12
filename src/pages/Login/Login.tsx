@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -21,7 +21,9 @@ type FormData = {
 
 export const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
-  const [error, setError] = useState<string | undefined>(undefined);
+  const [onSubmitError, setOnSubmitError] = useState<string | undefined>(
+    undefined
+  );
   const [signInErrorField, setSignInErrorField] = useState<{
     username: boolean;
     password: boolean;
@@ -37,7 +39,7 @@ export const Login = () => {
     resolver: zodResolver(SignUpSchema),
   });
 
-  const { setValue } = isSignUp ? useFormSignUp : useFormSignIn;
+  const { setValue, setError } = isSignUp ? useFormSignUp : useFormSignIn;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -60,7 +62,7 @@ export const Login = () => {
         username: false,
         password: false,
       });
-      setError(undefined);
+      setOnSubmitError(undefined);
       useFormSignUp.reset();
     } else if (location.hash === '#signin') {
       setIsSignUp(false);
@@ -68,7 +70,7 @@ export const Login = () => {
         username: false,
         password: false,
       });
-      setError(undefined);
+      setOnSubmitError(undefined);
       useFormSignIn.reset();
     }
   }, [location.hash, setValue, useFormSignIn, useFormSignUp]);
@@ -78,7 +80,7 @@ export const Login = () => {
       username: false,
       password: false,
     });
-    setError(undefined);
+    setOnSubmitError(undefined);
     axios
       .post(
         `${import.meta.env.VITE_API_URI}/auth/login`,
@@ -95,7 +97,7 @@ export const Login = () => {
         navigate('/');
       })
       .catch(() => {
-        setError('Invalid username or password');
+        setOnSubmitError('Invalid username or password');
         setSignInErrorField({
           username: true,
           password: true,
@@ -104,7 +106,7 @@ export const Login = () => {
   };
 
   const signUp = (data: FormData) => {
-    setError(undefined);
+    setOnSubmitError(undefined);
     axios
       .post(
         `${import.meta.env.VITE_API_URI}/auth/register`,
@@ -124,8 +126,16 @@ export const Login = () => {
         setIsSignUp(false);
         navigate('/login#signin');
       })
-      .catch(() => {
-        setError('Error while signing up');
+      .catch((error) => {
+        const err: AxiosError = error;
+
+        if (err.response?.status === 409) {
+          setError('username', {
+            type: 'manual',
+            message: 'Username already exists',
+          });
+        }
+        setOnSubmitError('Error while signing up');
       });
   };
 
@@ -139,7 +149,7 @@ export const Login = () => {
         window.location.href = response.data.redirectUrl;
       })
       .catch(() => {
-        setError('Error while logging in');
+        setOnSubmitError('Error while logging in');
       });
   };
   return (
@@ -186,7 +196,7 @@ export const Login = () => {
                     firstName: true,
                     lastName: true,
                   }}
-                  onSubmitErrorMessage={error}
+                  onSubmitErrorMessage={onSubmitError}
                 />
               </FormProvider>
             ) : (
@@ -200,7 +210,7 @@ export const Login = () => {
                     forgotPassword: true,
                   }}
                   overrideFieldErrors={signInErrorField}
-                  onSubmitErrorMessage={error}
+                  onSubmitErrorMessage={onSubmitError}
                 />
               </FormProvider>
             )}

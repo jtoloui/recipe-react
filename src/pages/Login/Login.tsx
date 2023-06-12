@@ -94,7 +94,7 @@ export const Login = () => {
       )
       .then((res) => {
         console.log(res);
-        navigate('/');
+        setIsSignUp(false);
       })
       .catch(() => {
         setError('username', {

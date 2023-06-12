@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, lazy } from 'react';
 import { QueryClient } from 'react-query';
 import {
   Navigate,
@@ -8,7 +8,7 @@ import {
 
 import { ProtectedRouteWithNav } from '@/components/ProtectedRouteWithNav';
 import { Home } from '@/pages/Home';
-import { Login } from '@/pages/Login';
+// import { Login } from '@/pages/Login';
 import { Profile } from '@/pages/Profile';
 import RecipeById, { loader as recipeLoader } from '@/pages/RecipeById';
 import { Welcome } from '@/pages/Welcome';
@@ -17,9 +17,9 @@ import { Welcome } from '@/pages/Welcome';
 //   import('@/pages/Profile').then((module) => ({ default: module.Profile }))
 // );
 // const RecipeById = React.lazy(() => import('@/pages/RecipeById'));
-// const Login = React.lazy(() =>
-//   import('@/pages/Login').then((module) => ({ default: module.Login }))
-// );
+const Login = lazy(() =>
+  import('@/pages/Login').then((module) => ({ default: module.Login }))
+);
 
 // // const Welcome = React.lazy(() =>
 // //   import('@/pages/Welcome').then((module) => ({ default: module.Welcome }))

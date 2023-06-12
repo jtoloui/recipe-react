@@ -43,6 +43,9 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
     if (size.width >= 1024) {
       setCardsToShow(6);
     }
+    if (size.width >= 2500) {
+      setCardsToShow(8);
+    }
   }, [size.width]);
 
   // display: flex;

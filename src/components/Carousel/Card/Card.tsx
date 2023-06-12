@@ -26,7 +26,7 @@ export const Card = ({
 
   return (
     <motion.div
-      className={`rounded-lg h-60 max-w-[25.125rem] max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100 ${
+      className={`rounded-lg h-60  max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100 ${
         isSelected ? 'border-4  border-green-500 ' : ''
       } ${hidden && width > 640 ? 'hidden' : ''} ${
         width <= 640 ? ' w-52' : 'flex-1'

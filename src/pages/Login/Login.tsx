@@ -56,9 +56,19 @@ export const Login = () => {
       setValue('password', '');
       setValue('email', '');
       setIsSignUp(true);
+      setSignInErrorField({
+        username: false,
+        password: false,
+      });
+      setError(undefined);
       useFormSignUp.reset();
     } else if (location.hash === '#signin') {
       setIsSignUp(false);
+      setSignInErrorField({
+        username: false,
+        password: false,
+      });
+      setError(undefined);
       useFormSignIn.reset();
     }
   }, [location.hash, setValue, useFormSignIn, useFormSignUp]);

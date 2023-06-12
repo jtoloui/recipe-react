@@ -2,7 +2,7 @@ import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import EditSvg from '@/assets/EditSvg';
-import { RecipeById } from '@/queries/types';
+import { type RecipeById } from '@/queries/types';
 import { formatTime } from '@/utils';
 
 type HeaderSectionProps = Omit<
@@ -63,7 +63,7 @@ export const HeaderSection = ({
               </p>
               <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500 flex gap-1">
                 Vegan:
-                <div className="items-center inline-flex">
+                <span className="items-center inline-flex">
                   {' '}
                   {vegan ? (
                     <FontAwesomeIcon
@@ -74,11 +74,11 @@ export const HeaderSection = ({
                   ) : (
                     <FontAwesomeIcon size="xs" icon={faX} color="var(--red)" />
                   )}
-                </div>
+                </span>
               </p>
               <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500 flex gap-1">
                 Vegetarian:
-                <div className="items-center inline-flex">
+                <span className="items-center inline-flex">
                   {' '}
                   {vegetarian ? (
                     <FontAwesomeIcon
@@ -89,7 +89,7 @@ export const HeaderSection = ({
                   ) : (
                     <FontAwesomeIcon icon={faX} color="var(--red)" size="xs" />
                   )}
-                </div>
+                </span>
               </p>
             </div>
 

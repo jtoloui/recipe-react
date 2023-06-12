@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { Card } from '@/components/Card';
-import { Carousel, CarouselData } from '@/components/Carousel';
+import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Layout } from '@/components/Layout';
 import { useRecipeLabels, useRecipesByLabel } from '@/queries';
 

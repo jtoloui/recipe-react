@@ -30,7 +30,7 @@ export const Card = ({
       }
     >
       <Image
-        src={image}
+        src={`https://source.unsplash.com/random/800x800/?${title}-food`}
         fallbackSrc={`https://source.unsplash.com/random/800x800/?${title}-food`}
         className="object-cover w-full h-64 "
         alt={title}

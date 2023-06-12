@@ -30,7 +30,7 @@ const RecipeById = () => {
         {/* <!-- Box 1 --> */}
         <div className="md:col-span-1 md:row-span-3 rounded-lg bg-white-500 dark:bg-slate-700 h-80 p-5">
           <Image
-            src={data?.imageSrc || ''}
+            src={`https://source.unsplash.com/random/800x800/?${data?.name}-food`}
             fallbackSrc={`https://source.unsplash.com/random/800x800/?${data?.name}-food`}
             className="w-full h-full object-cover"
             alt={data?.name || ''}

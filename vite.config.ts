@@ -1,8 +1,9 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import fs from 'fs';
-import svgr from 'vite-plugin-svgr';
 import path from 'path';
+import { defineConfig } from 'vite';
+import preload from 'vite-plugin-preload';
+import svgr from 'vite-plugin-svgr';
 
 const appEnv = process.env.APP_ENV;
 const isDev = appEnv === 'development';
@@ -15,11 +16,18 @@ export default defineConfig({
       { find: './runtimeConfig', replacement: './runtimeConfig.browser' },
     ],
   },
+  build: {
+    sourcemap: true,
+  },
+  optimizeDeps: {
+    include: ['react-query', 'react-router-dom'],
+  },
   plugins: [
     react(),
     svgr({
       exportAsDefault: false,
     }),
+    preload(),
   ],
   server: {
     port: 3000,

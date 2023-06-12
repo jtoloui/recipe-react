@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useWindowSize } from 'usehooks-ts';
 
-import { CarouselProps } from '.';
+import { type CarouselProps } from '.';
 import { Card } from './Card';
 
 export const Carousel = ({ data, onCardClick }: CarouselProps) => {

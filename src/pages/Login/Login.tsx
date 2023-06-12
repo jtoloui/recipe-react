@@ -1,10 +1,12 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import Logo from '@/assets/Logo';
 import LogoWithText from '@/assets/LogoWithText';
+import { LoginForm, SignInSchema, SignUpSchema } from '@/components/Forms';
 import { SigninGoogle } from '@/components/SigninGoogle/SigninGoogle';
 
 import './login.scss';
@@ -18,14 +20,24 @@ type FormData = {
 };
 
 export const Login = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-    setValue,
-  } = useForm<FormData>();
   const [isSignUp, setIsSignUp] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [signInErrorField, setSignInErrorField] = useState<{
+    username: boolean;
+    password: boolean;
+  }>({
+    username: false,
+    password: false,
+  });
+
+  const useFormSignIn = useForm<FormData>({
+    resolver: zodResolver(SignInSchema),
+  });
+  const useFormSignUp = useForm<FormData>({
+    resolver: zodResolver(SignUpSchema),
+  });
+
+  const { setValue } = isSignUp ? useFormSignUp : useFormSignIn;
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -44,12 +56,19 @@ export const Login = () => {
       setValue('password', '');
       setValue('email', '');
       setIsSignUp(true);
+      useFormSignUp.reset();
     } else if (location.hash === '#signin') {
       setIsSignUp(false);
+      useFormSignIn.reset();
     }
-  }, [location.hash, setValue]);
+  }, [location.hash, setValue, useFormSignIn, useFormSignUp]);
 
   const signIn = (data: FormData) => {
+    setSignInErrorField({
+      username: false,
+      password: false,
+    });
+    setError(undefined);
     axios
       .post(
         `${import.meta.env.VITE_API_URI}/auth/login`,
@@ -66,18 +85,16 @@ export const Login = () => {
         navigate('/');
       })
       .catch(() => {
-        setError('username', {
-          type: 'manual',
-          message: 'Invalid username or password',
-        });
-        setError('password', {
-          type: 'manual',
-          message: 'Invalid username or password',
+        setError('Invalid username or password');
+        setSignInErrorField({
+          username: true,
+          password: true,
         });
       });
   };
 
   const signUp = (data: FormData) => {
+    setError(undefined);
     axios
       .post(
         `${import.meta.env.VITE_API_URI}/auth/register`,
@@ -95,22 +112,12 @@ export const Login = () => {
       .then((res) => {
         console.log(res);
         setIsSignUp(false);
+        navigate('/login#signin');
       })
       .catch(() => {
-        setError('username', {
-          type: 'manual',
-          message: 'Invalid username or password',
-        });
-        setError('password', {
-          type: 'manual',
-          message: 'Invalid username or password',
-        });
+        setError('Error while signing up');
       });
   };
-
-  const onSubmit = handleSubmit((data) => {
-    isSignUp ? signUp(data) : signIn(data);
-  });
 
   const socialLogin = () => {
     axios
@@ -122,14 +129,7 @@ export const Login = () => {
         window.location.href = response.data.redirectUrl;
       })
       .catch(() => {
-        setError('username', {
-          type: 'manual',
-          message: 'Invalid username or password',
-        });
-        setError('password', {
-          type: 'manual',
-          message: 'Invalid username or password',
-        });
+        setError('Error while logging in');
       });
   };
   return (
@@ -164,117 +164,36 @@ export const Login = () => {
               <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
             </div>
 
-            <form onSubmit={onSubmit}>
-              <div className="mt-4">
-                <label
-                  className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-                  htmlFor="loggingUsername"
-                >
-                  Username
-                </label>
-                <input
-                  id="loggingUsername"
-                  className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
-                  type="text"
-                  placeholder="Username"
-                  defaultValue={''}
-                  {...register('username', { required: true })}
+            {isSignUp ? (
+              <FormProvider {...useFormSignUp}>
+                <LoginForm
+                  onSubmit={signUp}
+                  schema={SignUpSchema}
+                  fields={{
+                    username: true,
+                    password: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                  }}
+                  onSubmitErrorMessage={error}
                 />
-              </div>
-
-              {isSignUp && (
-                <>
-                  <div className="mt-4">
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-                      htmlFor="signUpEmail"
-                    >
-                      Email
-                    </label>
-                    <input
-                      id="signUpEmail"
-                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
-                      type="email"
-                      placeholder="Email"
-                      {...register('email', { required: true })}
-                    />
-                  </div>
-
-                  <div className="mt-4">
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-                      htmlFor="signUpFirstName"
-                    >
-                      First Name
-                    </label>
-                    <input
-                      id="signUpFirstName"
-                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
-                      type="text"
-                      placeholder="First Name"
-                      {...register('firstName', { required: true })}
-                    />
-                  </div>
-
-                  <div className="mt-4">
-                    <label
-                      className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-                      htmlFor="signUpLastName"
-                    >
-                      Last Name
-                    </label>
-                    <input
-                      id="signUpLastName"
-                      className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
-                      type="text"
-                      placeholder="Last Name"
-                      {...register('lastName', { required: true })}
-                    />
-                  </div>
-                </>
-              )}
-
-              <div className="mt-4">
-                <div className="flex justify-between">
-                  <label
-                    className="block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200"
-                    htmlFor="loggingPassword"
-                  >
-                    Password
-                  </label>
-                  {!isSignUp && (
-                    <a
-                      href="#"
-                      className="text-xs text-gray-500 dark:text-gray-300 hover:underline"
-                    >
-                      Forget Password?
-                    </a>
-                  )}
-                </div>
-
-                <input
-                  id="loggingPassword"
-                  className="block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none"
-                  type="password"
-                  placeholder="Password"
-                  {...register('password', { required: true })}
+              </FormProvider>
+            ) : (
+              <FormProvider {...useFormSignIn}>
+                <LoginForm
+                  onSubmit={signIn}
+                  schema={SignUpSchema}
+                  fields={{
+                    username: true,
+                    password: true,
+                    forgotPassword: true,
+                  }}
+                  overrideFieldErrors={signInErrorField}
+                  onSubmitErrorMessage={error}
                 />
-              </div>
-
-              <div className="mt-6">
-                {errors.username || errors.password ? (
-                  <p className="text-red-500 text-xs italic">
-                    {errors.username?.message || errors.password?.message}
-                  </p>
-                ) : null}
-                <button
-                  className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white-500 capitalize transition-colors duration-300 transform bg-green-500 rounded-lg hover:text-black-500 hover:bg-white-500 hover:border-green-500 hover:border focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-                  type="submit"
-                >
-                  {isSignUp ? 'Sign Up' : 'Sign In'}
-                </button>
-              </div>
-            </form>
+              </FormProvider>
+            )}
 
             <div className="flex items-center justify-between mt-4">
               <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>

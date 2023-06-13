@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Layout } from '@/components/Layout';
+import { Modal } from '@/components/Modal';
 import { useRecipeLabels, useRecipesByLabel } from '@/queries';
 
 export const Home = () => {
@@ -12,7 +13,6 @@ export const Home = () => {
   const { data: recipeByLabel } = useRecipesByLabel(selectedCarouselCard);
 
   const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
-
   const [recipeCardData, setRecipeCardData] = useState<
     | []
     | {
@@ -23,6 +23,8 @@ export const Home = () => {
         ingredientsCount: number;
       }[]
   >([]);
+
+  const [openCreateRecipeModal, setOpenCreateRecipeModal] = useState(false);
 
   const carouselDataCallback = useCallback(() => {
     if (recipeLabels) {
@@ -76,7 +78,10 @@ export const Home = () => {
             Welcome
           </h1>
           <div className="flex justify-end items-center  flex-auto">
-            <button className=" border-green-500  border-2 py-1 px-[0.625rem] rounded">
+            <button
+              className=" border-green-500  border-2 py-1 px-[0.625rem] rounded"
+              onClick={() => setOpenCreateRecipeModal(true)}
+            >
               <span className="text-green-500 text-sm font-semibold">
                 + Create Recipe
               </span>
@@ -100,6 +105,12 @@ export const Home = () => {
           />
         ))}
       </div>
+      <Modal
+        showModal={openCreateRecipeModal}
+        onClose={() => setOpenCreateRecipeModal(false)}
+      >
+        hello
+      </Modal>
     </Layout>
   );
 };

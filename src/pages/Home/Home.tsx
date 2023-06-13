@@ -106,8 +106,19 @@ export const Home = () => {
         ))}
       </div>
       <Modal
-        showModal={openCreateRecipeModal}
+        isOpen={openCreateRecipeModal}
+        title="Create Recipe"
         onClose={() => setOpenCreateRecipeModal(false)}
+        buttons={{
+          primary: {
+            label: 'Create',
+            onClick: () => console.log('clicked'),
+          },
+          secondary: {
+            label: 'Cancel',
+            onClick: () => setOpenCreateRecipeModal(false),
+          },
+        }}
       >
         hello
       </Modal>

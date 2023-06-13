@@ -78,5 +78,9 @@ const routes = createBrowserRouter([
 ]);
 
 export const App = () => {
-  return <RouterProvider router={routes} />;
+  return (
+    <div className="bg-lightBg-500 dark:bg-slate-500">
+      <RouterProvider router={routes} />;
+    </div>
+  );
 };

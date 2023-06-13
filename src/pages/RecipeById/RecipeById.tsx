@@ -1,6 +1,8 @@
 import { useQuery } from 'react-query';
 import { useLoaderData, useParams } from 'react-router-dom';
 
+import { IngredientIcon } from '@/assets/IngredientIcon';
+import IngredientSVG from '@/assets/images/ingredients-for-cooking-svgrepo-com.svg';
 import { Image } from '@/components/Elements';
 import { Layout } from '@/components/Layout';
 import { fetchRecipeByIdQuery } from '@/queries';
@@ -60,15 +62,13 @@ const RecipeById = () => {
                     }`}
                     key={index}
                   >
-                    <Image
-                      src={`https://source.unsplash.com/random/800x800/?${ingredient.item.replace(
-                        ' ',
-                        '-'
-                      )}-cook`}
-                      fallbackSrc="https://source.unsplash.com/random/800x800/?food"
+                    {/* <Image
+                      src={``}
+                      fallbackSrc={IngredientSVG}
                       alt={ingredient.item}
-                      className="w-12 h-12 mr-2 rounded-full"
-                    />
+                      className="w-12 h-12 mr-2 rounded-full fill-green-500"
+                    /> */}
+                    <IngredientIcon className="w-8 h-8 mr-2 fill-green-500 dark:fill-white-500" />
                     {`${ingredient.item} - ${ingredient.quantity} ${ingredient.measurement}`}
                   </div>
                 ))}
@@ -189,7 +189,7 @@ const RecipeById = () => {
                 <div className="mt-2 mb-2 text-black-500 dark:text-white-500">
                   Portions
                 </div>
-                <div className='text-sm mb-2 text-brownGrey-500 dark:text-white-500"'>
+                <div className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
                   - Portions size: {data?.portions || 'N/A'}
                 </div>
               </div>

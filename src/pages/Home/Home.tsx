@@ -1,5 +1,12 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useState } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 
+import {
+  CreateRecipe,
+  CreateRecipeFormData,
+  createRecipeSchema,
+} from '@/Forms';
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Layout } from '@/components/Layout';
@@ -70,6 +77,17 @@ export const Home = () => {
     }
   }, [cardRecipeDataCallback, recipeByLabel]);
 
+  const createRecipeFormMethods = useForm<CreateRecipeFormData>({
+    resolver: zodResolver(createRecipeSchema),
+  });
+
+  const {
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = createRecipeFormMethods;
+
+  const onSubmit = (data) => console.log(data);
+
   return (
     <Layout>
       <div>
@@ -111,8 +129,13 @@ export const Home = () => {
         onClose={() => setOpenCreateRecipeModal(false)}
         buttons={{
           primary: {
-            label: 'Create',
-            onClick: () => console.log('clicked'),
+            label: isSubmitting ? 'Creating...' : 'Create',
+            onClick: handleSubmit(
+              (data) => {
+                console.log(data);
+              },
+              (errors) => console.log(errors)
+            ),
           },
           secondary: {
             label: 'Cancel',
@@ -120,7 +143,9 @@ export const Home = () => {
           },
         }}
       >
-        hello
+        <FormProvider {...createRecipeFormMethods}>
+          <CreateRecipe />
+        </FormProvider>
       </Modal>
     </Layout>
   );

@@ -34,22 +34,30 @@ export const Modal: FC<ModalProps> = ({
   },
   title = 'Modal Title',
 }) => {
-  const escFunction = useCallback(
-    (event: DocumentEventMap['keydown']) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    },
-    [onClose]
-  );
+  // const escFunction = useCallback(
+  //   (event: DocumentEventMap['keydown']) => {
+  //     if (event.key === 'Escape') {
+  //       onClose();
+  //     }
+  //   },
+  //   [onClose]
+  // );
 
-  useEffect(() => {
-    document.addEventListener('keydown', escFunction, false);
+  // useEffect(() => {
+  //   document.addEventListener('keydown', escFunction, false);
 
-    return () => {
-      document.removeEventListener('keydown', escFunction, false);
-    };
-  }, [escFunction]);
+  //   return () => {
+  //     document.removeEventListener('keydown', escFunction, false);
+  //   };
+  // }, [escFunction]);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    console.log(event.key);
+
+    if (event.key === 'Escape') {
+      onClose();
+    }
+  };
 
   if (!isOpen) {
     return null;
@@ -61,8 +69,12 @@ export const Modal: FC<ModalProps> = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed top-0 left-0 flex items-center justify-center w-full h-full bg-black bg-opacity-50 bg-slate-400 opacity-5 z-[99]"
-      onClick={onClose}
-      onKeyDown={onClose}
+      // onClick={(e) => {
+      //   if (e.target === e.currentTarget) {
+      //     onClose();
+      //   }
+      // }}
+      // onKeyDown={handleKeyDown}
     >
       <div className="bg-white-500 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-2/3 p-6">
         <div className="flex justify-between items-center mb-6">
@@ -74,7 +86,8 @@ export const Modal: FC<ModalProps> = ({
             <FontAwesomeIcon icon={faX} color="var(--charcoal)" />
           </button>
         </div>
-        <div>{children}</div>
+        <div className="max-h-[80vh] overflow-auto">{children}</div>{' '}
+        {/* Make this div scrollable */}
         {buttons && (
           <div className="flex justify-end">
             <div className=" items-center gap-3 mt-8 flex w-2/5">

@@ -2,7 +2,7 @@ import { useQuery } from 'react-query';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 import { IngredientIcon } from '@/assets/IngredientIcon';
-import IngredientSVG from '@/assets/images/ingredients-for-cooking-svgrepo-com.svg';
+// import IngredientSVG from '@/assets/images/ingredients-for-cooking-svgrepo-com.svg';
 import { Image } from '@/components/Elements';
 import { Layout } from '@/components/Layout';
 import { fetchRecipeByIdQuery } from '@/queries';

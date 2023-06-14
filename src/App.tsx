@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 
 import { ProtectedRouteWithNav } from '@/components/ProtectedRouteWithNav';
+import { CreateRecipe } from '@/pages/CreateRecipe';
 import { Home } from '@/pages/Home';
 // import { Login } from '@/pages/Login';
 import { Profile } from '@/pages/Profile';
@@ -69,6 +70,10 @@ const routes = createBrowserRouter([
         element: <RecipeById />,
         loader: recipeLoader(queryClient),
       },
+      {
+        path: '/create-recipe',
+        element: <CreateRecipe />,
+      },
     ],
   },
   {
@@ -80,7 +85,7 @@ const routes = createBrowserRouter([
 export const App = () => {
   return (
     <div className="bg-lightBg-500 dark:bg-slate-500">
-      <RouterProvider router={routes} />;
+      <RouterProvider router={routes} />
     </div>
   );
 };

@@ -18,6 +18,7 @@
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@headlessui/react": "^1.7.15",
     "@hookform/resolvers": "^3.1.0",
     "auth0-js": "^9.21.0",
     "axios": "^1.4.0",
@@ -34,6 +35,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/auth0-js": "^9.14.7",
     "@types/node": "^20.1.4",
@@ -47,7 +49,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
     "postcss": "^8.4.23",
-    "prettier": "2.8.8",
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0",
     "sass": "^1.62.1",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",

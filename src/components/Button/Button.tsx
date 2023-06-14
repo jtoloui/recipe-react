@@ -3,9 +3,10 @@ import { FC } from 'react';
 type ButtonProps = {
   text: string;
   variant?: 'primary' | 'secondary' | 'cancelFull' | 'cancelOutline';
-  onClick: () => void;
+  onClick?: () => void;
   buttonClassName?: string;
   textClassName?: string;
+  type?: 'button' | 'submit' | 'reset';
 };
 
 export const Button: FC<ButtonProps> = ({
@@ -14,6 +15,7 @@ export const Button: FC<ButtonProps> = ({
   onClick,
   buttonClassName,
   textClassName,
+  type,
 }) => {
   const commonClasses =
     'w-full sm:w-auto px-4 py-2 rounded-lg shadow-md flex items-center justify-center';
@@ -48,10 +50,9 @@ export const Button: FC<ButtonProps> = ({
     <button
       className={`${buttonClassName} ${commonClasses} ${variantClasses}`}
       onClick={onClick}
+      type={type}
     >
-      <p
-        className={`leading-custom text-sm sm:text-sm md:text-base lg:text-lg xl:text-xl text-center ${textClassName}`}
-      >
+      <p className={`leading-custom text-sm  text-center ${textClassName}`}>
         {text}
       </p>
     </button>

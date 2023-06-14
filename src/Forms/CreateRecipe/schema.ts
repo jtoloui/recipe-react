@@ -9,20 +9,30 @@ export const createRecipeSchema = z.object({
   vegan: z.boolean(),
   difficulty: Difficulty,
   cuisine: z.string().min(1),
-  prepTime: z.number().min(1),
-  cookTime: z.number().min(1),
+  prepTime: z
+    .number({
+      invalid_type_error: 'Prep time must be a number',
+    })
+    .min(1, 'Prep time must be at least 1 minute'),
+  cookTime: z
+    .number({
+      invalid_type_error: 'Cook time must be a number',
+    })
+    .min(1, 'Cook time must be at least 1 minute'),
   steps: z.array(
     z.object({
       step: z.string(),
     })
   ),
-  ingredients: z.array(
-    z.object({
-      item: z.string(),
-      measurement: z.string(),
-      quantity: z.number(),
-    })
-  ),
+  ingredients: z
+    .array(
+      z.object({
+        item: z.string(),
+        measurement: z.string(),
+        quantity: z.number(),
+      })
+    )
+    .min(1, 'You must have at least one ingredient'),
   nutritionFacts: z.optional(
     z.object({
       kcal: z.optional(z.number()),

@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
 import {
   CreateRecipe,
@@ -77,16 +78,16 @@ export const Home = () => {
     }
   }, [cardRecipeDataCallback, recipeByLabel]);
 
-  const createRecipeFormMethods = useForm<CreateRecipeFormData>({
-    resolver: zodResolver(createRecipeSchema),
-  });
+  // const createRecipeFormMethods = useForm<CreateRecipeFormData>({
+  //   resolver: zodResolver(createRecipeSchema),
+  // });
 
-  const {
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = createRecipeFormMethods;
+  // const {
+  //   handleSubmit,
+  //   formState: { errors, isSubmitting },
+  // } = createRecipeFormMethods;
 
-  const onSubmit = (data) => console.log(data);
+  // const onSubmit = (data) => console.log(data);
 
   return (
     <Layout>
@@ -96,14 +97,15 @@ export const Home = () => {
             Welcome
           </h1>
           <div className="flex justify-end items-center  flex-auto">
-            <button
+            <Link
+              to={'/create-recipe'}
               className=" border-green-500  border-2 py-1 px-[0.625rem] rounded"
-              onClick={() => setOpenCreateRecipeModal(true)}
+              // onClick={() => (true)}
             >
               <span className="text-green-500 text-sm font-semibold">
                 + Create Recipe
               </span>
-            </button>
+            </Link>
           </div>
         </div>
         <Carousel
@@ -123,7 +125,7 @@ export const Home = () => {
           />
         ))}
       </div>
-      <Modal
+      {/* <Modal
         isOpen={openCreateRecipeModal}
         title="Create Recipe"
         onClose={() => setOpenCreateRecipeModal(false)}
@@ -146,7 +148,7 @@ export const Home = () => {
         <FormProvider {...createRecipeFormMethods}>
           <CreateRecipe />
         </FormProvider>
-      </Modal>
+      </Modal> */}
     </Layout>
   );
 };

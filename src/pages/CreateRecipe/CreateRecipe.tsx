@@ -605,6 +605,7 @@ export const CreateRecipe = () => {
                       })}
                       className={`block w-full px-0 pt-4 pb-1 border-0 border-b border-green-500 focus:ring-0 focus:border-black `}
                       placeholder=" "
+                      type="number"
                       id="kcal"
                     />
                     <label

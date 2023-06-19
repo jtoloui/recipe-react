@@ -68,6 +68,23 @@
   font-stretch: normal;
 }
 
+input:not(:placeholder-shown) + label,
+input:focus + label {
+  transform: translateY(-100%);
+  font-size: 0.7rem;
+}
+
+input[type='text']  {
+  @apply text-base;
+}
+input[type='number'] {
+  font-size: 16px;
+}
+
+input:focus {
+  outline: none;
+}
+
 // h2 {
 //   font-size: 2rem;
 //   font-weight: bold;

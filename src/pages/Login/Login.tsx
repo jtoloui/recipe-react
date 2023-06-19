@@ -4,9 +4,9 @@ import { useEffect, useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
+import { LoginForm, SignInSchema, SignUpSchema } from '@/Forms';
 import Logo from '@/assets/Logo';
 import LogoWithText from '@/assets/LogoWithText';
-import { LoginForm, SignInSchema, SignUpSchema } from '@/components/Forms';
 import { SigninGoogle } from '@/components/SigninGoogle/SigninGoogle';
 
 import './login.scss';

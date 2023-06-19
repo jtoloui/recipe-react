@@ -26,6 +26,8 @@ export const Welcome = () => {
           <Button
             text="Log in"
             variant="primary"
+            buttonClassName="h-12"
+            textClassName="px-20 font-bold sm:text-sm md:text-base lg:text-lg xl:text-xl"
             onClick={() =>
               navigate('/login#signin', {
                 state: { isSignUp: false },
@@ -35,6 +37,8 @@ export const Welcome = () => {
           <Button
             text="Sign Up"
             variant="secondary"
+            buttonClassName="h-12"
+            textClassName="px-20 font-bold sm:text-sm md:text-base lg:text-lg xl:text-xl"
             onClick={() =>
               navigate('/login#signup', {
                 state: { isSignUp: true },

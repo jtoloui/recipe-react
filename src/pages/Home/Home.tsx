@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
@@ -12,7 +13,6 @@ export const Home = () => {
   const { data: recipeByLabel } = useRecipesByLabel(selectedCarouselCard);
 
   const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
-
   const [recipeCardData, setRecipeCardData] = useState<
     | []
     | {
@@ -68,6 +68,17 @@ export const Home = () => {
     }
   }, [cardRecipeDataCallback, recipeByLabel]);
 
+  // const createRecipeFormMethods = useForm<CreateRecipeFormData>({
+  //   resolver: zodResolver(createRecipeSchema),
+  // });
+
+  // const {
+  //   handleSubmit,
+  //   formState: { errors, isSubmitting },
+  // } = createRecipeFormMethods;
+
+  // const onSubmit = (data) => console.log(data);
+
   return (
     <Layout>
       <div>
@@ -76,11 +87,15 @@ export const Home = () => {
             Welcome
           </h1>
           <div className="flex justify-end items-center  flex-auto">
-            <button className=" border-green-500  border-2 py-1 px-[0.625rem] rounded">
+            <Link
+              to={'/create-recipe'}
+              className=" border-green-500  border-2 py-1 px-[0.625rem] rounded"
+              // onClick={() => (true)}
+            >
               <span className="text-green-500 text-sm font-semibold">
                 + Create Recipe
               </span>
-            </button>
+            </Link>
           </div>
         </div>
         <Carousel

@@ -389,6 +389,7 @@ export const CreateRecipe = () => {
                           <CreatableSelect
                             {...field}
                             options={selectedOption}
+                            placeholder="Choose or add measurement"
                             styles={{
                               control: (provided, state) => ({
                                 ...provided,
@@ -422,6 +423,15 @@ export const CreateRecipe = () => {
                               menu: (provided) => ({
                                 ...provided,
                                 zIndex: 9999,
+                              }),
+                              container: (provided) => ({
+                                ...provided,
+                                flexGrow: 1,
+                              }),
+                              placeholder: (provided) => ({
+                                ...provided,
+                                textOverflow: 'ellipsis',
+                                width: '100%',
                               }),
                               menuList: (provided) => ({
                                 ...provided,

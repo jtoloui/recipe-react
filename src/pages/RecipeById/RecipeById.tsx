@@ -6,6 +6,7 @@ import { IngredientIcon } from '@/assets/IngredientIcon';
 import { Image } from '@/components/Elements';
 import { Layout } from '@/components/Layout';
 import { fetchRecipeByIdQuery } from '@/queries';
+import { Ingredient } from '@/queries/types';
 
 import { type loader } from '.';
 import { HeaderSection } from './components/HeaderSection';
@@ -23,6 +24,25 @@ const RecipeById = () => {
     ...fetchRecipeByIdQuery(params?.recipeId || ''),
     initialData,
   });
+
+  const getMarginClass = (array: Ingredient[], index: number) => {
+    // if the index is the second to last item and the array length is even, it will have no margin bottom on md and above
+    if (index === array.length - 2 && array.length % 2 === 0) {
+      return 'mb-4 md:mb-0';
+    }
+    // if the index is the first item, it will have margin bottom on below md
+    else if (index === 0) {
+      return 'mb-4';
+    }
+    // the last item always have no margin bottom
+    else if (index === array.length - 1) {
+      return 'mb-0';
+    }
+    // all other cases will have margin bottom
+    else {
+      return 'mb-4';
+    }
+  };
 
   if (!data) return null;
 
@@ -50,16 +70,20 @@ const RecipeById = () => {
               Ingredients
             </h1>
             <div className="flex">
-              <div className="flex flex-wrap">
+              <div className="flex flex-wrap w-full">
                 {data?.ingredients?.map((ingredient, index, array) => (
                   <div
-                    className={`flex items-center text-sm text-black-500 dark:text-white-500 w-full md:w-1/2 last:mb-0 ${
-                      index === array.length - 2 &&
-                      array.length % 2 === 0 &&
-                      index !== 0
-                        ? 'mb-4 md:mb-0'
-                        : 'mb-4'
-                    }`}
+                    className={`flex items-center text-sm text-black-500 dark:text-white-500 w-full md:w-1/2 last:mb-0 ${getMarginClass(
+                      array,
+                      index
+                    )}`}
+                    // className={`flex items-center text-sm text-black-500 dark:text-white-500 w-full md:w-1/2 last:mb-0 ${
+                    //   index === array.length - 2 &&
+                    //   array.length % 2 === 0 &&
+                    //   index !== 0
+                    //     ? 'mb-4 md:mb-0'
+                    //     : 'mb-4'
+                    // }`}
                     key={index}
                   >
                     {/* <Image

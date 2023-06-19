@@ -1,7 +1,7 @@
 import { faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { motion } from 'framer-motion';
-import { FC, useCallback, useEffect } from 'react';
+import { FC } from 'react';
 
 import { Button } from '../Button';
 
@@ -50,14 +50,6 @@ export const Modal: FC<ModalProps> = ({
   //     document.removeEventListener('keydown', escFunction, false);
   //   };
   // }, [escFunction]);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    console.log(event.key);
-
-    if (event.key === 'Escape') {
-      onClose();
-    }
-  };
 
   if (!isOpen) {
     return null;

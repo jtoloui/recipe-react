@@ -86,3 +86,32 @@ export interface Ingredient {
 export type RecipeByIdResponse = RecipeById;
 
 export type RecipesByLabelResponse = LabelByName[];
+
+export interface measurementsTypeResponse {
+  measurements: string[];
+}
+
+export interface popularLabelsResponse {
+  _id: null;
+  labels: string[];
+}
+
+export interface CreateRecipeResponse {
+  name: string;
+  imageSrc: string;
+  recipeAuthor: string;
+  timeToCook: TimeToCook;
+  difficulty: string;
+  labels: string[];
+  portions: string;
+  description: string;
+  nutrition: Nutrition;
+  vegan: boolean;
+  vegetarian: boolean;
+  ingredients: Ingredient[];
+  steps: string[];
+  cuisine: string;
+  creatorId: string;
+  _id: string;
+  __v: number;
+}

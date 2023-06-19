@@ -1,17 +1,9 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
-import {
-  CreateRecipe,
-  CreateRecipeFormData,
-  createRecipeSchema,
-} from '@/Forms';
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Layout } from '@/components/Layout';
-import { Modal } from '@/components/Modal';
 import { useRecipeLabels, useRecipesByLabel } from '@/queries';
 
 export const Home = () => {
@@ -31,8 +23,6 @@ export const Home = () => {
         ingredientsCount: number;
       }[]
   >([]);
-
-  const [openCreateRecipeModal, setOpenCreateRecipeModal] = useState(false);
 
   const carouselDataCallback = useCallback(() => {
     if (recipeLabels) {
@@ -125,30 +115,6 @@ export const Home = () => {
           />
         ))}
       </div>
-      {/* <Modal
-        isOpen={openCreateRecipeModal}
-        title="Create Recipe"
-        onClose={() => setOpenCreateRecipeModal(false)}
-        buttons={{
-          primary: {
-            label: isSubmitting ? 'Creating...' : 'Create',
-            onClick: handleSubmit(
-              (data) => {
-                console.log(data);
-              },
-              (errors) => console.log(errors)
-            ),
-          },
-          secondary: {
-            label: 'Cancel',
-            onClick: () => setOpenCreateRecipeModal(false),
-          },
-        }}
-      >
-        <FormProvider {...createRecipeFormMethods}>
-          <CreateRecipe />
-        </FormProvider>
-      </Modal> */}
     </Layout>
   );
 };

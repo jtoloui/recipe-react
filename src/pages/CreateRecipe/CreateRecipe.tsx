@@ -16,7 +16,10 @@ import { CreateRecipeResponse } from '@/queries/types';
 const createRecipe = async (newRecipe: CreateRecipeFormData) => {
   const { data } = await axios.post<CreateRecipeResponse>(
     `${import.meta.env.VITE_API_URI}/api/recipes`,
-    newRecipe
+    newRecipe,
+    {
+      withCredentials: true,
+    }
   );
   return data;
 };

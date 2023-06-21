@@ -1,3 +1,4 @@
+import { FileWithPath } from 'react-dropzone';
 import { z } from 'zod';
 
 const Difficulty = z.enum(['Easy', 'Medium', 'Hard'], {
@@ -14,6 +15,14 @@ const Difficulty = z.enum(['Easy', 'Medium', 'Hard'], {
     }
   },
 });
+
+export const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'image/svg+xml',
+];
 
 export type CreateRecipeFormData = z.infer<typeof createRecipeSchema>;
 
@@ -74,6 +83,11 @@ export const createRecipeSchema = z.object({
       invalid_type_error: 'Portion size must be a number',
     })
     .min(1, 'Portion size must be at least 1'),
+  image: z
+    .any()
+    .refine((file: FileWithPath) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+      message: 'Image must be a jpeg, jpg, png, webp, or svg',
+    }),
 });
 
 export function createRecipeFormToPostObject(

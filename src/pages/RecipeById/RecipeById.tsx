@@ -54,7 +54,7 @@ const RecipeById = () => {
           <Image
             src={`https://source.unsplash.com/random/800x800/?${data?.name}-food`}
             fallbackSrc={`https://source.unsplash.com/random/800x800/?${data?.name}-food`}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded"
             alt={data?.name || ''}
           />
         </div>

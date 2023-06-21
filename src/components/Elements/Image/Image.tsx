@@ -21,7 +21,11 @@ export const Image = ({
 
   return (
     <>
-      {isLoading && <Skeleton className={`dark:bg-slate-500 ${className}`} />}
+      {isLoading && (
+        <Skeleton
+          className={`dark:bg-slate-500 ${className ? className : ''}`}
+        />
+      )}
       <img
         ref={imageRef}
         src={src}
@@ -29,7 +33,9 @@ export const Image = ({
           setIsLoading(false);
           props.onLoad && props.onLoad(event);
         }}
-        className={` ${isLoading || hasError ? 'hidden' : ''} ${className}`}
+        className={`${isLoading || hasError ? 'hidden ' : ''}${
+          className ? className : ''
+        }`}
         onError={(event) => {
           setHasError(true);
           props.onError && props.onError(event);
@@ -37,15 +43,19 @@ export const Image = ({
         {...props}
       />
 
-      <img
-        src={fallbackSrc}
-        className={` ${isLoading || !hasError ? 'hidden' : ''} ${className}`}
-        onLoad={(event) => {
-          setIsLoading(false);
-          props.onLoad && props.onLoad(event);
-        }}
-        {...props}
-      />
+      {hasError && (
+        <img
+          src={fallbackSrc}
+          className={`${isLoading || !hasError ? 'hidden ' : ''}${
+            className ? className : ''
+          }`}
+          onLoad={(event) => {
+            setIsLoading(false);
+            props.onLoad && props.onLoad(event);
+          }}
+          {...props}
+        />
+      )}
     </>
   );
 };

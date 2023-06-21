@@ -1,14 +1,22 @@
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { ErrorCode, type FileWithPath, useDropzone } from 'react-dropzone';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Options } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
-import { CreateRecipeFormData, createRecipeSchema } from '@/Forms';
+import {
+  ACCEPTED_IMAGE_TYPES,
+  CreateRecipeFormData,
+  createRecipeSchema,
+} from '@/Forms';
 import { Button } from '@/components/Button';
+import { Image } from '@/components/Elements';
 import { Layout } from '@/components/Layout';
 import { usePopularLabels, usePopularMeasurements } from '@/queries';
 import { CreateRecipeResponse } from '@/queries/types';
@@ -56,6 +64,7 @@ export const CreateRecipe = () => {
     formState: { errors },
     control,
     handleSubmit,
+    setValue,
   } = useForm<CreateRecipeFormData>({
     resolver: zodResolver(createRecipeSchema),
   });
@@ -124,6 +133,37 @@ export const CreateRecipe = () => {
       setSelectedLabelOption(options);
     }
   }, [popularLabelsIsFetching, popularLabelsError, popularLabelData]);
+  const [selectedFileName, setSelectedFileName] = useState<FileWithPath | null>(
+    null
+  );
+
+  const onDrop = useCallback(
+    (acceptedFiles: FileWithPath[]) => {
+      // Do something with the files
+      setSelectedFileName(null);
+      if (acceptedFiles.length === 0) return;
+
+      setSelectedFileName(acceptedFiles[0]);
+      setValue('image', acceptedFiles[0]);
+    },
+    [setValue]
+  );
+
+  const { getRootProps, getInputProps, fileRejections } = useDropzone({
+    onDrop,
+    multiple: false,
+    validator: (file: FileWithPath) => {
+      if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
+        return {
+          code: ErrorCode.FileInvalidType,
+          message: `Invalid file type. Only: ${ACCEPTED_IMAGE_TYPES.join(
+            ', '
+          ).replace(/image\//g, '')} are accepted`,
+        };
+      }
+      return null;
+    },
+  });
 
   return (
     <Layout>
@@ -131,13 +171,72 @@ export const CreateRecipe = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* <!-- Box 1 --> */}
           <div className="md:col-span-1 md:row-span-3 rounded-lg bg-white-500 dark:bg-slate-700 h-80 p-5">
-            {/* <Image
-            src={`https://source.unsplash.com/random/800x800/?${data?.name}-food`}
-            fallbackSrc={`https://source.unsplash.com/random/800x800/?${data?.name}-food`}
-            className="w-full h-full object-cover"
-            alt={data?.name || ''}
-          /> */}
+            <div className="max-w-xl h-full" {...getRootProps()}>
+              <label
+                className={`flex w-full h-full transition bg-white appearance-none cursor-pointer hover:border-gray-400 focus:outline-none justify-center`}
+              >
+                {!selectedFileName && (
+                  <div className="relative h-full flex flex-col justify-center items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-6 h-6 dark:text-white-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                      />
+                    </svg>
+
+                    <span className="font-medium dark:text-white-500">
+                      Drop files to Attach, or{' '}
+                      <span className="text-green-500 underline">browse</span>
+                    </span>
+
+                    {fileRejections.length > 0 && (
+                      <p className="absolute bottom-0 text-red-500 text-sm items-center">
+                        {fileRejections[0].errors[0].message}
+                      </p>
+                    )}
+                  </div>
+                )}
+                <input
+                  {...getInputProps()}
+                  {...register('image')}
+                  className="hidden"
+                />
+                {selectedFileName && (
+                  <div className="flex relative">
+                    <Image
+                      src={URL.createObjectURL(selectedFileName)}
+                      fallbackSrc={URL.createObjectURL(selectedFileName)}
+                      alt={selectedFileName.name}
+                      className="rounded"
+                    />
+                    <FontAwesomeIcon
+                      size="xs"
+                      icon={faX}
+                      color="var(--white)"
+                      className="absolute top-0 right-0 m-1 p-3 rounded-full bg-mainColor2-500 shadow"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setSelectedFileName(null);
+                        setValue('image', null);
+                      }}
+                    />
+                  </div>
+                )}
+                {/* {errors.image?.message && (
+                  <span className="text-red-500">{errors.image.message}</span>
+                )} */}
+              </label>
+            </div>
           </div>
+
           {/* <!-- Box 2 --> */}
           <div className="md:col-span-2 rounded-lg bg-white-500 dark:bg-slate-700 p-5">
             {/* <!-- Heading --> */}

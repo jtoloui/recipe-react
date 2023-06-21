@@ -139,7 +139,6 @@ export const CreateRecipe = () => {
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
-      // Do something with the files
       setSelectedFileName(null);
       if (acceptedFiles.length === 0) return;
 
@@ -149,7 +148,7 @@ export const CreateRecipe = () => {
     [setValue]
   );
 
-  const { getRootProps, getInputProps, fileRejections } = useDropzone({
+  const { getRootProps, getInputProps, fileRejections, open } = useDropzone({
     onDrop,
     multiple: false,
     validator: (file: FileWithPath) => {
@@ -171,7 +170,14 @@ export const CreateRecipe = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {/* <!-- Box 1 --> */}
           <div className="md:col-span-1 md:row-span-3 rounded-lg bg-white-500 dark:bg-slate-700 h-80 p-5">
-            <div className="max-w-xl h-full" {...getRootProps()}>
+            <div
+              className="max-w-xl h-full"
+              {...getRootProps()}
+              onClick={(event) => {
+                event.stopPropagation();
+                open();
+              }}
+            >
               <label
                 className={`flex w-full h-full transition bg-white appearance-none cursor-pointer hover:border-gray-400 focus:outline-none justify-center`}
               >
@@ -204,11 +210,7 @@ export const CreateRecipe = () => {
                     )}
                   </div>
                 )}
-                <input
-                  {...getInputProps()}
-                  {...register('image')}
-                  className="hidden"
-                />
+
                 {selectedFileName && (
                   <div className="flex relative">
                     <Image
@@ -230,10 +232,13 @@ export const CreateRecipe = () => {
                     />
                   </div>
                 )}
-                {/* {errors.image?.message && (
-                  <span className="text-red-500">{errors.image.message}</span>
-                )} */}
               </label>
+              <input
+                {...register('image')}
+                {...getInputProps()}
+                className="hidden"
+                type="file"
+              />
             </div>
           </div>
 

@@ -85,9 +85,15 @@ export const createRecipeSchema = z.object({
     .min(1, 'Portion size must be at least 1'),
   image: z
     .any()
-    .refine((file: FileWithPath) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
-      message: 'Image must be a jpeg, jpg, png, webp, or svg',
-    }),
+    .refine((file?: FileWithPath) => file?.type !== undefined, {
+      message: 'Image is required',
+    })
+    .refine(
+      (file?: FileWithPath) => ACCEPTED_IMAGE_TYPES.includes(file?.type || ''),
+      {
+        message: 'Image must be a jpeg, jpg, png, webp, or svg',
+      }
+    ),
 });
 
 export function createRecipeFormToPostObject(

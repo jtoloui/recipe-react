@@ -204,8 +204,15 @@ export const CreateRecipe = () => {
                     </span>
 
                     {fileRejections.length > 0 && (
+                      <>
+                        <p className="absolute bottom-0 text-red-500 text-sm items-center">
+                          {fileRejections[0].errors[0].message}
+                        </p>
+                      </>
+                    )}
+                    {errors.image?.message && fileRejections.length === 0 && (
                       <p className="absolute bottom-0 text-red-500 text-sm items-center">
-                        {fileRejections[0].errors[0].message}
+                        {errors?.image?.message as string}
                       </p>
                     )}
                   </div>

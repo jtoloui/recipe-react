@@ -1012,7 +1012,12 @@ export const CreateRecipe = () => {
                 </div>
               </div>
               <div className="flex justify-end w-full">
-                <Button variant="primary" text="Create Recipe" type="submit" />
+                <Button
+                  variant="primary"
+                  text="Create Recipe"
+                  type="submit"
+                  buttonClassName="sm:w-auto"
+                />
               </div>
             </>
           </div>

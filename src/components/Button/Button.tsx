@@ -18,7 +18,7 @@ export const Button: FC<ButtonProps> = ({
   type,
 }) => {
   const commonClasses =
-    'w-full sm:w-auto px-4 py-2 rounded-lg shadow-md flex items-center justify-center';
+    'w-full px-4 py-2 rounded-lg shadow-md flex items-center justify-center';
   let variantClasses = '';
   // variant === 'primary'
   //   ? 'bg-green-500 text-white-500 hover:bg-white-500 hover:text-green-500 border-2 border-green-500'

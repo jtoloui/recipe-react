@@ -245,14 +245,14 @@ export const LoginForm = ({
               variant="secondary"
               onClick={onSecondaryButtonClick}
               text={secondaryButtonText}
-              buttonClassName="sm:w-[100%] px-6 py-3"
+              buttonClassName=" sm:w-auto md:w-[100%] px-6 py-3"
             />
           )}
           <Button
             type="submit"
             variant="primary"
             text={submitButtonText}
-            buttonClassName="sm:w-[100%] px-6 py-3"
+            buttonClassName="sm:w-[100%] md:w-[100%] px-6 py-3"
           />
           {/* <button
             className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white-500 capitalize transition-colors duration-300 transform bg-green-500 rounded-lg hover:text-black-500 hover:bg-white-500 hover:border-green-500 hover:border focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"

@@ -20,6 +20,9 @@ type FormData = {
 };
 
 export const Login = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [isSignUp, setIsSignUp] = useState(false);
   const [onSubmitError, setOnSubmitError] = useState<string | undefined>(
     undefined
@@ -34,15 +37,15 @@ export const Login = () => {
 
   const useFormSignIn = useForm<FormData>({
     resolver: zodResolver(SignInSchema),
+    defaultValues: {
+      username: location.state?.username || '',
+    },
   });
   const useFormSignUp = useForm<FormData>({
     resolver: zodResolver(SignUpSchema),
   });
 
   const { setValue, setError } = isSignUp ? useFormSignUp : useFormSignIn;
-
-  const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
     if (!location.hash) {
@@ -75,7 +78,7 @@ export const Login = () => {
     }
   }, [location.hash, setValue, useFormSignIn, useFormSignUp]);
 
-  const signIn = (data: FormData) => {
+  const signIn = (data: Partial<FormData>) => {
     setSignInErrorField({
       username: false,
       password: false,
@@ -104,7 +107,7 @@ export const Login = () => {
       });
   };
 
-  const signUp = (data: FormData) => {
+  const signUp = (data: Partial<FormData>) => {
     setOnSubmitError(undefined);
     axios
       .post(
@@ -122,7 +125,9 @@ export const Login = () => {
       )
       .then(() => {
         setIsSignUp(false);
-        navigate('/login#signin');
+        navigate('/verify-email', {
+          state: { username: data.username },
+        });
       })
       .catch((error) => {
         const err: AxiosError = error;

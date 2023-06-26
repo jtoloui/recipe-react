@@ -1,24 +1,29 @@
 import { useFormContext } from 'react-hook-form';
-import { ZodType } from 'zod';
+import { ZodType, z } from 'zod';
 
-type FormData = {
+import { Button } from '@/components/Button';
+
+export type FormData = {
   username: string;
   password: string;
   email?: string;
   firstName?: string;
   lastName?: string;
+  verificationCode?: number;
 };
 
 type Props = {
-  schema: ZodType<FormData>;
-  onSubmit: (data: FormData) => void;
+  schema: ZodType<Partial<FormData>>;
+  onSubmit: (data: Partial<FormData>) => void;
   fields: {
-    username: boolean;
-    password: boolean;
+    username?: boolean;
+    password?: boolean;
     forgotPassword?: boolean;
     email?: boolean;
     firstName?: boolean;
     lastName?: boolean;
+    verificationCode?: boolean;
+    secondaryButton?: boolean;
   };
   overrideFieldErrors?: {
     username?: boolean;
@@ -26,9 +31,13 @@ type Props = {
     email?: boolean;
     firstName?: boolean;
     lastName?: boolean;
+    verificationCode?: boolean;
   };
+  secondaryButtonText?: string;
   submitButtonText?: string;
   onSubmitErrorMessage?: string;
+  handleResendVerificationCode?: () => void;
+  onSecondaryButtonClick?: () => void;
 };
 
 export const LoginForm = ({
@@ -37,12 +46,17 @@ export const LoginForm = ({
   submitButtonText = 'Submit',
   onSubmitErrorMessage,
   overrideFieldErrors,
+  schema,
+  handleResendVerificationCode,
+  secondaryButtonText = 'button',
+  onSecondaryButtonClick,
 }: Props) => {
+  type LoginFormData = z.infer<typeof schema>;
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useFormContext<FormData>();
+  } = useFormContext<LoginFormData>();
 
   const formSubmit = handleSubmit((data) => {
     onSubmit(data);
@@ -148,6 +162,44 @@ export const LoginForm = ({
           )}
         </div>
       )}
+
+      {fields.verificationCode && (
+        <div className="mt-4">
+          <div className="flex justify-between">
+            <label
+              className={`block mb-2 text-sm font-medium text-gray-600 dark:text-gray-200`}
+              htmlFor="verificationCode"
+            >
+              Verify Email Code
+            </label>
+            <a
+              href="#"
+              className="text-xs text-gray-500 dark:text-gray-300 hover:underline"
+              onClick={handleResendVerificationCode}
+            >
+              Resend Verification Code?
+            </a>
+          </div>
+          <input
+            id="code"
+            className={`block w-full px-4 py-2 text-gray-700 bg-white border-b border-brownishGrey-500 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-green-500  dark:focus:border-blue-300 focus:outline-none ${
+              (errors.verificationCode ||
+                overrideFieldErrors?.verificationCode) &&
+              'border-red-500'
+            }`}
+            type="number"
+            placeholder="e.g. 123456"
+            {...register('verificationCode', {
+              setValueAs: (value) => Number(value),
+            })}
+          />
+          {errors.verificationCode && (
+            <p className="text-red-500 text-xs italic">
+              {errors.verificationCode.message}
+            </p>
+          )}
+        </div>
+      )}
       {fields.password && (
         <div className="mt-4">
           <div className="flex justify-between">
@@ -186,12 +238,29 @@ export const LoginForm = ({
       )}
 
       <div className="mt-6">
-        <button
-          className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white-500 capitalize transition-colors duration-300 transform bg-green-500 rounded-lg hover:text-black-500 hover:bg-white-500 hover:border-green-500 hover:border focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-          type="submit"
-        >
-          {submitButtonText}
-        </button>
+        <div className="flex justify-center gap-3">
+          {fields.secondaryButton && (
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={onSecondaryButtonClick}
+              text={secondaryButtonText}
+              buttonClassName="sm:w-[100%] px-6 py-3"
+            />
+          )}
+          <Button
+            type="submit"
+            variant="primary"
+            text={submitButtonText}
+            buttonClassName="sm:w-[100%] px-6 py-3"
+          />
+          {/* <button
+            className="w-full px-6 py-3 text-sm font-medium tracking-wide text-white-500 capitalize transition-colors duration-300 transform bg-green-500 rounded-lg hover:text-black-500 hover:bg-white-500 hover:border-green-500 hover:border focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50"
+            type="submit"
+          >
+            {submitButtonText}
+          </button> */}
+        </div>
         {onSubmitErrorMessage && (
           <p className="mt-2 text-xs text-red-500 italic">
             {onSubmitErrorMessage}

@@ -12,6 +12,8 @@ import { Profile } from '@/pages/Profile';
 import RecipeById, { loader as recipeLoader } from '@/pages/RecipeById';
 import { Welcome } from '@/pages/Welcome';
 
+import { VerifyEmailSignUp } from './pages/VerifyEmailSignUp';
+
 const CreateRecipe = lazy(() =>
   import('@/pages/CreateRecipe').then((module) => ({
     default: module.CreateRecipe,
@@ -24,6 +26,10 @@ const Login = lazy(() =>
 const queryClient = new QueryClient();
 
 const routes = createBrowserRouter([
+  {
+    path: '/verify-email',
+    element: <VerifyEmailSignUp />,
+  },
   {
     path: '/welcome',
     element: (

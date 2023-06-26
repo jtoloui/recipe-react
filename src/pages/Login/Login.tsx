@@ -150,6 +150,43 @@ export const Login = () => {
         setOnSubmitError('Error while logging in');
       });
   };
+  const [formFields, setFormFields] = useState<{
+    username: boolean;
+    password: boolean;
+    forgotPassword?: boolean;
+    email?: boolean;
+    firstName?: boolean;
+    lastName?: boolean;
+  }>({
+    username: true,
+    password: true,
+    forgotPassword: true,
+    email: false,
+    firstName: false,
+    lastName: false,
+  });
+  useEffect(() => {
+    if (isSignUp) {
+      setFormFields({
+        username: true,
+        password: true,
+        forgotPassword: false,
+        email: true,
+        firstName: true,
+        lastName: true,
+      });
+    } else {
+      setFormFields({
+        username: true,
+        password: true,
+        forgotPassword: true,
+        email: false,
+        firstName: false,
+        lastName: false,
+      });
+    }
+  }, [isSignUp]);
+
   return (
     <div className="relative dark:bg-slate-700 min-h-screen background">
       <div className="min-h-screen flex items-center">
@@ -182,37 +219,15 @@ export const Login = () => {
               <span className="w-1/5 border-b dark:border-gray-400 lg:w-1/4"></span>
             </div>
 
-            {isSignUp ? (
-              <FormProvider {...useFormSignUp}>
-                <LoginForm
-                  onSubmit={signUp}
-                  schema={SignUpSchema}
-                  fields={{
-                    username: true,
-                    password: true,
-                    email: true,
-                    firstName: true,
-                    lastName: true,
-                  }}
-                  onSubmitErrorMessage={onSubmitError}
-                />
-              </FormProvider>
-            ) : (
-              <FormProvider {...useFormSignIn}>
-                <LoginForm
-                  onSubmit={signIn}
-                  schema={SignUpSchema}
-                  fields={{
-                    username: true,
-                    password: true,
-                    forgotPassword: true,
-                  }}
-                  overrideFieldErrors={signInErrorField}
-                  onSubmitErrorMessage={onSubmitError}
-                />
-              </FormProvider>
-            )}
-
+            <FormProvider {...(isSignUp ? useFormSignUp : useFormSignIn)}>
+              <LoginForm
+                onSubmit={isSignUp ? signUp : signIn}
+                schema={isSignUp ? SignUpSchema : SignInSchema}
+                fields={formFields}
+                onSubmitErrorMessage={onSubmitError}
+                {...(isSignUp ? { overrideFieldErrors: signInErrorField } : {})}
+              />
+            </FormProvider>
             <div className="flex items-center justify-between mt-4">
               <span className="w-1/5 border-b dark:border-gray-600 md:w-1/4"></span>
               <Link

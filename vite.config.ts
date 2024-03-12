@@ -17,7 +17,7 @@ export default defineConfig({
     ],
   },
   build: {
-    sourcemap: true,
+    sourcemap: false,
   },
   optimizeDeps: {
     include: ['react-query', 'react-router-dom'],

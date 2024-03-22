@@ -61,7 +61,7 @@ export const VerifyEmailSignUp = () => {
     setOnSubmitError(undefined);
     axios
       .post(
-        `${import.meta.env.VITE_API_URI}/auth/verify/email`,
+        `${import.meta.env.VITE_API_URI}/api/auth/verify/email`,
         {
           username: data.username,
           code: `${data.verificationCode}`,
@@ -89,7 +89,7 @@ export const VerifyEmailSignUp = () => {
     setOnSubmitError(undefined);
     axios
       .post(
-        `${import.meta.env.VITE_API_URI}/auth/resend/verification-code`,
+        `${import.meta.env.VITE_API_URI}/api/auth/resend/verification-code`,
         {
           username: data.username,
         },

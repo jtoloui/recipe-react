@@ -4,6 +4,7 @@ import { UseQueryResult, useQuery } from 'react-query';
 import {
   type RecipeLabelsResponse,
   type RecipesByLabelResponse,
+  popularLabelsResponse,
 } from './types';
 
 type Labels = RecipeLabelsResponse;
@@ -39,5 +40,23 @@ export const useRecipesByLabel = (
 ): UseQueryResult<RecipeByLabel, Error> => {
   return useQuery<RecipeByLabel, Error>(['recipesByLabel', label], () =>
     fetchRecipesByLabel(label)
+  );
+};
+
+export const fetchPopularLabels = async (): Promise<popularLabelsResponse> => {
+  const response = await axios.get<popularLabelsResponse>(
+    `${import.meta.env.VITE_API_URI}/api/labels/popular`,
+    { withCredentials: true }
+  );
+
+  return response.data;
+};
+
+export const usePopularLabels = (): UseQueryResult<
+  popularLabelsResponse,
+  Error
+> => {
+  return useQuery<popularLabelsResponse, Error>('popularLabels', () =>
+    fetchPopularLabels()
   );
 };

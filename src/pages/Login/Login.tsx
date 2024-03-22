@@ -86,7 +86,7 @@ export const Login = () => {
     setOnSubmitError(undefined);
     axios
       .post(
-        `${import.meta.env.VITE_API_URI}/auth/login`,
+        `${import.meta.env.VITE_API_URI}/api/auth/login`,
         {
           username: data.username,
           password: data.password,
@@ -111,7 +111,7 @@ export const Login = () => {
     setOnSubmitError(undefined);
     axios
       .post(
-        `${import.meta.env.VITE_API_URI}/auth/register`,
+        `${import.meta.env.VITE_API_URI}/api/auth/register`,
         {
           username: data.username,
           password: data.password,
@@ -144,9 +144,12 @@ export const Login = () => {
 
   const socialLogin = () => {
     axios
-      .get(`${import.meta.env.VITE_API_URI}/auth/login-social?type=Google`, {
-        withCredentials: true,
-      })
+      .get(
+        `${import.meta.env.VITE_API_URI}/api/auth/login-social?type=Google`,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         // Redirect the user to the received redirect URL
         window.location.href = response.data.redirectUrl;

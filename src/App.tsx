@@ -12,6 +12,7 @@ import { Profile } from '@/pages/Profile';
 import RecipeById, { loader as recipeLoader } from '@/pages/RecipeById';
 import { Welcome } from '@/pages/Welcome';
 
+import { Page404 } from './pages/Page404';
 import { VerifyEmailSignUp } from './pages/VerifyEmailSignUp';
 
 const CreateRecipe = lazy(() =>
@@ -66,6 +67,7 @@ const routes = createBrowserRouter([
         path: '/recipe/:recipeId',
         element: <RecipeById />,
         loader: recipeLoader(queryClient),
+        errorElement: <Page404 />,
       },
       {
         path: '/create-recipe',

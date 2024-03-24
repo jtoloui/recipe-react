@@ -101,7 +101,7 @@ export const ImageUpload = () => {
                 <b>Click to upload</b> or drag and drop
                 {errorMessage ? (
                   <p className="mt-4 flex justify-center text-red-500 text-sm ">
-                    Error: {errorMessage}
+                    {errorMessage}
                   </p>
                 ) : (
                   <p className="mt-4 text-gray-600 text-sm">

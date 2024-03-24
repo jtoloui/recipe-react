@@ -1,19 +1,19 @@
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+from = "/*"
+to = "/index.html"
+status = 200
 
 [[headers]]
-  for = "/*"
-  [headers.values]
-    Strict-Transport-Security = '''
+for = "/*"
+[headers.values]
+Strict-Transport-Security = '''
       max-age=31536000;
       includeSubDomains;
       preload
     '''
-    X-Frame-Options = "DENY"
-    X-XSS-Protection = "1; mode=block"
-    X-Content-Type-Options = "nosniff"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://*.unsplash.com; font-src 'self'; connect-src 'self' https://*.jamietoloui.com;"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "camera=(), gyroscope=(), microphone=(), usb=(), fullscreen=(self), payment=()"
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+X-Content-Type-Options = "nosniff"
+Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https://*.unsplash.com https://d35qwubl2aivrw.cloudfront.net; font-src 'self'; connect-src 'self' https://*.jamietoloui.com;"
+Referrer-Policy = "strict-origin-when-cross-origin"
+Permissions-Policy = "camera=(), gyroscope=(), microphone=(), usb=(), fullscreen=(self), payment=()"

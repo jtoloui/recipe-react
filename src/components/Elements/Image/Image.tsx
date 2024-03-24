@@ -3,7 +3,7 @@ import Skeleton from 'react-loading-skeleton';
 
 type ImageProps = {
   src: string;
-  fallbackSrc: string;
+  fallbackSrc?: string;
   className?: string;
 } & React.ImgHTMLAttributes<HTMLImageElement>;
 

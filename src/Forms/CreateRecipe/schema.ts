@@ -1,4 +1,3 @@
-import { FileWithPath } from 'react-dropzone';
 import { z } from 'zod';
 
 const Difficulty = z.enum(['Easy', 'Medium', 'Hard'], {
@@ -85,15 +84,15 @@ export const createRecipeSchema = z.object({
     .min(1, 'Portion size must be at least 1'),
   image: z
     .any()
-    .refine((file?: FileWithPath) => file?.type !== undefined, {
+    .refine((file?: File) => file?.type !== undefined, {
       message: 'Image is required',
     })
-    .refine(
-      (file?: FileWithPath) => ACCEPTED_IMAGE_TYPES.includes(file?.type || ''),
-      {
-        message: 'Image must be a jpeg, jpg, png, webp, or svg',
-      }
-    ),
+    .refine((file: File) => file?.size < 5000000, {
+      message: 'File is larger than 5MB',
+    })
+    .refine((file: File) => ACCEPTED_IMAGE_TYPES.includes(file?.type || ''), {
+      message: 'Image must be a jpeg, jpg, png, webp, or svg',
+    }),
 });
 
 export function createRecipeFormToPostObject(

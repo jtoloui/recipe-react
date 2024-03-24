@@ -22,13 +22,21 @@ import { usePopularLabels, usePopularMeasurements } from '@/queries';
 import { CreateRecipeResponse } from '@/queries/types';
 
 const createRecipe = async (newRecipe: CreateRecipeFormData) => {
+  const formData = new FormData();
+
+  formData.append('imageSrc', newRecipe.image);
+  formData.append('jsonData', JSON.stringify(newRecipe));
   const { data } = await axios.post<CreateRecipeResponse>(
     `${import.meta.env.VITE_API_URI}/api/recipes`,
-    newRecipe,
+    formData,
     {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
       withCredentials: true,
     }
   );
+
   return data;
 };
 

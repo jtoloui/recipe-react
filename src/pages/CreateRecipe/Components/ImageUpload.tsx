@@ -122,6 +122,7 @@ export const ImageUpload = () => {
           accept="image/*"
           className="hidden"
           id="image"
+          capture="environment"
         />
       </label>
     </div>

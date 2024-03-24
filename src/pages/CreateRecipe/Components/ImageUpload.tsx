@@ -1,16 +1,25 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import cn from 'classnames';
-import { ChangeEvent, DragEvent, Fragment, useState } from 'react';
+import { ChangeEvent, DragEvent, Fragment, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import { ACCEPTED_IMAGE_TYPES, createRecipeSchema } from '@/Forms';
+import {
+  ACCEPTED_IMAGE_TYPES,
+  CreateRecipeFormData,
+  createRecipeSchema,
+} from '@/Forms';
 import { Image } from '@/components/Elements';
 
 import { CloudUpload } from './CloudUpload';
 
 export const ImageUpload = () => {
-  const { register, setValue } = useFormContext(); // retrieve all hook methods
+  const {
+    register,
+    setValue,
+    formState: { errors },
+    setError,
+  } = useFormContext<CreateRecipeFormData>(); // retrieve all hook methods
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
@@ -40,7 +49,6 @@ export const ImageUpload = () => {
   };
 
   const updateImage = (file: File) => {
-    setErrorMessage('');
     const result = createRecipeSchema.shape.image.safeParse(file);
 
     if (!result.success) {
@@ -51,10 +59,17 @@ export const ImageUpload = () => {
       return;
     }
 
+    setErrorMessage('');
     setImage(file);
     setPreviewUrl(URL.createObjectURL(file));
     setValue('image', file);
   };
+
+  useEffect(() => {
+    if (errors.image) {
+      setErrorMessage(errors.image.message as string);
+    }
+  }, [errors.image]);
 
   return (
     <div className="w-full h-full">
@@ -75,8 +90,10 @@ export const ImageUpload = () => {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               className={cn(
-                ' hover:cursor-pointer border-dashed border-4 border-gap-4 border-gray-300 p-4 rounded-lg flex justify-center flex-col items-center',
-                { 'h-full': true }
+                ' hover:cursor-pointer border-dashed border-4 border-gap-4 p-4 rounded-lg flex justify-center flex-col items-center',
+                { 'h-full': true },
+                { 'border-red-500': errors.image },
+                { 'border-gray-300': !errors.image }
               )}
             >
               <CloudUpload height={24} width={24} strokeWidth={3} />
@@ -108,7 +125,10 @@ export const ImageUpload = () => {
               <FontAwesomeIcon
                 icon={faXmark}
                 size="lg"
-                onClick={handleRemoveImage}
+                onClick={() => {
+                  setError('image', { message: 'Image is required' });
+                  handleRemoveImage();
+                }}
                 color="#30be76"
               />
             </div>

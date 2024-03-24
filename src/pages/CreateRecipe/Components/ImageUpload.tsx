@@ -81,7 +81,7 @@ export const ImageUpload = () => {
             >
               <CloudUpload height={24} width={24} strokeWidth={3} />
               <span className="text-center">
-                <b>Click to upload</b> or drag and drop an image here.
+                <b>Click to upload</b> or drag and drop
                 {errorMessage ? (
                   <p className="mt-4 flex justify-center text-red-500 text-sm ">
                     Error: {errorMessage}

@@ -78,7 +78,7 @@ export const VerifyEmailSignUp = () => {
       .catch((err) => {
         const error = err;
         if (isAxiosError(error)) {
-          setOnSubmitError(error.response?.data.error);
+          setOnSubmitError(error.response?.data.error.error);
         } else {
           setOnSubmitError('Unable to verify email. Please try again later.');
         }
@@ -109,7 +109,7 @@ export const VerifyEmailSignUp = () => {
       .catch((err) => {
         const error = err;
         if (isAxiosError(error)) {
-          setOnSubmitError(error.response?.data.error);
+          setOnSubmitError(error.response?.data.error.error);
         } else {
           setOnSubmitError(
             'Unable to resend verification code. Please try again later.'

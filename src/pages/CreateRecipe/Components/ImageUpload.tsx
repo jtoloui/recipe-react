@@ -119,10 +119,9 @@ export const ImageUpload = () => {
           {...register('image')}
           type="file"
           onChange={handleFileChange}
-          accept="image/*"
+          accept="capture=camera,image/*"
           className="hidden"
           id="image"
-          capture="environment"
         />
       </label>
     </div>

@@ -14,6 +14,6 @@ Strict-Transport-Security = '''
 X-Frame-Options = "DENY"
 X-XSS-Protection = "1; mode=block"
 X-Content-Type-Options = "nosniff"
-Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://*.unsplash.com https://d35qwubl2aivrw.cloudfront.net; font-src 'self'; connect-src 'self' https://*.jamietoloui.com;"
+Content-Security-Policy = "default-src 'self'; script-src 'self' https://*.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://*.unsplash.com https://d35qwubl2aivrw.cloudfront.net; font-src 'self'; connect-src 'self' https://*.jamietoloui.com;"
 Referrer-Policy = "strict-origin-when-cross-origin"
 Permissions-Policy = "camera=(), gyroscope=(), microphone=(), usb=(), fullscreen=(self), payment=()"

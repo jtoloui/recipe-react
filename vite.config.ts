@@ -19,30 +19,28 @@ export default defineConfig({
   build: {
     sourcemap: isDev,
     rollupOptions: {
-      output: {
-        manualChunks(id: string) {
-          if (id.includes('@zod') || id.includes('zod')) {
-            return '@zod';
-          }
-
-          if (id.includes('react-hook-form')) {
-            return '@react-hook-form';
-          }
-
-          if (id.includes('fontawesome')) {
-            return '@fontawesome';
-          }
-          // creating a chunk to react routes deps. Reducing the vendor chunk size
-          if (
-            id.includes('react-router-dom') ||
-            id.includes('@remix-run') ||
-            id.includes('react-router') ||
-            id.includes('react-dom')
-          ) {
-            return '@react-router';
-          }
-        },
-      },
+      // output: {
+      //   manualChunks(id: string) {
+      //     if (id.includes('@zod') || id.includes('zod')) {
+      //       return '@zod';
+      //     }
+      //     if (id.includes('react-hook-form')) {
+      //       return '@react-hook-form';
+      //     }
+      //     if (id.includes('fontawesome')) {
+      //       return '@fontawesome';
+      //     }
+      //     // creating a chunk to react routes deps. Reducing the vendor chunk size
+      //     if (
+      //       id.includes('react-router-dom') ||
+      //       id.includes('@remix-run') ||
+      //       id.includes('react-router') ||
+      //       id.includes('react-dom')
+      //     ) {
+      //       return '@react-router';
+      //     }
+      //   },
+      // },
     },
   },
   optimizeDeps: {

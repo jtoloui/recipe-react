@@ -2,7 +2,7 @@ import react from '@vitejs/plugin-react';
 import fs from 'fs';
 import path from 'path';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
-// import preload from 'vite-plugin-preload';
+import preload from 'vite-plugin-preload';
 import svgr from 'vite-plugin-svgr';
 
 const appEnv = process.env.APP_ENV;
@@ -53,7 +53,7 @@ export default defineConfig({
     svgr({
       exportAsDefault: false,
     }),
-    // preload(),
+    preload(),
     splitVendorChunkPlugin(),
   ],
   server: {

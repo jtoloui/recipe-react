@@ -53,6 +53,7 @@ export default defineConfig({
     svgr({
       exportAsDefault: false,
     }),
+    // preload(),
     splitVendorChunkPlugin(),
   ],
   server: {
@@ -77,9 +78,11 @@ export default defineConfig({
         secure: false,
       },
     },
-    headers: {
-      'Content-Security-Policy':
-        "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://*.unsplash.com https://d35qwubl2aivrw.cloudfront.net; font-src 'self'; connect-src 'self' https://localhost:3001;",
-    },
+    headers: isDev
+      ? {
+          'Content-Security-Policy':
+            "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://*.unsplash.com https://d35qwubl2aivrw.cloudfront.net; font-src 'self'; connect-src 'self' https://localhost:3001;",
+        }
+      : {},
   },
 });

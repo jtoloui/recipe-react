@@ -119,12 +119,16 @@ export const ImageUpload = () => {
               height: 'inherit',
             }}
           >
-            <Image src={previewUrl} alt={image?.name} className="rounded" />
+            <Image
+              src={previewUrl}
+              alt={image?.name}
+              className="w-full h-full object-cover rounded"
+            />
 
             <div className="absolute right-2 top-2 cursor-pointer ">
               <FontAwesomeIcon
                 icon={faXmark}
-                size="lg"
+                size="2xl"
                 onClick={() => {
                   setError('image', { message: 'Image is required' });
                   handleRemoveImage();

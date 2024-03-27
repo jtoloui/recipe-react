@@ -5,9 +5,8 @@ function LogoWithText({ className }: LogoWithTextProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="102"
       height="28"
-      viewBox="0 0 102 28"
+      viewBox="-4 0 90 28"
       className={className}
     >
       <g fill="none" fillRule="evenodd">
@@ -19,7 +18,7 @@ function LogoWithText({ className }: LogoWithTextProps) {
           transform="translate(28 4)"
           className="dark:fill-white-500"
         >
-          <tspan x="0" y="20" className="dark:text-whit">
+          <tspan x="0" y="16" className="dark:text-whit">
             toloui
           </tspan>
         </text>

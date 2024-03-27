@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import {
   Controller,
@@ -17,6 +16,7 @@ import { Button } from '@/components/Button';
 import { Layout } from '@/components/Layout';
 import { usePopularLabels, usePopularMeasurements } from '@/queries';
 import { CreateRecipeResponse } from '@/queries/types';
+import { axiosInstanceFormData } from '@/utils';
 
 import { ImageUpload } from './Components';
 
@@ -25,8 +25,8 @@ const createRecipe = async (newRecipe: CreateRecipeFormData) => {
 
   formData.append('imageSrc', newRecipe.image);
   formData.append('jsonData', JSON.stringify(newRecipe));
-  const { data } = await axios.post<CreateRecipeResponse>(
-    `${import.meta.env.VITE_API_URI}/api/recipes`,
+  const { data } = await axiosInstanceFormData.post<CreateRecipeResponse>(
+    `/api/recipes`,
     formData,
     {
       headers: {

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios, { isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ import {
 } from '@/Forms';
 import Logo from '@/assets/Logo';
 import LogoWithText from '@/assets/LogoWithText';
+import { axiosInstance } from '@/utils';
 
 type FormData = {
   username: string;
@@ -62,7 +63,7 @@ export const ForgotPassword = () => {
   const onRequestedNewCode = (data: Partial<FormData>) => {
     setOnSubmitError(undefined);
 
-    axios
+    axiosInstance
       .post(
         '/api/auth/forgot-password',
         {
@@ -97,45 +98,12 @@ export const ForgotPassword = () => {
       });
   };
 
-  // const onRequestedNewCode1 = (data: Partial<FormData>) => {
-  //   setOnSubmitError(undefined);
-  //   axios
-  //     .post(
-  //       `${import.meta.env.VITE_API_URI}/api/auth/resend/verification-code`,
-  //       {
-  //         username: data.username,
-  //       },
-  //       {
-  //         withCredentials: true,
-  //       }
-  //     )
-  //     .then(() => {
-  //       // setVerificationCodeValue(
-  //       //   'verificationCode',
-  //       //   undefined as unknown as number
-  //       // );
-  //       // setVerificationCodeValue('username', data.username || '');
-  //       // setRequestedNewCode(false);
-  //       setFields({ ...fields, verificationCode: true });
-  //     })
-  //     .catch((err) => {
-  //       const error = err;
-  //       if (isAxiosError(error)) {
-  //         setOnSubmitError(error.response?.data.error.error);
-  //       } else {
-  //         setOnSubmitError(
-  //           'Unable to resend verification code. Please try again later.'
-  //         );
-  //       }
-  //     });
-  // };
-
   const onSetNewPassword = (data: Partial<FormData>) => {
     setOnSubmitError(undefined);
 
-    axios
+    axiosInstance
       .post(
-        '/api/auth/forgot-password/confirm',
+        `/api/auth/forgot-password/confirm`,
         {
           username: data.username,
           password: data.password,

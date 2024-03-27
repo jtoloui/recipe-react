@@ -15,6 +15,8 @@ import Logo from '@/assets/Logo';
 import LogoWithText from '@/assets/LogoWithText';
 import { axiosInstance } from '@/utils';
 
+import '../Login/login.scss';
+
 type FormData = {
   username: string;
   password: string;
@@ -140,7 +142,11 @@ export const ForgotPassword = () => {
                 errors?.verificationCode ? 'top-[9.35%]' : 'top-[6.3%]'
               }`}
             />
-            <LogoWithText className="absolute top-1/2 z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3" />
+            <LogoWithText
+              className={`absolute z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3 ${
+                requestPasswordReset ? 'top-[59.7%]' : 'top-[39%]'
+              }`}
+            />
 
             <div className="absolute top-0 left-0 w-full h-full z-10 gradient"></div>
           </div>

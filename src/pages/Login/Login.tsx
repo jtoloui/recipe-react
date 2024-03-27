@@ -212,7 +212,11 @@ export const Login = () => {
                 isSignUp ? 'top-[24.6%]' : 'top-[11%]'
               } left-[-30%] opacity-50`}
             />
-            <LogoWithText className="absolute top-1/2 z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3" />
+            <LogoWithText
+              className={`absolute z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3 ${
+                isSignUp ? 'top-[48.3%]' : 'top-[47.5%]'
+              }`}
+            />
 
             <div className="absolute top-0 left-0 w-full h-full z-10 gradient"></div>
           </div>

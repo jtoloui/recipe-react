@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { FormProvider, useForm } from 'react-hook-form';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { LoginForm, SignInSchema, SignUpSchema } from '@/Forms';
@@ -41,6 +41,13 @@ export const Login = () => {
       username: location.state?.username || '',
     },
   });
+
+  useWatch({
+    name: 'username',
+    control: useFormSignIn.control,
+    defaultValue: location.state?.username || '',
+  });
+
   const useFormSignUp = useForm<FormData>({
     resolver: zodResolver(SignUpSchema),
   });

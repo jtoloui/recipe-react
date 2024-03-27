@@ -127,7 +127,11 @@ export const VerifyEmailSignUp = () => {
                 errors.verificationCode ? 'top-[9.35%]' : 'top-[6.3%]'
               }`}
             />
-            <LogoWithText className="absolute top-[47%] z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3" />
+            <LogoWithText
+              className={`absolute z-20 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/2 h-1/3 ${
+                requestedNewCode ? 'top-[59.7%]' : 'top-[47%]'
+              }`}
+            />
 
             <div className="absolute top-0 left-0 w-full h-full z-10 gradient"></div>
           </div>

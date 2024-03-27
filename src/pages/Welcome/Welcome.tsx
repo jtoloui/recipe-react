@@ -47,7 +47,7 @@ export const Welcome = () => {
           />
         </div>
       </div>
-      <div className="relative overflow-hidden lg:ml-auto lg:w-3/5 lg:-mr-16 opacity-30 mt-8 lg:mt-0 max-h-screen">
+      <div className="relative overflow-hidden lg:ml-auto lg:w-3/5 opacity-30 mt-8 lg:mt-0 max-h-screen">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-white-500 dark:to-slate-700 via-transparent"></div>
         <img
           src={cookieImg}

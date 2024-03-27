@@ -57,11 +57,14 @@ export const Menu = () => {
               <MenuLink to="/" className="order-1 md:order-1">
                 Home
               </MenuLink>
-              <MenuLink to="/recipes" className="order-2 md:order-2">
+              <MenuLink
+                to="/recipes"
+                className="order-2 md:order-2 whitespace-nowrap"
+              >
                 My Recipes
               </MenuLink>
 
-              <div className="relative mt-4 md:mt-0 md:mx-4 w-full md:max-w-[16rem] lg:max-w-xs order-3 md:order-3">
+              <div className="relative mt-4 md:mt-0 md:mx-4 w-full order-3 md:order-3">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <svg
                     className="w-4 h-4 text-gray-600"

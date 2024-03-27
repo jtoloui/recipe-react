@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import {
   LoginForm,
+  LoginFormFields,
   ResendVerificationCodeSchema,
   VerificationCodeSchema,
 } from '@/Forms';
@@ -21,11 +22,9 @@ export const VerifyEmailSignUp = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [fields, setFields] = useState<{
-    username?: boolean;
-    verificationCode?: boolean;
-    secondaryButton?: boolean;
-  }>({
+  const [fields, setFields] = useState<
+    Pick<LoginFormFields, 'username' | 'verificationCode' | 'secondaryButton'>
+  >({
     username: true,
     verificationCode: true,
     secondaryButton: true,

@@ -12,6 +12,7 @@ import { Profile } from '@/pages/Profile';
 import RecipeById, { loader as recipeLoader } from '@/pages/RecipeById';
 import { Welcome } from '@/pages/Welcome';
 
+import { ForgotPassword } from './pages/ForgotPassword';
 import { Page404 } from './pages/Page404';
 import { VerifyEmailSignUp } from './pages/VerifyEmailSignUp';
 
@@ -30,6 +31,10 @@ const routes = createBrowserRouter([
   {
     path: '/verify-email',
     element: <VerifyEmailSignUp />,
+  },
+  {
+    path: '/reset-password',
+    element: <ForgotPassword />,
   },
   {
     path: '/welcome',

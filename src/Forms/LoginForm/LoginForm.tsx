@@ -1,4 +1,5 @@
 import { useFormContext } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { ZodType, z } from 'zod';
 
 import { Button } from '@/components/Button';
@@ -12,19 +13,21 @@ export type FormData = {
   verificationCode?: number;
 };
 
+export type LoginFormFields = {
+  username?: boolean;
+  password?: boolean;
+  forgotPassword?: boolean;
+  email?: boolean;
+  firstName?: boolean;
+  lastName?: boolean;
+  verificationCode?: boolean;
+  secondaryButton?: boolean;
+};
+
 type Props = {
   schema: ZodType<Partial<FormData>>;
   onSubmit: (data: Partial<FormData>) => void;
-  fields: {
-    username?: boolean;
-    password?: boolean;
-    forgotPassword?: boolean;
-    email?: boolean;
-    firstName?: boolean;
-    lastName?: boolean;
-    verificationCode?: boolean;
-    secondaryButton?: boolean;
-  };
+  fields: LoginFormFields;
   overrideFieldErrors?: {
     username?: boolean;
     password?: boolean;
@@ -56,6 +59,7 @@ export const LoginForm = ({
     register,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useFormContext<LoginFormData>();
 
   const formSubmit = handleSubmit((data) => {
@@ -210,12 +214,15 @@ export const LoginForm = ({
               Password
             </label>
             {fields.forgotPassword && (
-              <a
-                href="#"
+              <Link
+                to="/reset-password"
+                state={{
+                  username: getValues().username,
+                }}
                 className="text-xs text-gray-500 dark:text-gray-300 hover:underline"
               >
                 Forget Password?
-              </a>
+              </Link>
             )}
           </div>
 

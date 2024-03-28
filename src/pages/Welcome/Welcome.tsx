@@ -15,7 +15,7 @@ export const Welcome = () => {
         </div>
         <div className="max-w-lg mb-10 mt-24">
           <p className="text-4xl font-semibold text-black-500 dark:text-white-500 mb-2.5">
-            Welcome to toloui recipes, don't say I never created it
+            Welcome to JustCooking, don't say I never created it
           </p>
           <p className="text-brownishGrey-500 text-sm leading-relaxed">
             Never run out of ideas again. Try new foods, ingredients, cooking

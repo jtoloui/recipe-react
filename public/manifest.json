@@ -1,7 +1,7 @@
 {
-	"short_name": "Toloui Recipe",
-	"name": "Toloui cook book of recipes",
-	"description": "Toloui cook book of recipes where you can find all the recipes you need to cook your favorite food",
+	"short_name": "JustCooking",
+	"name": "JustCooking cookbook of recipes",
+	"description": "JustCooking cookbook of recipes where you can find all the recipes you need to cook your favorite food",
 	"icons": [
 		{
 			"src": "./favicon.ico",

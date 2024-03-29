@@ -53,7 +53,7 @@ export const Carousel = ({ data, onCardClick }: CarouselProps) => {
   //  overflow-x: auto;
   return (
     <div
-      className={`relative w-full sm:overflow-x-hidden z-10 ${
+      className={`relative w-full z-10 ${
         size.width <= 640 ? 'flex flex-nowrap overflow-x-auto' : ''
       }`}
     >

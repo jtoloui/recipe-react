@@ -4,7 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Layout } from '@/components/Layout';
-import { useRecipes, useRecipesByLabel } from '@/queries';
+import { useRecipes } from '@/queries';
 import { Labels } from '@/queries/types';
 
 export const Home = () => {
@@ -19,7 +19,6 @@ export const Home = () => {
     searchParams.get('search') || '',
     searchParams.get('label') || ''
   );
-  const { data: recipeByLabel } = useRecipesByLabel(selectedCarouselCard);
 
   const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
   const [recipeCardData, setRecipeCardData] = useState<
@@ -124,21 +123,10 @@ export const Home = () => {
   }, [recipesMeta?.recipes]);
 
   useEffect(() => {
-    if (recipeByLabel) {
+    if (recipesMeta?.recipes) {
       cardRecipeDataCallback();
     }
-  }, [cardRecipeDataCallback, recipeByLabel]);
-
-  // const createRecipeFormMethods = useForm<CreateRecipeFormData>({
-  //   resolver: zodResolver(createRecipeSchema),
-  // });
-
-  // const {
-  //   handleSubmit,
-  //   formState: { errors, isSubmitting },
-  // } = createRecipeFormMethods;
-
-  // const onSubmit = (data) => console.log(data);
+  }, [cardRecipeDataCallback, recipesMeta?.recipes]);
 
   return (
     <Layout>

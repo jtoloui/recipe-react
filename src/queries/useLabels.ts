@@ -1,5 +1,5 @@
+import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { UseQueryResult, useQuery } from 'react-query';
 
 import {
   type RecipeLabelsResponse,
@@ -21,7 +21,10 @@ const fetchRecipeLabels = async (): Promise<Labels> => {
 };
 
 export const useRecipeLabels = (): UseQueryResult<Labels, Error> => {
-  return useQuery<Labels, Error>('recipeLabels', fetchRecipeLabels);
+  return useQuery<Labels, Error>({
+    queryKey: ['recipeLabels'],
+    queryFn: fetchRecipeLabels,
+  });
 };
 
 const fetchRecipesByLabel = async (label: string): Promise<RecipeByLabel> => {
@@ -38,9 +41,10 @@ const fetchRecipesByLabel = async (label: string): Promise<RecipeByLabel> => {
 export const useRecipesByLabel = (
   label: string
 ): UseQueryResult<RecipeByLabel, Error> => {
-  return useQuery<RecipeByLabel, Error>(['recipesByLabel', label], () =>
-    fetchRecipesByLabel(label)
-  );
+  return useQuery<RecipeByLabel, Error>({
+    queryKey: ['recipesByLabel', label],
+    queryFn: () => fetchRecipesByLabel(label),
+  });
 };
 
 export const fetchPopularLabels = async (): Promise<popularLabelsResponse> => {
@@ -56,7 +60,8 @@ export const usePopularLabels = (): UseQueryResult<
   popularLabelsResponse,
   Error
 > => {
-  return useQuery<popularLabelsResponse, Error>('popularLabels', () =>
-    fetchPopularLabels()
-  );
+  return useQuery<popularLabelsResponse, Error>({
+    queryKey: ['popularLabels'],
+    queryFn: fetchPopularLabels,
+  });
 };

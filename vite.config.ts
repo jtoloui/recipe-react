@@ -44,7 +44,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['react-query', 'react-router-dom'],
+    include: ['@tanstack/react-query', 'react-router-dom'],
   },
   plugins: [
     react(),

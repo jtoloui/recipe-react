@@ -1,5 +1,5 @@
+import { QueryClient } from '@tanstack/react-query';
 import { Suspense, lazy } from 'react';
-import { QueryClient } from 'react-query';
 import {
   Navigate,
   RouterProvider,

@@ -4,13 +4,15 @@ import { Link } from 'react-router-dom';
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Layout } from '@/components/Layout';
-import { useRecipeLabels, useRecipesByLabel } from '@/queries';
+import { useRecipes, useRecipesByLabel } from '@/queries';
 
 export const Home = () => {
   const [selectedCarouselCard, setSelectedCarouselCard] =
     useState<string>('All');
-  const { data: recipeLabels } = useRecipeLabels();
+  const { data: recipesMeta, ...props } = useRecipes();
   const { data: recipeByLabel } = useRecipesByLabel(selectedCarouselCard);
+
+  // console.log(props.refetch("jamie"));
 
   const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
   const [recipeCardData, setRecipeCardData] = useState<
@@ -25,8 +27,8 @@ export const Home = () => {
   >([]);
 
   const carouselDataCallback = useCallback(() => {
-    if (recipeLabels) {
-      const newData = recipeLabels.labelCounts.map((label) => ({
+    if (recipesMeta?.meta) {
+      const newData = recipesMeta.meta.labels.map((label) => ({
         image: `https://source.unsplash.com/random/800x800/?${label.label}-food`,
         title: label.label,
         count: label.count,
@@ -35,18 +37,18 @@ export const Home = () => {
         {
           image: 'https://source.unsplash.com/random/800x800?food',
           title: 'All',
-          count: recipeLabels.totalRecipes,
+          count: recipesMeta.meta.totalRecipes,
         }, // Ensure the default object is always the first item
         ...newData,
       ]);
     }
-  }, [recipeLabels]);
+  }, [recipesMeta?.meta]);
 
   useEffect(() => {
-    if (recipeLabels) {
+    if (recipesMeta?.meta) {
       carouselDataCallback();
     }
-  }, [carouselDataCallback, recipeLabels]);
+  }, [carouselDataCallback, recipesMeta?.meta]);
 
   const cardRecipeDataCallback = useCallback(() => {
     if (recipeByLabel) {

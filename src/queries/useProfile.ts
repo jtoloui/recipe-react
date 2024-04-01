@@ -1,5 +1,5 @@
+import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { UseQueryResult, useQuery } from 'react-query';
 
 type Profile = {
   name: string;
@@ -19,5 +19,8 @@ const fetchProfile = async (): Promise<Profile> => {
 };
 
 export const useProfile = (): UseQueryResult<Profile, Error> => {
-  return useQuery<Profile, Error>('profile', fetchProfile);
+  return useQuery<Profile, Error>({
+    queryKey: ['profile'],
+    queryFn: fetchProfile,
+  });
 };

@@ -6,5 +6,6 @@ export type CarouselData = {
 
 export type CarouselProps = {
   data: CarouselData[];
+  defaultIndex?: number;
   onCardClick: (title: string) => void;
 };

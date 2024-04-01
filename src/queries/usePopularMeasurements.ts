@@ -1,5 +1,5 @@
+import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { UseQueryResult, useQuery } from 'react-query';
 
 import { measurementsTypeResponse } from './types';
 
@@ -17,7 +17,8 @@ export const usePopularMeasurements = (): UseQueryResult<
   measurementsTypeResponse,
   Error
 > => {
-  return useQuery<measurementsTypeResponse, Error>('measurementsType', () =>
-    fetchPopularMeasurements()
-  );
+  return useQuery<measurementsTypeResponse, Error>({
+    queryKey: ['measurementsType'],
+    queryFn: fetchPopularMeasurements,
+  });
 };

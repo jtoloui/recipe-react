@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 import { IngredientIcon } from '@/assets/IngredientIcon';

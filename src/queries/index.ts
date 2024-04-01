@@ -2,6 +2,6 @@ export * from './useLabels';
 
 export * from './useProfile';
 
-export * from './useRecipeById';
+export * from './useRecipes';
 
 export * from './usePopularMeasurements';

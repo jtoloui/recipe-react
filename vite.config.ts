@@ -44,7 +44,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['react-query', 'react-router-dom'],
+    include: ['@tanstack/react-query', 'react-router-dom'],
   },
   plugins: [
     react(),
@@ -79,7 +79,7 @@ export default defineConfig({
     headers: isDev
       ? {
           'Content-Security-Policy':
-            "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://*.unsplash.com https://d35qwubl2aivrw.cloudfront.net; font-src 'self'; connect-src 'self' https://localhost:3001;",
+            "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://*.unsplash.com https://d35qwubl2aivrw.cloudfront.net https://media.justcook.ing; font-src 'self'; connect-src 'self' https://localhost:3001;",
         }
       : {},
   },

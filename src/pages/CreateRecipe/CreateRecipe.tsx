@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import {
   Controller,
@@ -6,7 +7,6 @@ import {
   useFieldArray,
   useForm,
 } from 'react-hook-form';
-import { useMutation } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { Options } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
@@ -47,7 +47,9 @@ export const CreateRecipe = () => {
     isSuccess: createRecipeIsSuccess,
     // isIdle: createRecipeIsIdle,
     mutate: createRecipeMutate,
-  } = useMutation(createRecipe);
+  } = useMutation({
+    mutationFn: createRecipe,
+  });
   const [selectedOption, setSelectedOption] = useState<
     Options<{ value: string; label: string }>
   >([

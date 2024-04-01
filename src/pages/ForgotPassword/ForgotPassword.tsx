@@ -123,8 +123,6 @@ export const ForgotPassword = () => {
       .catch((err) => {
         const error = err;
         if (isAxiosError(error)) {
-          console.log(error.response?.data);
-
           setOnSubmitError(error.response?.data.message);
         } else {
           setOnSubmitError('Unable to reset password. Please try again later.');

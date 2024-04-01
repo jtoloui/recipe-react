@@ -1,6 +1,31 @@
-type Labels = {
+export type Labels = {
   count: number;
   label: string;
+};
+
+export type RecipesResponse = {
+  recipes: {
+    _id: string;
+    name: string;
+    imageSrc: string;
+    labels: string[];
+    ingredients?: IngredientsEntity[];
+    timeToCook: {
+      id: string;
+      Cook: number;
+      Prep: number;
+      totalMinutes: number;
+      totalHours: number;
+      totalDays: number;
+      totalTime: string;
+    };
+  }[];
+  meta: {
+    allLabels: Labels[];
+    availableLabels: Labels[];
+    totalRecipes: number;
+    totalRecipesMatching: number;
+  };
 };
 
 export type RecipeLabelsResponse = {

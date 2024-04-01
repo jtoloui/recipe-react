@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
 import Logo from '@/assets/LogoWithText';
+import { useRecipes } from '@/queries';
 
 import { Avatar } from './Avatar';
 import { BurgerMenu } from './BurgerMenu';
@@ -11,9 +12,21 @@ import { MenuLink } from './MenuLink';
 export const Menu = () => {
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [search, setSearch] = useState<string>(
+    searchParams.get('search') || ''
+  );
+  const { refetch } = useRecipes(
+    search,
+    searchParams.get('label') || undefined
+  );
 
   const size = useWindowSize();
   const location = useLocation();
+
+  const handleSearch = () => {
+    refetch();
+  };
 
   useEffect(() => {
     if (size.width >= 768 && isBurgerMenuOpen) {
@@ -65,7 +78,10 @@ export const Menu = () => {
               </MenuLink>
 
               <div className="relative mt-4 md:mt-0 md:mx-4 w-full order-3 md:order-3">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                <span
+                  className="absolute inset-y-0 left-0 flex items-center pl-3"
+                  onClick={handleSearch}
+                >
                   <svg
                     className="w-4 h-4 text-gray-600"
                     viewBox="0 0 24 24"
@@ -87,6 +103,17 @@ export const Menu = () => {
                   type="text"
                   className="text-ellipsis w-full py-1 pl-10 pr-4 text-black-500 dark:text-white-500 dark:placeholder-white-600 placeholder-black-600 bg-white-500  dark:bg-slate-600 border-b border-brownGrey-500 dark:border-white-500 focus:outline-none dark:focus:border-white-500 focus:border-gray-600"
                   placeholder="Search Recipe, Profile, or Ingredients"
+                  onChange={(e) => {
+                    setSearchParams((initial) => {
+                      initial.set('search', e.target.value);
+                      return initial;
+                    });
+                    setSearch(e.target.value);
+                  }}
+                  value={searchParams.get('search') || search}
+                  onKeyUp={(e) => {
+                    e.key === 'Enter' && handleSearch();
+                  }}
                 />
               </div>
             </div>

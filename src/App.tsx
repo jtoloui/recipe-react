@@ -1,4 +1,5 @@
 import { QueryClient } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Suspense, lazy } from 'react';
 import {
   Navigate,
@@ -94,6 +95,7 @@ export const App = () => {
   return (
     <div className="bg-lightBg-500 dark:bg-slate-500">
       <RouterProvider router={routes} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </div>
   );
 };

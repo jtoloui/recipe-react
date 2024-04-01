@@ -1,4 +1,4 @@
-type Labels = {
+export type Labels = {
   count: number;
   label: string;
 };
@@ -21,8 +21,10 @@ export type RecipesResponse = {
     };
   }[];
   meta: {
-    labels: Labels[];
+    allLabels: Labels[];
+    availableLabels: Labels[];
     totalRecipes: number;
+    totalRecipesMatching: number;
   };
 };
 

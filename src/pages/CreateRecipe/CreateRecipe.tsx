@@ -47,7 +47,9 @@ export const CreateRecipe = () => {
     isSuccess: createRecipeIsSuccess,
     // isIdle: createRecipeIsIdle,
     mutate: createRecipeMutate,
-  } = useMutation(createRecipe);
+  } = useMutation({
+    mutationFn: createRecipe,
+  });
   const [selectedOption, setSelectedOption] = useState<
     Options<{ value: string; label: string }>
   >([

@@ -5,10 +5,20 @@ import { useWindowSize } from 'usehooks-ts';
 import { type CarouselProps } from '.';
 import { Card } from './Card';
 
-export const Carousel = ({ data, onCardClick }: CarouselProps) => {
+export const Carousel = ({
+  data,
+  onCardClick,
+  defaultIndex,
+}: CarouselProps) => {
   const [current, setCurrent] = useState(0);
   const [cardsToShow, setCardsToShow] = useState(6); // default value
-  const [selected, setSelected] = useState(0); // Add this line
+  const [selected, setSelected] = useState(0);
+
+  useEffect(() => {
+    if (defaultIndex && defaultIndex !== -1) {
+      setSelected(defaultIndex);
+    }
+  }, [defaultIndex]);
 
   const size = useWindowSize();
 

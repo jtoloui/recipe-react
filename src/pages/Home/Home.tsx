@@ -1,18 +1,25 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Layout } from '@/components/Layout';
 import { useRecipes, useRecipesByLabel } from '@/queries';
+import { Labels } from '@/queries/types';
 
 export const Home = () => {
-  const [selectedCarouselCard, setSelectedCarouselCard] =
-    useState<string>('All');
-  const { data: recipesMeta, ...props } = useRecipes();
-  const { data: recipeByLabel } = useRecipesByLabel(selectedCarouselCard);
+  const [searchParams, setSearchParams] = useSearchParams({
+    label: 'All',
+  });
+  const [selectedCarouselCard, setSelectedCarouselCard] = useState<string>(
+    searchParams.get('label') || 'All'
+  );
 
-  // console.log(props.refetch("jamie"));
+  const { data: recipesMeta, refetch } = useRecipes(
+    searchParams.get('search') || '',
+    searchParams.get('label') || ''
+  );
+  const { data: recipeByLabel } = useRecipesByLabel(selectedCarouselCard);
 
   const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
   const [recipeCardData, setRecipeCardData] = useState<
@@ -26,18 +33,70 @@ export const Home = () => {
       }[]
   >([]);
 
+  useEffect(() => {
+    if (selectedCarouselCard) {
+      refetch();
+    }
+  }, [selectedCarouselCard, refetch]);
+
+  const initializeLabelCounts = (allLabels: Labels[]) => {
+    const labelCounts: { [key: string]: Labels } = {};
+    allLabels.forEach(({ label, count }) => {
+      labelCounts[label] = {
+        count: count,
+        label: label,
+      };
+    });
+    return labelCounts;
+  };
+
+  const updateAvailableLabelCounts = (
+    labelCounts: { [key: string]: Labels },
+    availableLabels: Labels[]
+  ) => {
+    // Reset counts to 0 to reflect the new search/filter context
+    Object.keys(labelCounts).forEach((label) => {
+      labelCounts[label] = {
+        count: 0,
+        label: label,
+      }; // Reset to 0 as a base for available counts
+    });
+
+    // Now, update counts based on availableLabels
+    availableLabels.forEach(({ label, count }) => {
+      if (label in labelCounts) {
+        labelCounts[label] = {
+          count: count,
+          label: label,
+        };
+      }
+    });
+
+    return labelCounts;
+  };
+
   const carouselDataCallback = useCallback(() => {
     if (recipesMeta?.meta) {
-      const newData = recipesMeta.meta.labels.map((label) => ({
-        image: `https://source.unsplash.com/random/800x800/?${label.label}-food`,
-        title: label.label,
-        count: label.count,
-      }));
+      const initialCount = initializeLabelCounts(recipesMeta.meta.allLabels);
+
+      const updatedCount = updateAvailableLabelCounts(
+        initialCount,
+        recipesMeta.meta.availableLabels
+      );
+
+      const newData = Object.keys(updatedCount).map((key) => {
+        return {
+          image: `https://source.unsplash.com/random/800x800/?${key}-food`,
+          title: key,
+          count: updatedCount[key].count,
+        };
+      });
+
       setCarouselData(() => [
         {
           image: 'https://source.unsplash.com/random/800x800?food',
           title: 'All',
-          count: recipesMeta.meta.totalRecipes,
+          count: recipesMeta.meta.totalRecipesMatching,
         }, // Ensure the default object is always the first item
         ...newData,
       ]);
@@ -51,18 +110,18 @@ export const Home = () => {
   }, [carouselDataCallback, recipesMeta?.meta]);
 
   const cardRecipeDataCallback = useCallback(() => {
-    if (recipeByLabel) {
-      const newData = recipeByLabel.map((recipe) => ({
+    if (recipesMeta?.recipes) {
+      const newData = recipesMeta.recipes.map((recipe) => ({
         image: recipe.imageSrc,
         title: recipe.name,
         to: `/recipe/${recipe._id}`,
-        totalTime: recipe.totalTime,
+        totalTime: recipe.timeToCook.totalTime,
         ingredientsCount: recipe.ingredients?.length || 0,
       }));
       setRecipeCardData(newData);
     }
     return;
-  }, [recipeByLabel]);
+  }, [recipesMeta?.recipes]);
 
   useEffect(() => {
     if (recipeByLabel) {
@@ -102,7 +161,16 @@ export const Home = () => {
         </div>
         <Carousel
           data={carouselData}
-          onCardClick={(title) => setSelectedCarouselCard(title)}
+          defaultIndex={carouselData.findIndex(
+            (card) => card.title === selectedCarouselCard
+          )}
+          onCardClick={(title) => {
+            setSearchParams((params) => {
+              params.set('label', title);
+              return params;
+            });
+            setSelectedCarouselCard(title);
+          }}
         />
       </div>
       <div className="mt-4 w-full rounded-lg bg-white-500 p-5 flex gap-7 flex-wrap dark:bg-slate-600 ">

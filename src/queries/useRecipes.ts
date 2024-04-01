@@ -45,7 +45,7 @@ export const useRecipes = (
   label?: string
 ): UseQueryResult<RecipesResponse, Error> => {
   return useQuery<RecipesResponse, Error>({
-    queryKey: ['recipes', search, label],
+    queryKey: ['searchRecipes'],
     queryFn: () => fetchRecipes(search, label),
   });
 };

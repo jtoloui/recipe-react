@@ -132,9 +132,11 @@ export const Carousel = ({
               image={card.image}
               title={`${card.title} (${card.count})`}
               onClick={() => {
+                if (card.count === 0) return;
                 centerCard(index);
                 onCardClick(card.title);
               }}
+              disabled={card.count === 0}
               isSelected={index === selected}
               offset={index - current}
               cardsToShow={cardsToShow}

@@ -1,3 +1,4 @@
+import cn from 'classnames';
 import { motion } from 'framer-motion';
 import { useWindowSize } from 'usehooks-ts';
 
@@ -10,6 +11,7 @@ type CardProps = {
   isSelected: boolean;
   offset: number;
   cardsToShow: number;
+  disabled?: boolean;
 };
 
 export const Card = ({
@@ -19,6 +21,7 @@ export const Card = ({
   isSelected,
   offset,
   cardsToShow,
+  disabled = false,
 }: CardProps) => {
   const hidden = offset < 0 || offset >= cardsToShow;
 
@@ -26,12 +29,14 @@ export const Card = ({
 
   return (
     <motion.div
-      className={`rounded-lg h-60  max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out hover:opacity-100 ${
-        isSelected ? 'border-4  border-green-500 ' : ''
-      } ${hidden && width > 640 ? 'hidden' : ''} ${
-        width <= 640 ? ' w-52' : 'flex-1'
-      }`}
-      whileHover={{ scale: 1.05 }}
+      className={cn(
+        'rounded-lg h-60  max-h-[11.688rem] relative overflow-hidden shadow-lg cursor-pointer transition-opacity duration-500 ease-in-out',
+        isSelected && 'border-4  border-green-500',
+        hidden && width > 640 && 'hidden',
+        width <= 640 ? 'w-52' : 'flex-1',
+        disabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-100'
+      )}
+      whileHover={{ scale: disabled ? 1 : 1.05 }}
       // initial={{ opacity: 0.7 }}
       onClick={onClick} // Add onClick function to the Card component
       tabIndex={0}

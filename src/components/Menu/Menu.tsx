@@ -7,20 +7,33 @@ import Logo from '@/assets/LogoWithText';
 import { Avatar } from './Avatar';
 import { BurgerMenu } from './BurgerMenu';
 import { MenuLink } from './MenuLink';
+import { SearchBar } from './SearchBar';
 
 export const Menu = () => {
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState<string>(
-    searchParams.get('search') || ''
-  );
+  const [searchTriggered, setSearchTriggered] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setSearchParams] = useSearchParams();
 
   const size = useWindowSize();
   const location = useLocation();
 
-  const handleSearch = () => {
-    window.dispatchEvent(new CustomEvent('homeSearch', { detail: { search } }));
+  const handleSearch = (search: string) => {
+    setSearchTriggered(true);
+    setSearchParams((params) => {
+      if (!search) {
+        params.delete('search');
+        if (search === '') setSearchTriggered(false);
+      } else {
+        params.set('search', search);
+      }
+      window.dispatchEvent(
+        new CustomEvent('homeSearch', { detail: { search } })
+      );
+      return params;
+    });
+    if (isBurgerMenuOpen) setIsBurgerMenuOpen(false);
   };
 
   useEffect(() => {
@@ -73,43 +86,10 @@ export const Menu = () => {
               </MenuLink>
 
               <div className="relative mt-4 md:mt-0 md:mx-4 w-full order-3 md:order-3">
-                <span
-                  className="absolute inset-y-0 left-0 flex items-center pl-3"
-                  onClick={handleSearch}
-                >
-                  <svg
-                    className="w-4 h-4 text-gray-600"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="dark:stroke-white-500"
-                    ></path>
-                  </svg>
-                </span>
-
-                {/* // Search bar */}
-                <input
-                  type="text"
-                  className="text-ellipsis w-full py-1 pl-10 pr-4 text-black-500 dark:text-white-500 dark:placeholder-white-600 placeholder-black-600 bg-white-500  dark:bg-slate-600 border-b border-brownGrey-500 dark:border-white-500 focus:outline-none dark:focus:border-white-500 focus:border-gray-600"
-                  placeholder="Search Recipe, Profile, or Ingredients"
-                  onChange={(e) => {
-                    setSearchParams((initial) => {
-                      if (!e.target.value) initial.delete('search');
-                      else initial.set('search', e.target.value);
-                      return initial;
-                    });
-                    setSearch(e.target.value);
-                  }}
-                  value={searchParams.get('search') || search}
-                  onKeyUp={(e) => {
-                    e.key === 'Enter' && handleSearch();
-                  }}
+                <SearchBar
+                  handleSearch={handleSearch}
+                  showRemoveSearch={searchTriggered}
+                  setRemoveSearch={setSearchTriggered}
                 />
               </div>
             </div>

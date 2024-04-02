@@ -15,10 +15,7 @@ export const Home = () => {
     searchParams.get('label') || 'All'
   );
 
-  const { data: recipesMeta } = useRecipes(
-    searchParams.get('search') || '',
-    searchParams.get('label') || ''
-  );
+  const { data: recipesMeta } = useRecipes();
 
   const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
   const [recipeCardData, setRecipeCardData] = useState<

@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const SearchWrapper = ({ children }: Props) => {
-  const [urlParams] = useSearchParams();
+  const [urlParams, setUrlParams] = useSearchParams();
   const [triggerRefetch, setTriggerRefetch] = useState(false);
 
   const search = urlParams.get('search') || '';
@@ -24,6 +24,16 @@ export const SearchWrapper = ({ children }: Props) => {
       setTriggerRefetch(true);
     }
   });
+
+  // Remove search query param when component unmounts
+  useEffect(() => {
+    return () => {
+      setUrlParams((params) => {
+        params.delete('search');
+        return params;
+      });
+    };
+  }, []);
 
   useEffect(() => {
     if (triggerRefetch) {

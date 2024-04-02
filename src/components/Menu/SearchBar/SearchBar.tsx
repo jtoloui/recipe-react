@@ -1,4 +1,4 @@
-import { Dispatch, Fragment, useEffect, useRef, useState } from 'react';
+import { Dispatch, Fragment, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useDebounceCallback } from 'usehooks-ts';
 
@@ -6,21 +6,19 @@ type Props = {
   handleSearch: (search: string) => void;
   showRemoveSearch: boolean;
   setRemoveSearch: Dispatch<React.SetStateAction<boolean>>;
+  setIsBurgerMenuOpen: Dispatch<React.SetStateAction<boolean>>;
 };
 export const SearchBar = ({
   handleSearch,
   showRemoveSearch,
   setRemoveSearch,
+  setIsBurgerMenuOpen,
 }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [search, setSearch] = useState<string>(
-    searchParams.get('search') || ''
-  );
 
   useEffect(() => {
     if (searchParams.has('search') && searchParams.get('search') !== '') {
       setRemoveSearch(true);
-      setSearch(searchParams.get('search') || 'test');
     } else {
       setRemoveSearch(false);
     }
@@ -50,14 +48,14 @@ export const SearchBar = ({
       // allows us to use debounce without losing the input value
       inputRef.current.value = searchParams.get('search') || '';
     }
-  }, [search, inputRef, searchParams]);
+  }, [inputRef, searchParams]);
 
   return (
     <Fragment>
       <button>
         <span
           className="absolute inset-y-0 left-0 flex items-center pl-3"
-          onClick={() => handleSearch(search)}
+          // onClick={() => handleSearch(inputRef.current?.value || '')}
         >
           <svg
             className="w-4 h-4 text-gray-600"
@@ -86,19 +84,20 @@ export const SearchBar = ({
         onChange={handleInputChange}
         onKeyUp={(e) => {
           if (e.key === 'Enter') {
-            handleSearch(search);
+            console.log('Enter key pressed');
+            setIsBurgerMenuOpen(false);
+            //     handleSearch(inputRef.current?.value || '');
             if (e.target instanceof HTMLInputElement) {
               e.target.blur();
             }
           }
         }}
       />
-      {showRemoveSearch && search !== '' && (
+      {showRemoveSearch && inputRef.current?.value !== '' && (
         <button
           className="absolute inset-y-0 right-0 flex items-center pr-3"
           onClick={() => {
             setSearchParams((initial) => {
-              setSearch('');
               handleSearch('');
               setRemoveSearch(false);
               const nextParams = new URLSearchParams(initial);

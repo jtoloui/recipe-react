@@ -9,10 +9,13 @@ import { BurgerMenu } from './BurgerMenu';
 import { MenuLink } from './MenuLink';
 import { SearchBar } from './SearchBar';
 
+const ALLOW_SEARCH = ['/', '/my-recipes'];
+
 export const Menu = () => {
   const [isBurgerMenuOpen, setIsBurgerMenuOpen] = useState(false);
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [searchTriggered, setSearchTriggered] = useState(false);
+  const [searchEnabled, setSearchEnabled] = useState(true);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setSearchParams] = useSearchParams();
 
@@ -43,6 +46,14 @@ export const Menu = () => {
     }
   }, [size.width, isBurgerMenuOpen]);
 
+  useEffect(() => {
+    if (ALLOW_SEARCH.includes(location.pathname)) {
+      setSearchEnabled(true);
+    } else {
+      setSearchEnabled(false);
+    }
+  }, [location.pathname]);
+
   if (location.pathname === '/login') return null;
 
   return (
@@ -51,7 +62,13 @@ export const Menu = () => {
         <div className="md:flex md:items-center">
           {/* // logo and burger menu */}
           <div className="flex items-center justify-between">
-            <Link to="/" aria-label="toloui recipe menu logo">
+            <Link
+              to="/"
+              aria-label="toloui recipe menu logo"
+              onClick={() => {
+                setIsBurgerMenuOpen(false);
+              }}
+            >
               <Logo />
             </Link>
             <div className="flex md:hidden gap-3">
@@ -76,23 +93,35 @@ export const Menu = () => {
             } md:opacity-100 md:translate-x-0 md:flex md:items-center md:justify-between`}
           >
             <div className="flex flex-col text-gray-600 capitalize md:flex md:px-16 md:-mx-4 md:flex-row md:items-center w-full">
-              <MenuLink to="/" className="order-1 md:order-1">
+              <MenuLink
+                to="/"
+                className="order-1 md:order-1"
+                onClick={() => {
+                  setIsBurgerMenuOpen(false);
+                }}
+              >
                 Home
               </MenuLink>
               <MenuLink
-                to="/recipes"
+                to="/my-recipes"
                 className="order-2 md:order-2 whitespace-nowrap"
+                onClick={() => {
+                  setIsBurgerMenuOpen(false);
+                }}
               >
                 My Recipes
               </MenuLink>
 
-              <div className="relative mt-4 md:mt-0 md:mx-4 w-full order-3 md:order-3">
-                <SearchBar
-                  handleSearch={handleSearch}
-                  showRemoveSearch={searchTriggered}
-                  setRemoveSearch={setSearchTriggered}
-                />
-              </div>
+              {searchEnabled && (
+                <div className="relative mt-4 md:mt-0 md:mx-4 w-full order-3 md:order-3">
+                  <SearchBar
+                    handleSearch={handleSearch}
+                    showRemoveSearch={searchTriggered}
+                    setRemoveSearch={setSearchTriggered}
+                    setIsBurgerMenuOpen={setIsBurgerMenuOpen}
+                  />
+                </div>
+              )}
             </div>
 
             {/* // profile circle icon */}

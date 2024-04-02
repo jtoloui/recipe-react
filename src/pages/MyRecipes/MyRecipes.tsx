@@ -6,10 +6,10 @@ import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Chip } from '@/components/Chip';
 import { Layout } from '@/components/Layout';
-import { useRecipes } from '@/queries';
+import { useMyRecipes } from '@/queries';
 import { Labels } from '@/queries/types';
 
-export const Home = () => {
+export const MyRecipes = () => {
   const [searchParams, setSearchParams] = useSearchParams(
     createSearchParams({
       label: 'All',
@@ -24,7 +24,7 @@ export const Home = () => {
 
   const search = searchParams.get('search') || '';
   const labels = searchParams.get('label') || '';
-  const { data: recipesMeta, refetch } = useRecipes(false, search, labels);
+  const { data: recipesMeta, refetch } = useMyRecipes(false, search, labels);
 
   const [recipeCardData, setRecipeCardData] = useState<
     | []

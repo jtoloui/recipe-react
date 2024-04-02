@@ -14,6 +14,7 @@ import RecipeById, { loader as recipeLoader } from '@/pages/RecipeById';
 import { Welcome } from '@/pages/Welcome';
 
 import { ForgotPassword } from './pages/ForgotPassword';
+import { MyRecipes } from './pages/MyRecipes/MyRecipes';
 import { Page404 } from './pages/Page404';
 import { VerifyEmailSignUp } from './pages/VerifyEmailSignUp';
 
@@ -60,6 +61,10 @@ const routes = createBrowserRouter([
       {
         path: '/',
         element: <Home />,
+      },
+      {
+        path: '/my-recipes',
+        element: <MyRecipes />,
       },
       {
         path: '/profile',

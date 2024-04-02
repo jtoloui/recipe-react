@@ -144,7 +144,7 @@ export const Carousel = ({
           ))}
         </motion.div>
         {/* // if selected is the current card, don't show the gradient or else show the gradient */}
-        {size.width > 640 && (
+        {cardsToShow < data.length && size.width > 640 && (
           <>
             <div
               className={
@@ -166,7 +166,7 @@ export const Carousel = ({
           </>
         )}
       </div>
-      {size.width > 640 && (
+      {cardsToShow < data.length && size.width > 640 && (
         <button
           onClick={() =>
             current < data.length - cardsToShow

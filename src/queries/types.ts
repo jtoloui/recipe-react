@@ -1,6 +1,7 @@
 export type Labels = {
   count: number;
   label: string;
+  image: string;
 };
 
 export type RecipesResponse = {

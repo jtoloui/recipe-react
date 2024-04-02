@@ -1,5 +1,6 @@
-import { Dispatch, Fragment, useEffect, useState } from 'react';
+import { Dispatch, Fragment, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useDebounceCallback } from 'usehooks-ts';
 
 type Props = {
   handleSearch: (search: string) => void;
@@ -17,12 +18,39 @@ export const SearchBar = ({
   );
 
   useEffect(() => {
-    if (searchParams.has('search')) {
+    if (searchParams.has('search') && searchParams.get('search') !== '') {
       setRemoveSearch(true);
+      setSearch(searchParams.get('search') || 'test');
     } else {
       setRemoveSearch(false);
     }
   }, [searchParams, setRemoveSearch]);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const debounce = useDebounceCallback((value: string) => {
+    setSearchParams((initial) => {
+      const nextParams = new URLSearchParams(initial);
+      if (value === '') {
+        nextParams.delete('search');
+      } else {
+        nextParams.set('search', value);
+      }
+      return nextParams;
+    });
+  }, 250);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    debounce(value); // Debounce side effects, not the input value update
+  };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      // allows us to use debounce without losing the input value
+      inputRef.current.value = searchParams.get('search') || '';
+    }
+  }, [search, inputRef, searchParams]);
 
   return (
     <Fragment>
@@ -50,22 +78,12 @@ export const SearchBar = ({
 
       {/* // Search bar */}
       <input
+        ref={inputRef}
         type="text"
         className="text-ellipsis w-full py-1 pl-10 pr-4 text-black-500 dark:text-white-500 dark:placeholder-white-600 placeholder-black-600 bg-white-500  dark:bg-slate-600 border-b border-brownGrey-500 dark:border-white-500 focus:outline-none dark:focus:border-white-500 focus:border-gray-600"
         placeholder="Search Recipe, Profile, or Ingredients"
-        onChange={(e) => {
-          setSearch(e.target.value);
-          setSearchParams((initial) => {
-            const nextParams = new URLSearchParams(initial);
-            if (e.target.value === '') {
-              nextParams.delete('search');
-              return nextParams;
-            }
-            nextParams.set('search', e.target.value);
-            return nextParams;
-          });
-        }}
-        value={searchParams.get('search') || ''}
+        defaultValue={searchParams.get('search') || ''}
+        onChange={handleInputChange}
         onKeyUp={(e) => {
           if (e.key === 'Enter') {
             handleSearch(search);
@@ -80,12 +98,13 @@ export const SearchBar = ({
           className="absolute inset-y-0 right-0 flex items-center pr-3"
           onClick={() => {
             setSearchParams((initial) => {
-              initial.delete('search');
-              return initial;
+              setSearch('');
+              handleSearch('');
+              setRemoveSearch(false);
+              const nextParams = new URLSearchParams(initial);
+              nextParams.delete('search');
+              return nextParams;
             });
-            setSearch('');
-            handleSearch('');
-            setRemoveSearch(false);
           }}
         >
           <svg

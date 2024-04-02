@@ -34,7 +34,7 @@
     "react-loading-skeleton": "^3.3.1",
     "react-router-dom": "^6.11.1",
     "react-select": "^5.7.3",
-    "usehooks-ts": "^2.9.1",
+    "usehooks-ts": "^3.0.2",
     "vite-plugin-preload": "^0.3.0",
     "vite-plugin-svgr": "^3.2.0",
     "zod": "^3.21.4"

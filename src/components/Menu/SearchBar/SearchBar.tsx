@@ -69,6 +69,9 @@ export const SearchBar = ({
         onKeyUp={(e) => {
           if (e.key === 'Enter') {
             handleSearch(search);
+            if (e.target instanceof HTMLInputElement) {
+              e.target.blur();
+            }
           }
         }}
       />

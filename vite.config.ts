@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { defineConfig, splitVendorChunkPlugin } from 'vite';
 import preload from 'vite-plugin-preload';
+import Sitemap from 'vite-plugin-sitemap';
 import svgr from 'vite-plugin-svgr';
 
 const appEnv = process.env.APP_ENV;
@@ -53,6 +54,13 @@ export default defineConfig({
     }),
     preload(),
     splitVendorChunkPlugin(),
+    Sitemap({
+      priority: 1,
+      changefreq: 'daily',
+      hostname: 'https://www.justcook.ing',
+      dynamicRoutes: ['/recipes', '/my-recipes', '/login', '/welcome'],
+      exclude: ['/reset-password', '/verify-email'],
+    }),
   ],
   server: {
     port: 3000,

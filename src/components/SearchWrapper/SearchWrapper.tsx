@@ -24,9 +24,12 @@ export const SearchWrapper = ({ children }: Props) => {
       setTriggerRefetch(true);
     }
   });
+  console.log('inside wrapper');
 
   // Remove search query param when component unmounts
   useLayoutEffect(() => {
+    console.log('jamie');
+
     return () => {
       setUrlParams((params) => {
         const nextSearchParams = new URLSearchParams(params);

@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
+import { useWindowSize } from 'usehooks-ts';
 
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
+import { Chip } from '@/components/Chip';
 import { Layout } from '@/components/Layout';
 import { useRecipes } from '@/queries';
 import { Labels } from '@/queries/types';
@@ -13,16 +15,17 @@ export const Home = () => {
       label: 'All',
     })
   );
+  const size = useWindowSize();
 
   const [selectedCarouselCard, setSelectedCarouselCard] = useState<string>(
     searchParams.get('label') || 'All'
   );
+  const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
 
   const search = searchParams.get('search') || '';
   const labels = searchParams.get('label') || '';
-  const { data: recipesMeta } = useRecipes(search, labels);
+  const { data: recipesMeta, refetch } = useRecipes(search, labels);
 
-  const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
   const [recipeCardData, setRecipeCardData] = useState<
     | []
     | {
@@ -39,11 +42,12 @@ export const Home = () => {
       const labelEvent = new CustomEvent('homeSearch', {
         detail: {
           label: selectedCarouselCard,
+          search: searchParams.get('search') || '',
         },
       });
       window.dispatchEvent(labelEvent);
     }
-  }, [selectedCarouselCard]);
+  }, [selectedCarouselCard, searchParams]);
 
   const initializeLabelCounts = (allLabels: Labels[]) => {
     const labelCounts: { [key: string]: Labels } = {};
@@ -168,7 +172,23 @@ export const Home = () => {
           }}
         />
       </div>
-
+      {size.width < 768 && searchParams.has('search') && (
+        <Chip
+          text={`Search: ${search}`}
+          handleOnClick={(e) => {
+            e.preventDefault();
+            setSearchParams((params) => {
+              const nextParams = new URLSearchParams(params);
+              nextParams.delete('search');
+              return nextParams;
+            });
+            refetch();
+          }}
+        />
+      )}
+      {size.width < 768 && searchParams.has('label') && (
+        <Chip text={`Label: ${selectedCarouselCard}`} />
+      )}
       <div className="mt-4 w-full rounded-lg bg-white-500 p-5 flex gap-7 flex-wrap dark:bg-slate-600 ">
         {recipeCardData.map((recipe) => (
           <Card

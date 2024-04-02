@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import { createSearchParams, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 
 import { useRecipes } from '@/queries';
@@ -11,13 +11,14 @@ type Props = {
 export const SearchWrapper = ({ children }: Props) => {
   const [urlParams] = useSearchParams();
   const [triggerRefetch, setTriggerRefetch] = useState(false);
+  const [searchValue, setSearchValue] = useState(urlParams.get('search') || '');
 
-  const search = urlParams.get('search') || '';
   const labels = urlParams.get('label') || '';
 
-  const { refetch: searchRecipeRefetch } = useRecipes(search, labels);
+  const { refetch: searchRecipeRefetch } = useRecipes(searchValue, labels);
 
-  useEventListener('homeSearch', () => {
+  useEventListener('homeSearch', (e) => {
+    setSearchValue(e.detail.search);
     setTriggerRefetch(true);
   });
 

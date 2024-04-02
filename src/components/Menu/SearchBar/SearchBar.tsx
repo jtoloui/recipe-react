@@ -19,6 +19,8 @@ export const SearchBar = ({
   useEffect(() => {
     if (searchParams.has('search')) {
       setRemoveSearch(true);
+    } else {
+      setRemoveSearch(false);
     }
   }, [searchParams, setRemoveSearch]);
 
@@ -53,15 +55,24 @@ export const SearchBar = ({
         placeholder="Search Recipe, Profile, or Ingredients"
         onChange={(e) => {
           setSearch(e.target.value);
+          setSearchParams((initial) => {
+            const nextParams = new URLSearchParams(initial);
+            if (e.target.value === '') {
+              nextParams.delete('search');
+              return nextParams;
+            }
+            nextParams.set('search', e.target.value);
+            return nextParams;
+          });
         }}
-        value={search}
+        value={searchParams.get('search') || ''}
         onKeyUp={(e) => {
           if (e.key === 'Enter') {
             handleSearch(search);
           }
         }}
       />
-      {showRemoveSearch && (
+      {showRemoveSearch && search !== '' && (
         <button
           className="absolute inset-y-0 right-0 flex items-center pr-3"
           onClick={() => {

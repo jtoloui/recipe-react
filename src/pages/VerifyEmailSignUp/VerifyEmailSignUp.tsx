@@ -71,7 +71,7 @@ export const VerifyEmailSignUp = () => {
       )
       .then(() => {
         navigate('/login#signin', {
-          state: { username: data.username },
+          state: { username: data.username, from: location.state?.from },
         });
       })
       .catch((err) => {

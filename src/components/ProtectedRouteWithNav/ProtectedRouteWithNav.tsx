@@ -1,3 +1,4 @@
+import { url } from 'inspector';
 import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
@@ -47,7 +48,16 @@ export const ProtectedRouteWithNav = () => {
         </div>
       </div>
     );
-  if (!isAuthenticated) return <Navigate to="/welcome" replace />;
+  if (!isAuthenticated)
+    return (
+      <Navigate
+        to="/welcome"
+        replace
+        state={{
+          from: pathname,
+        }}
+      />
+    );
 
   return (
     <div>

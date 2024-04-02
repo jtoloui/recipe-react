@@ -103,7 +103,12 @@ export const Login = () => {
         }
       )
       .then(() => {
-        navigate('/');
+        if (location.state?.from) {
+          navigate(location.state.from);
+          return;
+        } else {
+          navigate('/');
+        }
       })
       .catch(() => {
         setOnSubmitError('Invalid username or password');
@@ -133,7 +138,7 @@ export const Login = () => {
       .then(() => {
         setIsSignUp(false);
         navigate('/verify-email', {
-          state: { username: data.username },
+          state: { username: data.username, from: location.state?.from },
         });
       })
       .catch((error) => {

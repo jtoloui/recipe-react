@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Logo from '@/assets/LogoWithText';
 import cookieImg from '@/assets/images/joanie-simon-2r8BzVYZIeo-unsplash.jpg';
@@ -6,6 +6,8 @@ import { Button } from '@/components/Button/Button';
 
 export const Welcome = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const state = location.state as { from?: string };
 
   return (
     <div className="relative dark:bg-slate-700 min-h-screen">
@@ -30,7 +32,7 @@ export const Welcome = () => {
             textClassName="px-20 font-bold sm:text-sm md:text-base lg:text-lg xl:text-xl"
             onClick={() =>
               navigate('/login#signin', {
-                state: { isSignUp: false },
+                state: { isSignUp: false, from: state?.from },
               })
             }
           />
@@ -41,7 +43,7 @@ export const Welcome = () => {
             textClassName="px-20 font-bold sm:text-sm md:text-base lg:text-lg xl:text-xl"
             onClick={() =>
               navigate('/login#signup', {
-                state: { isSignUp: true },
+                state: { isSignUp: true, from: state?.from },
               })
             }
           />

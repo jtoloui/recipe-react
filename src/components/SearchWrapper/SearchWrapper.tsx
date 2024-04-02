@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react';
-import { useLocation, useSearchParams } from 'react-router-dom';
+import React, { Fragment, useEffect, useState } from 'react';
+import { createSearchParams, useSearchParams } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 
 import { useRecipes } from '@/queries';
@@ -9,42 +9,17 @@ type Props = {
 };
 
 export const SearchWrapper = ({ children }: Props) => {
-  const [urlParams, setUrlParams] = useSearchParams();
+  const [urlParams] = useSearchParams();
   const [triggerRefetch, setTriggerRefetch] = useState(false);
 
   const search = urlParams.get('search') || '';
   const labels = urlParams.get('label') || '';
 
-  const location = useLocation();
-
   const { refetch: searchRecipeRefetch } = useRecipes(search, labels);
 
   useEventListener('homeSearch', () => {
-    if (location.pathname === '/') {
-      setTriggerRefetch(true);
-    }
+    setTriggerRefetch(true);
   });
-  // console.log('inside wrapper');
-
-  // Remove search query param when component unmounts
-  // useLayoutEffect(() => {
-  //   console.log('jamie');
-
-  //   return () => {
-  //     console.log('inside return');
-
-  //     setUrlParams((params) => {
-  //       console.log('inside mehtod');
-  //       const nextSearchParams = new URLSearchParams(params);
-
-  //       nextSearchParams.delete('search');
-  //       console.log(nextSearchParams.toString());
-
-  //       // params.delete('search');
-  //       return nextSearchParams;
-  //     });
-  //   };
-  // }, []);
 
   useEffect(() => {
     if (triggerRefetch) {

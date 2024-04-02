@@ -14,34 +14,25 @@ export const Menu = () => {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [searchTriggered, setSearchTriggered] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [_, setSearchParams] = useSearchParams();
 
   const size = useWindowSize();
   const location = useLocation();
 
-  useEffect(() => {
-    if (searchParams.has('search') && !searchTriggered) {
-      console.log('here');
-      setSearchParams((params) => {
-        params.delete('search');
-        return params;
-      });
-    }
-  }, [searchParams, searchTriggered, setSearchParams]);
-
   const handleSearch = (search: string) => {
     setSearchTriggered(true);
     setSearchParams((params) => {
+      const nextParams = new URLSearchParams(params);
       if (!search) {
-        params.delete('search');
+        nextParams.delete('search');
         if (search === '') setSearchTriggered(false);
       } else {
-        params.set('search', search);
+        nextParams.set('search', search);
       }
       window.dispatchEvent(
         new CustomEvent('homeSearch', { detail: { search } })
       );
-      return params;
+      return nextParams;
     });
     if (isBurgerMenuOpen) setIsBurgerMenuOpen(false);
   };
@@ -100,7 +91,6 @@ export const Menu = () => {
                   handleSearch={handleSearch}
                   showRemoveSearch={searchTriggered}
                   setRemoveSearch={setSearchTriggered}
-                  searchTriggered={searchTriggered}
                 />
               </div>
             </div>

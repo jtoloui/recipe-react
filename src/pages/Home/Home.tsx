@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
 
 import { Card } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
@@ -8,14 +8,19 @@ import { useRecipes } from '@/queries';
 import { Labels } from '@/queries/types';
 
 export const Home = () => {
-  const [searchParams, setSearchParams] = useSearchParams({
-    label: 'All',
-  });
+  const [searchParams, setSearchParams] = useSearchParams(
+    createSearchParams({
+      label: 'All',
+    })
+  );
+
   const [selectedCarouselCard, setSelectedCarouselCard] = useState<string>(
     searchParams.get('label') || 'All'
   );
 
-  const { data: recipesMeta } = useRecipes();
+  const search = searchParams.get('search') || '';
+  const labels = searchParams.get('label') || '';
+  const { data: recipesMeta } = useRecipes(search, labels);
 
   const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
   const [recipeCardData, setRecipeCardData] = useState<
@@ -163,6 +168,7 @@ export const Home = () => {
           }}
         />
       </div>
+
       <div className="mt-4 w-full rounded-lg bg-white-500 p-5 flex gap-7 flex-wrap dark:bg-slate-600 ">
         {recipeCardData.map((recipe) => (
           <Card

@@ -31,7 +31,10 @@ export const SearchWrapper = ({ children }: Props) => {
     console.log('jamie');
 
     return () => {
+      console.log('inside return');
+
       setUrlParams((params) => {
+        console.log('inside mehtod');
         const nextSearchParams = new URLSearchParams(params);
 
         nextSearchParams.delete('search');

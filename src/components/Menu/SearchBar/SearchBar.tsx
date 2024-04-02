@@ -5,11 +5,13 @@ type Props = {
   handleSearch: (search: string) => void;
   showRemoveSearch: boolean;
   setRemoveSearch: Dispatch<React.SetStateAction<boolean>>;
+  searchTriggered?: boolean;
 };
 export const SearchBar = ({
   handleSearch,
   showRemoveSearch,
   setRemoveSearch,
+  searchTriggered,
 }: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [search, setSearch] = useState<string>(
@@ -17,9 +19,10 @@ export const SearchBar = ({
   );
 
   useEffect(() => {
-    return () => {
+    if (search && !searchTriggered) {
+      console.log('inside');
       setSearch('');
-    };
+    }
   }, []);
 
   return (

@@ -24,27 +24,27 @@ export const SearchWrapper = ({ children }: Props) => {
       setTriggerRefetch(true);
     }
   });
-  console.log('inside wrapper');
+  // console.log('inside wrapper');
 
   // Remove search query param when component unmounts
-  useLayoutEffect(() => {
-    console.log('jamie');
+  // useLayoutEffect(() => {
+  //   console.log('jamie');
 
-    return () => {
-      console.log('inside return');
+  //   return () => {
+  //     console.log('inside return');
 
-      setUrlParams((params) => {
-        console.log('inside mehtod');
-        const nextSearchParams = new URLSearchParams(params);
+  //     setUrlParams((params) => {
+  //       console.log('inside mehtod');
+  //       const nextSearchParams = new URLSearchParams(params);
 
-        nextSearchParams.delete('search');
-        console.log(nextSearchParams.toString());
+  //       nextSearchParams.delete('search');
+  //       console.log(nextSearchParams.toString());
 
-        // params.delete('search');
-        return nextSearchParams;
-      });
-    };
-  }, []);
+  //       // params.delete('search');
+  //       return nextSearchParams;
+  //     });
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (triggerRefetch) {

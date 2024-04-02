@@ -20,7 +20,13 @@ export const fetchRecipes = async (
 ): Promise<RecipesResponse> => {
   const response = await axios.get<RecipesResponse>(
     `${import.meta.env.VITE_API_URI}/api/recipes`,
-    { withCredentials: true, params: { search, label } }
+    {
+      withCredentials: true,
+      params: {
+        ...(search ? { search } : {}),
+        ...(label ? { label } : {}),
+      },
+    }
   );
 
   return response.data;

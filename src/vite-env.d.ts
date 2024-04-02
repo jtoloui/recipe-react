@@ -10,3 +10,7 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+interface WindowEventMap extends CustomEvent {
+  homeSearch: CustomEvent<{ search: string; label: string }>;
+}

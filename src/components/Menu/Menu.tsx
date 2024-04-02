@@ -3,7 +3,6 @@ import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
 import Logo from '@/assets/LogoWithText';
-import { useRecipes } from '@/queries';
 
 import { Avatar } from './Avatar';
 import { BurgerMenu } from './BurgerMenu';
@@ -16,16 +15,12 @@ export const Menu = () => {
   const [search, setSearch] = useState<string>(
     searchParams.get('search') || ''
   );
-  const { refetch } = useRecipes(
-    search,
-    searchParams.get('label') || undefined
-  );
 
   const size = useWindowSize();
   const location = useLocation();
 
   const handleSearch = () => {
-    refetch();
+    window.dispatchEvent(new CustomEvent('homeSearch', { detail: { search } }));
   };
 
   useEffect(() => {
@@ -105,7 +100,8 @@ export const Menu = () => {
                   placeholder="Search Recipe, Profile, or Ingredients"
                   onChange={(e) => {
                     setSearchParams((initial) => {
-                      initial.set('search', e.target.value);
+                      if (!e.target.value) initial.delete('search');
+                      else initial.set('search', e.target.value);
                       return initial;
                     });
                     setSearch(e.target.value);

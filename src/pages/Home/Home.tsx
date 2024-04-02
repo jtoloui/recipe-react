@@ -15,7 +15,7 @@ export const Home = () => {
     searchParams.get('label') || 'All'
   );
 
-  const { data: recipesMeta, refetch } = useRecipes(
+  const { data: recipesMeta } = useRecipes(
     searchParams.get('search') || '',
     searchParams.get('label') || ''
   );
@@ -34,9 +34,14 @@ export const Home = () => {
 
   useEffect(() => {
     if (selectedCarouselCard) {
-      refetch();
+      const labelEvent = new CustomEvent('homeSearch', {
+        detail: {
+          label: selectedCarouselCard,
+        },
+      });
+      window.dispatchEvent(labelEvent);
     }
-  }, [selectedCarouselCard, refetch]);
+  }, [selectedCarouselCard]);
 
   const initializeLabelCounts = (allLabels: Labels[]) => {
     const labelCounts: { [key: string]: Labels } = {};

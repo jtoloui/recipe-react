@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 import { Menu } from '@/components/Menu';
+import { SearchWrapper } from '@/components/SearchWrapper';
 import { useIsAuthenticated } from '@/hooks';
 
 export const ProtectedRouteWithNav = () => {
@@ -50,8 +51,10 @@ export const ProtectedRouteWithNav = () => {
 
   return (
     <div>
-      <Menu />
-      <Outlet />
+      <SearchWrapper>
+        <Menu />
+        <Outlet />
+      </SearchWrapper>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { useEventListener } from 'usehooks-ts';
 
@@ -26,11 +26,16 @@ export const SearchWrapper = ({ children }: Props) => {
   });
 
   // Remove search query param when component unmounts
-  useEffect(() => {
+  useLayoutEffect(() => {
     return () => {
       setUrlParams((params) => {
-        params.delete('search');
-        return params;
+        const nextSearchParams = new URLSearchParams(params);
+
+        nextSearchParams.delete('search');
+        console.log(nextSearchParams.toString());
+
+        // params.delete('search');
+        return nextSearchParams;
       });
     };
   }, []);

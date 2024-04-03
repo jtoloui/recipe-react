@@ -77,7 +77,6 @@ const formDefaultValues = (
       const file = new File([dataBlob], data.image.originalName, {
         type: response.data.type,
       });
-      console.log(file);
 
       setValue('image', file);
     });

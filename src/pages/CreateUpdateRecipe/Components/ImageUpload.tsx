@@ -13,7 +13,11 @@ import { Image } from '@/components/Elements';
 
 import { CloudUpload } from './CloudUpload';
 
-export const ImageUpload = () => {
+type Props = {
+  existingImage?: string;
+};
+
+export const ImageUpload = ({ existingImage }: Props) => {
   const {
     register,
     setValue,
@@ -23,6 +27,12 @@ export const ImageUpload = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [image, setImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState('');
+
+  useEffect(() => {
+    if (existingImage) {
+      setPreviewUrl(existingImage);
+    }
+  }, [existingImage]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;

@@ -84,7 +84,6 @@ export const SearchBar = ({
         onChange={handleInputChange}
         onKeyUp={(e) => {
           if (e.key === 'Enter') {
-            console.log('Enter key pressed');
             setIsBurgerMenuOpen(false);
             //     handleSearch(inputRef.current?.value || '');
             if (e.target instanceof HTMLInputElement) {

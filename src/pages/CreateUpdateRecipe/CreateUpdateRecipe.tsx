@@ -2,7 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import {
-  DefaultValues,
   FieldErrors,
   FormProvider,
   UseFormSetValue,
@@ -62,16 +61,39 @@ const updateRecipe = async (newRecipe: CreateRecipeFormData, id: string) => {
 };
 
 type Props = {
-  defaultValues?: DefaultValues<CreateRecipeFormData>;
   formType?: 'create' | 'update';
-  recipeId?: string;
 };
 
+async function imageUrlToFile(imageUrl: string, filename: string) {
+  try {
+    // Fetch the image
+    const response = await fetch(imageUrl);
+    if (!response.ok) throw new Error('Network response was not ok.');
+    console.log(response);
+
+    // Get the image Blob
+    const imageBlob = await response.blob();
+
+    // Create a File from the Blob
+    const file = new File([imageBlob], filename, { type: imageBlob.type });
+
+    return file;
+  } catch (error) {
+    console.error('Error converting image URL to file:', error);
+    return null;
+  }
+}
 const formDefaultValues = (
   data: RecipeByIdResponse,
   setValue: UseFormSetValue<CreateRecipeFormData>
 ) => {
-  setValue('image', data.imageSrc);
+  imageUrlToFile(data.imageSrc, 'image.jpg').then((file) => {
+    if (file) {
+      console.log(file);
+    }
+  });
+
+  // setValue('image', data.imageSrc);
   setValue('recipeName', data.name);
   setValue('recipeDescription', data.description);
   setValue('vegetarian', data.vegetarian);
@@ -92,7 +114,6 @@ const formDefaultValues = (
       quantity: ingredient.quantity,
     }))
   );
-  console.log(data.labels);
 
   setValue('labels', data.labels);
   setValue('portionSize', parseInt(data.portions));
@@ -117,10 +138,7 @@ const formDefaultValues = (
   // };
 };
 
-export const CreateUpdateRecipe = ({
-  defaultValues = {},
-  formType = 'create',
-}: Props) => {
+export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
   const navigate = useNavigate();
   const params = useParams<{ recipeId: string }>();
 
@@ -163,7 +181,7 @@ export const CreateUpdateRecipe = ({
     if (formType === 'update' && updatedFormData) {
       formDefaultValues(updatedFormData, setValue);
     }
-  }, [formType, updatedFormData]);
+  }, [formType, updatedFormData, setValue]);
 
   const onSubmit = async (data: CreateRecipeFormData) => {
     try {
@@ -189,7 +207,11 @@ export const CreateUpdateRecipe = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {/* <!-- Box 1 --> */}
             <div className="md:col-span-1 md:row-span-3 rounded-lg bg-white-500 dark:bg-slate-700 h-80 p-5">
-              <ImageUpload />
+              <ImageUpload
+                {...(formType === 'update'
+                  ? { existingImage: updatedFormData?.imageSrc }
+                  : {})}
+              />
             </div>
 
             {/* <!-- Box 2 --> */}

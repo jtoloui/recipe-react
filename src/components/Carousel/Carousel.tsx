@@ -43,8 +43,6 @@ export const Carousel = ({
     visible: { opacity: 1, x: 0 },
   };
 
-  console.log(cardsToShow, size.width <= 640, size.width);
-
   useEffect(() => {
     if (size.width >= 0) {
       setCardsToShow(2);

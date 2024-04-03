@@ -175,8 +175,6 @@ export const AdditionalInformation = () => {
                       setLabelValues([...labelValues, newOption]);
                     }}
                     onChange={(option) => {
-                      console.log(option);
-
                       const labels = option.map((label) => label.value);
                       field.onChange(labels);
                       setLabelValues(option);

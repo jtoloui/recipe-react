@@ -60,8 +60,6 @@ export const ImageUpload = ({ existingImage }: Props) => {
   };
 
   const updateImage = (file: File) => {
-    console.log('file', file);
-
     const result = createRecipeSchema.shape.image.safeParse(file);
 
     if (!result.success) {

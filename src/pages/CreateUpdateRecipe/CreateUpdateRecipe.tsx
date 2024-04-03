@@ -66,50 +66,17 @@ type Props = {
   formType?: 'create' | 'update';
 };
 
-// async function imageUrlToFile(imageUrl: string, filename: string) {
-//   try {
-//     // Fetch the image
-//     const response = await fetch(imageUrl);
-//     if (!response.ok) throw new Error('Network response was not ok.');
-//     console.log(JSON.stringify(response.headers, null, 2));
-
-//     // Get the image Blob
-//     const imageBlob = await response.blob();
-//     console.log(imageBlob.name);
-
-//     // Create a File from the Blob
-//     const file = new File([imageBlob], filename, { type: imageBlob.type });
-
-//     return file;
-//   } catch (error) {
-//     console.error('Error converting image URL to file:', error);
-//     return null;
-//   }
-// }
 const formDefaultValues = (
   data: RecipeByIdResponse,
   setValue: UseFormSetValue<CreateRecipeFormData>
 ) => {
-  // imageUrlToFile(data.imageSrc, 'test.jpg').then((file) => {
-  //   if (file) {
-  //     console.log(file.name);
-  //   }
-  // });
-
   axios
     .get(data.image.src, { responseType: 'blob' })
     .then((response: AxiosResponse<Blob>) => {
-      const imgExt = response.data.type.replace('image/', '');
       const dataBlob = response.data as unknown as BlobPart;
-      const file = new File(
-        [dataBlob],
-        `${data._id}-${data.name
-          .toLocaleLowerCase()
-          .replace(/ /g, '-')}.${imgExt}`,
-        {
-          type: response.data.type,
-        }
-      );
+      const file = new File([dataBlob], data.image.originalName, {
+        type: response.data.type,
+      });
       console.log(file);
 
       setValue('image', file);
@@ -139,25 +106,6 @@ const formDefaultValues = (
 
   setValue('labels', data.labels);
   setValue('portionSize', parseInt(data.portions));
-
-  // return {
-  //   recipeName: data.name,
-  //   recipeDescription: data.description,
-  //   vegetarian: data.vegetarian,
-  //   vegan: data.vegan,
-  //   difficulty: data.difficulty,
-  //   cuisine: data.cuisine,
-  //   prepTime: data.timeToCook.Prep,
-  //   cookTime: data.timeToCook.Cook,
-  //   steps: data.steps.map((step) => ({ step })),
-  //   ingredients: data.ingredients.map((ingredient) => ({
-  //     item: ingredient.item,
-  //     measurement: ingredient.measurement,
-  //     quantity: ingredient.quantity,
-  //   })),
-  //   labels: data.labels,
-  //   portionSize: parseInt(data.portions),
-  // };
 };
 
 export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {

@@ -1,5 +1,6 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { boolean } from 'zod';
 
 import { type RecipeByIdResponse, RecipesResponse } from './types';
 
@@ -50,11 +51,13 @@ export const fetchMyRecipes = async (
 };
 
 export const useRecipeById = (
-  id: string
+  id: string,
+  enabled?: boolean
 ): UseQueryResult<RecipeByIdResponse, Error> => {
   return useQuery<RecipeByIdResponse, Error>({
     queryKey: ['recipe', id],
     queryFn: () => fetchRecipeById(id),
+    enabled,
   });
 };
 

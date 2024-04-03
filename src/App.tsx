@@ -18,9 +18,9 @@ import { MyRecipes } from './pages/MyRecipes/MyRecipes';
 import { Page404 } from './pages/Page404';
 import { VerifyEmailSignUp } from './pages/VerifyEmailSignUp';
 
-const CreateRecipe = lazy(() =>
-  import('@/pages/CreateRecipe').then((module) => ({
-    default: module.CreateRecipe,
+const CreateUpdateRecipe = lazy(() =>
+  import('@/pages/CreateUpdateRecipe').then((module) => ({
+    default: module.CreateUpdateRecipe,
   }))
 );
 const Login = lazy(() =>
@@ -75,16 +75,29 @@ const routes = createBrowserRouter([
         element: <div>Settings</div>,
       },
       {
-        path: '/recipe/:recipeId',
-        element: <RecipeById />,
-        loader: recipeLoader(queryClient),
-        errorElement: <Page404 />,
+        path: 'recipe',
+        children: [
+          {
+            path: ':recipeId',
+            element: <RecipeById />,
+            loader: recipeLoader(queryClient),
+            errorElement: <Page404 />,
+          },
+          {
+            path: ':recipeId/edit',
+            element: (
+              <Suspense>
+                <CreateUpdateRecipe formType="update" />
+              </Suspense>
+            ),
+          },
+        ],
       },
       {
         path: '/create-recipe',
         element: (
           <Suspense>
-            <CreateRecipe />
+            <CreateUpdateRecipe formType="create" />
           </Suspense>
         ),
       },

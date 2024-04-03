@@ -66,7 +66,7 @@ export interface RecipeById {
   imageSrc: string;
   recipeAuthor: string;
   timeToCook: TimeToCook;
-  difficulty: string;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
   labels: string[];
   portions: string;
   description: string;

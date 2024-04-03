@@ -1,5 +1,7 @@
 import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link, NavLink } from 'react-router-dom';
+import { receiveMessageOnPort } from 'worker_threads';
 
 import EditSvg from '@/assets/EditSvg';
 import { type RecipeById } from '@/queries/types';
@@ -14,7 +16,9 @@ type HeaderSectionProps = Omit<
   | 'portions'
   | 'steps'
   | 'nutrition'
->;
+> & {
+  recipeId: string;
+};
 
 export const HeaderSection = ({
   name,
@@ -26,6 +30,7 @@ export const HeaderSection = ({
   vegetarian,
   timeToCook,
   description,
+  recipeId,
 }: HeaderSectionProps) => {
   return (
     <div className="border-b border-gray2-500 mb-4">
@@ -40,10 +45,15 @@ export const HeaderSection = ({
             </h1>
             {isAuthor && (
               <div className="flex justify-end items-start flex-auto">
-                <button className="text-green-500 text-sm font-semibold flex items-center">
+                {/* <button className="text-green-500 text-sm font-semibold flex items-center"> */}
+                <Link
+                  to={`/recipe/${recipeId}/edit`}
+                  className="text-green-500 text-sm font-semibold flex items-center"
+                >
                   <EditSvg height={24} width={24} className="sm:mr-2" />{' '}
                   <span className="hidden sm:contents">Edit Recipe</span>
-                </button>
+                </Link>
+                {/* </button> */}
               </div>
             )}
           </div>

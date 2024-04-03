@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useLoaderData, useParams } from 'react-router-dom';
+import { Outlet, useLoaderData, useParams } from 'react-router-dom';
 
 import { IngredientIcon } from '@/assets/IngredientIcon';
 // import IngredientSVG from '@/assets/images/ingredients-for-cooking-svgrepo-com.svg';
@@ -62,7 +62,7 @@ const RecipeById = () => {
         <div className="md:col-span-2 rounded-lg bg-white-500 dark:bg-slate-700 p-5">
           {/* <!-- Heading --> */}
           {/* <!-- Description --> */}
-          <HeaderSection {...data} />
+          <HeaderSection recipeId={params.recipeId || ''} {...data} />
 
           {/* <!-- Ingredients --> */}
           <div>

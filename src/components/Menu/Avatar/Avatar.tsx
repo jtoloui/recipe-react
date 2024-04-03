@@ -67,6 +67,8 @@ export const Avatar = ({
   ];
 
   const RenderMenuItems = () => {
+    console.log(menuItems);
+
     return (
       <>
         {menuItems.map((item) => (

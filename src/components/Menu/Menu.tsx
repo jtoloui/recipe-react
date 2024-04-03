@@ -57,7 +57,7 @@ export const Menu = () => {
   if (location.pathname === '/login') return null;
 
   return (
-    <nav className="bg-white-500 shadow-md dark:shadow-white-500 dark:bg-slate-600 rounded-b-lg fixed w-full z-[99]">
+    <nav className="bg-white-500 shadow-md dark:shadow-white-500 dark:bg-slate-600 rounded-b-lg fixed w-full z-[9999]">
       <div className="px-6 py-4 mx-auto">
         <div className="md:flex md:items-center">
           {/* // logo and burger menu */}

@@ -204,7 +204,11 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
             <Instructions />
 
             {/* <!-- Additional Information --> */}
-            <AdditionalInformation />
+            <AdditionalInformation
+              submitText={
+                formType === 'create' ? 'Create Recipe' : 'Update Recipe'
+              }
+            />
           </div>
         </form>
       </FormProvider>

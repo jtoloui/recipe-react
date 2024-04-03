@@ -70,7 +70,13 @@ const nutritionFields: DynamicInputProps<CreateRecipeFormData>[] = [
   },
 ];
 
-export const AdditionalInformation = () => {
+type Props = {
+  submitText?: string;
+};
+
+export const AdditionalInformation = ({
+  submitText = 'Create Recipe',
+}: Props) => {
   const [selectedLabelOption, setSelectedLabelOption] = useState<
     Options<{ value: string; label: string }>
   >([]);
@@ -276,7 +282,7 @@ export const AdditionalInformation = () => {
         <div className="flex justify-end w-full">
           <Button
             variant="primary"
-            text="Create Recipe"
+            text={submitText}
             type="submit"
             buttonClassName="sm:w-auto"
           />

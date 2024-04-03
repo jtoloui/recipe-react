@@ -89,7 +89,7 @@ export const MyRecipes = () => {
   };
 
   const carouselDataCallback = useCallback(() => {
-    if (recipesMeta?.meta) {
+    if (recipesMeta?.meta && recipesMeta.recipes?.length > 0) {
       const initialCount = initializeLabelCounts(recipesMeta.meta.allLabels);
 
       const updatedCount = updateAvailableLabelCounts(
@@ -114,7 +114,7 @@ export const MyRecipes = () => {
         ...newData,
       ]);
     }
-  }, [recipesMeta?.meta]);
+  }, [recipesMeta?.meta, recipesMeta?.recipes]);
 
   useEffect(() => {
     if (recipesMeta?.meta) {

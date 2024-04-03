@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { Outlet, useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 
 import { IngredientIcon } from '@/assets/IngredientIcon';
 // import IngredientSVG from '@/assets/images/ingredients-for-cooking-svgrepo-com.svg';

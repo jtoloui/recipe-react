@@ -1,6 +1,5 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { boolean } from 'zod';
 
 import { type RecipeByIdResponse, RecipesResponse } from './types';
 

@@ -1,7 +1,6 @@
 import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link, NavLink } from 'react-router-dom';
-import { receiveMessageOnPort } from 'worker_threads';
+import { Link } from 'react-router-dom';
 
 import EditSvg from '@/assets/EditSvg';
 import { type RecipeById } from '@/queries/types';

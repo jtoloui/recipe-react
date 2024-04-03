@@ -7,7 +7,7 @@ import {
   UseFormSetValue,
   useForm,
 } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { CreateRecipeFormData, createRecipeSchema } from '@/Forms';
 import {
@@ -17,7 +17,7 @@ import {
   Instructions,
 } from '@/Forms/Recipe';
 import { Layout } from '@/components/Layout';
-import { useRecipeById } from '@/queries';
+import { useProfile, useRecipeById } from '@/queries';
 import { CreateRecipeResponse, RecipeByIdResponse } from '@/queries/types';
 import { axiosInstanceFormData } from '@/utils';
 
@@ -140,6 +140,7 @@ const formDefaultValues = (
 
 export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
   const navigate = useNavigate();
+
   const params = useParams<{ recipeId: string }>();
 
   const { refetch, data: updatedFormData } = useRecipeById(
@@ -147,11 +148,19 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
     false
   );
 
+  const { data: profileData } = useProfile();
+
   useEffect(() => {
     if (formType === 'update' && params?.recipeId) {
       refetch();
     }
   }, [formType, params.recipeId, refetch]);
+
+  useEffect(() => {
+    if (updatedFormData?.creatorId !== profileData?.id) {
+      navigate(`/recipe/${params.recipeId}`);
+    }
+  }, [updatedFormData, profileData, navigate, params.recipeId]);
 
   const {
     data: createRecipeData,

@@ -1,5 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import axios, { AxiosResponse } from 'axios';
+import { Blob } from 'buffer';
 import { useEffect } from 'react';
 import {
   FieldErrors,
@@ -7,7 +9,7 @@ import {
   UseFormSetValue,
   useForm,
 } from 'react-hook-form';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { CreateRecipeFormData, createRecipeSchema } from '@/Forms';
 import {
@@ -64,34 +66,54 @@ type Props = {
   formType?: 'create' | 'update';
 };
 
-async function imageUrlToFile(imageUrl: string, filename: string) {
-  try {
-    // Fetch the image
-    const response = await fetch(imageUrl);
-    if (!response.ok) throw new Error('Network response was not ok.');
-    console.log(response);
+// async function imageUrlToFile(imageUrl: string, filename: string) {
+//   try {
+//     // Fetch the image
+//     const response = await fetch(imageUrl);
+//     if (!response.ok) throw new Error('Network response was not ok.');
+//     console.log(JSON.stringify(response.headers, null, 2));
 
-    // Get the image Blob
-    const imageBlob = await response.blob();
+//     // Get the image Blob
+//     const imageBlob = await response.blob();
+//     console.log(imageBlob.name);
 
-    // Create a File from the Blob
-    const file = new File([imageBlob], filename, { type: imageBlob.type });
+//     // Create a File from the Blob
+//     const file = new File([imageBlob], filename, { type: imageBlob.type });
 
-    return file;
-  } catch (error) {
-    console.error('Error converting image URL to file:', error);
-    return null;
-  }
-}
+//     return file;
+//   } catch (error) {
+//     console.error('Error converting image URL to file:', error);
+//     return null;
+//   }
+// }
 const formDefaultValues = (
   data: RecipeByIdResponse,
   setValue: UseFormSetValue<CreateRecipeFormData>
 ) => {
-  imageUrlToFile(data.imageSrc, 'image.jpg').then((file) => {
-    if (file) {
+  // imageUrlToFile(data.imageSrc, 'test.jpg').then((file) => {
+  //   if (file) {
+  //     console.log(file.name);
+  //   }
+  // });
+
+  axios
+    .get(data.image.src, { responseType: 'blob' })
+    .then((response: AxiosResponse<Blob>) => {
+      const imgExt = response.data.type.replace('image/', '');
+      const dataBlob = response.data as unknown as BlobPart;
+      const file = new File(
+        [dataBlob],
+        `${data._id}-${data.name
+          .toLocaleLowerCase()
+          .replace(/ /g, '-')}.${imgExt}`,
+        {
+          type: response.data.type,
+        }
+      );
       console.log(file);
-    }
-  });
+
+      setValue('image', file);
+    });
 
   // setValue('image', data.imageSrc);
   setValue('recipeName', data.name);
@@ -151,16 +173,19 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
   const { data: profileData } = useProfile();
 
   useEffect(() => {
-    if (formType === 'update' && params?.recipeId) {
+    if (formType === 'update' && params.recipeId) {
       refetch();
     }
   }, [formType, params.recipeId, refetch]);
 
   useEffect(() => {
-    if (updatedFormData?.creatorId !== profileData?.id) {
+    if (
+      formType === 'update' &&
+      updatedFormData?.creatorId !== profileData?.id
+    ) {
       navigate(`/recipe/${params.recipeId}`);
     }
-  }, [updatedFormData, profileData, navigate, params.recipeId]);
+  }, [updatedFormData, profileData, navigate, params.recipeId, formType]);
 
   const {
     data: createRecipeData,
@@ -179,9 +204,6 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
 
   const methods = useForm<CreateRecipeFormData>({
     resolver: zodResolver(createRecipeSchema),
-    // ...(formType === 'update'
-    //   ? { defaultValues: formDefaultValues(updatedFormData as RecipeById) }
-    //   : {}),
   });
 
   const { handleSubmit, setValue } = methods;
@@ -218,7 +240,7 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
             <div className="md:col-span-1 md:row-span-3 rounded-lg bg-white-500 dark:bg-slate-700 h-80 p-5">
               <ImageUpload
                 {...(formType === 'update'
-                  ? { existingImage: updatedFormData?.imageSrc }
+                  ? { existingImage: updatedFormData?.image.src }
                   : {})}
               />
             </div>

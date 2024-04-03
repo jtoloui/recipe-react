@@ -125,7 +125,7 @@ export const Home = () => {
   const cardRecipeDataCallback = useCallback(() => {
     if (recipesMeta?.recipes) {
       const newData = recipesMeta.recipes.map((recipe) => ({
-        image: recipe.imageSrc,
+        image: recipe.image.src,
         title: recipe.name,
         to: `/recipe/${recipe._id}`,
         totalTime: recipe.timeToCook.totalTime,

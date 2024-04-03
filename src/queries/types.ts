@@ -8,7 +8,12 @@ export type RecipesResponse = {
   recipes: {
     _id: string;
     name: string;
-    imageSrc: string;
+    image: {
+      src: string;
+      type: string;
+      originalName: string;
+      storageName: string;
+    };
     labels: string[];
     ingredients?: IngredientsEntity[];
     timeToCook: {
@@ -37,7 +42,12 @@ export type RecipeLabelsResponse = {
 export interface LabelByName {
   _id: string;
   name: string;
-  imageSrc: string;
+  image: {
+    src: string;
+    type: string;
+    originalName: string;
+    storageName: string;
+  };
   timeToCook: TimeToCook;
   labels?: string[] | null;
   ingredients?: IngredientsEntity[] | null;
@@ -63,7 +73,12 @@ export interface IngredientsEntity {
 export interface RecipeById {
   _id: string;
   name: string;
-  imageSrc: string;
+  image: {
+    src: string;
+    type: string;
+    originalName: string;
+    storageName: string;
+  };
   recipeAuthor: string;
   timeToCook: TimeToCook;
   difficulty: 'Easy' | 'Medium' | 'Hard';
@@ -124,7 +139,12 @@ export interface popularLabelsResponse {
 
 export interface CreateRecipeResponse {
   name: string;
-  imageSrc: string;
+  image: {
+    src: string;
+    type: string;
+    originalName: string;
+    storageName: string;
+  };
   recipeAuthor: string;
   timeToCook: TimeToCook;
   difficulty: string;

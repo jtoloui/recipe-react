@@ -43,6 +43,7 @@ export const ImageUpload = ({ existingImage }: Props) => {
 
   const handleRemoveImage = () => {
     setImage(null);
+    setValue('image', null);
     setPreviewUrl('');
   };
 
@@ -59,6 +60,8 @@ export const ImageUpload = ({ existingImage }: Props) => {
   };
 
   const updateImage = (file: File) => {
+    console.log('file', file);
+
     const result = createRecipeSchema.shape.image.safeParse(file);
 
     if (!result.success) {

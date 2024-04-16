@@ -39,6 +39,35 @@ export const BasicInfo = () => {
             </div>
           </div>
           <div className="flex gap-3 mb-2 flex-wrap">
+            {/* Visibility */}
+            <div className="w-full md:flex-1">
+              <div className="text-sm mb-6">
+                <div className={`relative ${errors.visibility ? '' : ''}`}>
+                  <select
+                    {...register('visibility')}
+                    id="visibility"
+                    className={`block w-full px-0 pt-4 pb-3 border-0 border-b focus:ring-0 focus:border-black focus:outline-none ${
+                      errors.visibility
+                        ? 'border-red-500 text-red-500'
+                        : 'border-green-500'
+                    }`}
+                  >
+                    <option value="" hidden>
+                      Select Visibility
+                    </option>
+                    <option value="public">Public</option>
+                    <option value="private">Private</option>
+                  </select>
+                  {errors.visibility && (
+                    <p className="text-sm text-red-500">
+                      {errors.visibility.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-3 mb-2 flex-wrap">
             {/* //info */}
             <div className="w-full md:flex-1">
               <p className="mb-2 text-lg text-black-500 dark:text-white-500">

@@ -1,4 +1,9 @@
-import { faCheck, faX } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheck,
+  faEarthEurope,
+  faLock,
+  faX,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
@@ -30,6 +35,7 @@ export const HeaderSection = ({
   timeToCook,
   description,
   recipeId,
+  visibility,
 }: HeaderSectionProps) => {
   return (
     <div className="border-b border-gray2-500 mb-4">
@@ -56,6 +62,21 @@ export const HeaderSection = ({
               </div>
             )}
           </div>
+          {/* Visibility */}
+          {isAuthor && (
+            <div className="flex gap-3 mb-2">
+              <p className="text-sm text-black-500 dark:text-white-500">
+                Visibility:
+                <span className="text-green-500 ml-2">
+                  <FontAwesomeIcon
+                    size="lg"
+                    icon={visibility?.public ? faEarthEurope : faLock}
+                    color="var(--green)"
+                  />
+                </span>
+              </p>
+            </div>
+          )}
           <div className="flex gap-3 mb-2">
             {/* //info */}
             <div className="flex-1">

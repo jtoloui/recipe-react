@@ -93,6 +93,20 @@ export const createRecipeSchema = z.object({
     .refine((file: File) => ACCEPTED_IMAGE_TYPES.includes(file?.type || ''), {
       message: 'Image must be a jpeg, jpg, png, webp, or svg',
     }),
+  visibility: z.enum(['public', 'private'], {
+    errorMap: (error) => {
+      switch (error.code) {
+        case z.ZodIssueCode.invalid_enum_value:
+          return {
+            message: 'Visibility must be one of public or private',
+          };
+        default:
+          return {
+            message: 'Visibility is required',
+          };
+      }
+    },
+  }),
 });
 
 export function createRecipeFormToPostObject(

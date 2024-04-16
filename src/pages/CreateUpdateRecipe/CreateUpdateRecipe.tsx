@@ -90,6 +90,7 @@ const formDefaultValues = (
   setValue('cuisine', data.cuisine);
   setValue('prepTime', data.timeToCook.Prep);
   setValue('cookTime', data.timeToCook.Cook);
+  setValue('visibility', data.visibility?.public ? 'public' : 'private');
   setValue(
     'steps',
     data.steps.map((step) => ({ step }))

@@ -93,6 +93,11 @@ export interface RecipeById {
   cuisine: string;
   creatorId: string;
   isAuthor: boolean;
+  visibility: {
+    public: boolean;
+    private: boolean;
+    groups: string[];
+  };
 }
 
 export interface TimeToCook {

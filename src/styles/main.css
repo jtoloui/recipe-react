@@ -237,3 +237,21 @@ input[type='number'] {
 input:focus {
   outline: none;
 }
+
+/* --- Animated logo loader: steam ribbons rise + fade, bowl gently pulses --- */
+@keyframes jc-steam-rise {
+  0%   { opacity: 0.25; transform: translateY(3px) scaleY(0.85); }
+  50%  { opacity: 1;    transform: translateY(-2px) scaleY(1.1); }
+  100% { opacity: 0.25; transform: translateY(3px) scaleY(0.85); }
+}
+@keyframes jc-bowl-pulse {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-1px); }
+}
+.jc-steam { transform-origin: center bottom; animation: jc-steam-rise 1.6s ease-in-out infinite; }
+.jc-steam-2 { animation-delay: 0.2s; }
+.jc-steam-3 { animation-delay: 0.4s; }
+.jc-bowl  { transform-origin: center; animation: jc-bowl-pulse 1.6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .jc-steam, .jc-bowl { animation: none; }
+}

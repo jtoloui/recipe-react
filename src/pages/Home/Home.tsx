@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
-import { Card } from '@/components/Card';
+import { Card, FeaturedCard } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Chip } from '@/components/Chip';
 import { Layout } from '@/components/Layout';
@@ -192,17 +192,28 @@ export const Home = () => {
       {size.width < 768 && searchParams.has('label') && (
         <Chip text={`Label: ${selectedCarouselCard}`} />
       )}
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {recipeCardData.map((recipe) => (
-          <Card
-            key={recipe.to}
-            image={recipe.image}
-            title={recipe.title}
-            to={recipe.to}
-            ingredientsCount={recipe.ingredientsCount}
-            totalTime={recipe.totalTime}
-          />
-        ))}
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-[220px] gap-5">
+        {recipeCardData.map((recipe, index) =>
+          index === 0 ? (
+            <FeaturedCard
+              key={recipe.to}
+              image={recipe.image}
+              title={recipe.title}
+              to={recipe.to}
+              ingredientsCount={recipe.ingredientsCount}
+              totalTime={recipe.totalTime}
+            />
+          ) : (
+            <Card
+              key={recipe.to}
+              image={recipe.image}
+              title={recipe.title}
+              to={recipe.to}
+              ingredientsCount={recipe.ingredientsCount}
+              totalTime={recipe.totalTime}
+            />
+          )
+        )}
       </div>
     </Layout>
   );

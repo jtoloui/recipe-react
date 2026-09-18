@@ -123,7 +123,7 @@ export const Instructions = () => {
                   type="button"
                   aria-label="Remove step"
                   onClick={() => removeStep(index)}
-                  className="shrink-0 self-start px-1.5 text-lg leading-none text-brownishGrey-600 hover:text-red-500"
+                  className="shrink-0 self-start px-2.5 py-1 text-lg leading-none text-brownishGrey-600 hover:text-red-500"
                 >
                   <FontAwesomeIcon icon={faXmark} />
                 </button>

@@ -64,10 +64,10 @@ export const DynamicInput = <TFormValues extends FieldValues>({
         })}
         className={cn(
           inputProps.className,
-          `block w-full px-0 pt-4 pb-1 border-0 border-b focus:ring-0 focus:border-black`,
+          `block w-full rounded-md border px-2.5 py-2 pt-6 text-sm bg-white-500 dark:bg-slate-700 focus:outline-none`,
           {
             'border-red-500': errorObj,
-            'border-green-500': !errorObj,
+            'border-gray2-500 dark:border-slate-600 focus:border-green-500': !errorObj,
           }
         )}
         id={id}
@@ -75,7 +75,7 @@ export const DynamicInput = <TFormValues extends FieldValues>({
       />
       <label
         htmlFor={id}
-        className={`absolute top-0 mt-2 transition-all duration-300 origin-0 ${
+        className={`absolute top-0 left-2.5 mt-1 text-xs transition-all duration-300 origin-0 text-brownishGrey-600 ${
           errorObj ? 'text-red-500' : ''
         }`}
       >

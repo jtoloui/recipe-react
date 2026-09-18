@@ -215,7 +215,7 @@ export const Ingredients = () => {
                   type="button"
                   aria-label="Remove ingredient"
                   onClick={() => removeIngredient(index)}
-                  className="shrink-0 px-1.5 text-lg leading-none text-brownishGrey-600 hover:text-red-500"
+                  className="shrink-0 px-2.5 py-1 text-lg leading-none text-brownishGrey-600 hover:text-red-500"
                 >
                   <FontAwesomeIcon icon={faXmark} />
                 </button>

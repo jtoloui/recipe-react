@@ -78,7 +78,7 @@ export const SearchBar = ({
       <input
         ref={inputRef}
         type="text"
-        className="text-ellipsis w-full py-1 pl-10 pr-4 text-black-500 dark:text-white-500 dark:placeholder-white-600 placeholder-black-600 bg-white-500  dark:bg-slate-600 border-b border-brownGrey-500 dark:border-white-500 focus:outline-none dark:focus:border-white-500 focus:border-gray-600"
+        className="text-ellipsis w-full py-1 pl-10 pr-4 text-black-500 dark:text-white-500 dark:placeholder:text-white-600 placeholder:text-black-600 bg-white-500  dark:bg-slate-600 border-b border-brownGrey-500 dark:border-white-500 focus:outline-none dark:focus:border-white-500 focus:border-gray-600"
         placeholder="Search Recipe, Profile, or Ingredients"
         defaultValue={searchParams.get('search') || ''}
         onChange={handleInputChange}

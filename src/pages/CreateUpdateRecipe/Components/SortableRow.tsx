@@ -36,15 +36,15 @@ export const SortableRow = ({ id, children, lead }: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-2 rounded-lg border px-2 py-2 bg-gray2-100 dark:bg-slate-700/40 ${
+      className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 bg-gray2-300 dark:bg-slate-700/40 ${
         isDragging
           ? 'border-green-500 shadow-md'
-          : 'border-gray2-400 dark:border-slate-700'
+          : 'border-brownishGrey-300 dark:border-slate-700'
       }`}
     >
       <button
         type="button"
-        className="cursor-grab touch-none px-1 text-brownishGrey-600 hover:text-green-500 active:cursor-grabbing"
+        className="cursor-grab touch-none px-1 min-w-[20px] text-center text-brownishGrey-600 hover:text-green-500 active:cursor-grabbing"
         {...attributes}
         {...listeners}
         // aria-label after the spreads so dnd-kit's own attributes don't clobber it.

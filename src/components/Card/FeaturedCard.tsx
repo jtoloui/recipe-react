@@ -13,8 +13,10 @@ type FeaturedCardProps = {
 };
 
 /** Large hero card for the first recipe — image fills the tile, title + meta
- *  overlaid on a gradient scrim. Spans 2×2 in the bento grid so the listing
- *  reads as an editorial layout rather than a wall of identical cards. */
+ *  overlaid on a gradient scrim. Spans 2 rows everywhere and 2 columns from
+ *  the sm breakpoint up, so the listing reads as an editorial layout rather
+ *  than a wall of identical cards. On mobile (single column) it is a full-width
+ *  hero two rows tall — no min-height fighting the grid's auto-rows. */
 export const FeaturedCard = ({
   image,
   title,
@@ -25,7 +27,7 @@ export const FeaturedCard = ({
   return (
     <NavLink
       to={to}
-      className="group relative flex min-h-[260px] flex-col justify-end overflow-hidden rounded-2xl border border-gray2-400 shadow-sm transition-all duration-200 hover:shadow-lg dark:border-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40 sm:col-span-2 sm:row-span-2 sm:min-h-full"
+      className="group relative flex flex-col justify-end overflow-hidden rounded-2xl border border-gray2-400 shadow-sm transition-all duration-200 hover:shadow-lg dark:border-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40 row-span-2 sm:col-span-2"
     >
       {/* Image / placeholder fills the whole tile */}
       <div className="absolute inset-0">

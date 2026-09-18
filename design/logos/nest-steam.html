@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JustCooking — Nest Steam (refined)</title>
+<style>
+  :root{ --green:#30be76; --green-600:#26985e; --green-700:#1d7247; --amber:#f8b449;
+    --ink:#0f1f17; --bg:#f4f6f5; --card:#fff; --muted:#6b7770; --line:#e6eae8; }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Nunito',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  header{padding:48px 32px 20px;text-align:center;background:radial-gradient(1000px 360px at 50% -120px,rgba(48,190,118,.16),transparent 70%)}
+  header h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-.02em}
+  header p{margin:8px 0 0;color:var(--muted)}
+  .wrap{max-width:1180px;margin:0 auto;padding:14px 32px 70px;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:0 1px 2px rgba(16,31,23,.04),0 8px 24px rgba(16,31,23,.05);display:flex;flex-direction:column;gap:16px}
+  .card h3{margin:0;font-size:14px;font-weight:800}
+  .card .tag{color:var(--muted);font-size:12.5px;margin-top:-10px}
+  .hero{display:flex;align-items:center;justify-content:center;gap:26px;min-height:150px;border-radius:14px;background:var(--bg);flex-wrap:wrap}
+  .s{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .s span{font-size:10px;font-weight:700;color:var(--muted)}
+  .lockup{display:flex;align-items:center;gap:12px;justify-content:center}
+  .lockup .wm{font-size:26px;font-weight:800;letter-spacing:-.02em}
+  .favs{display:flex;gap:10px;justify-content:center}
+  .fav{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+  footer{text-align:center;color:var(--muted);font-size:13px;padding-bottom:50px}
+  .toolbar{display:flex;gap:10px;justify-content:center;margin-top:18px}
+  .toolbar button{font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;border:1.5px solid var(--line);background:#fff;color:#363837;padding:8px 16px;border-radius:999px}
+  .toolbar button.active{background:var(--green);color:#fff;border-color:var(--green)}
+</style>
+</head>
+<body>
+<header>
+  <h1>Nest Steam — refined & surface-aware</h1>
+  <p>The mark RECOLORS to its surface. Light → green bowl + amber steam · Dark → white + amber · Green → white bowl + amber steam (treatment A). Toggle to verify no clashes.</p>
+  <div class="toolbar"><button data-bg="light" class="active">Light bg</button><button data-bg="dark">Dark bg</button><button data-bg="green">Brand green bg</button></div>
+</header>
+
+<div class="wrap" id="wrap"></div>
+<footer>Every surface stays legible. Confirm and I'll build the favicon/app-icon set + wire the Logo component.</footer>
+
+<script>
+const green="#30be76",green2="#1d7247",amber="#f8b449",mint="#83d8ad",cream="#eafaf1",ink="#0f1f17";
+
+/* Surface-aware mark. surface: 'light' | 'dark' | 'green'.
+   light: green bowl + amber steam. dark: white bowl + amber steam. green: white bowl + amber steam (A).
+   opts.badge: 'none'|'squircle'|'round'|'disc' */
+function mark(size, surface='light', opts={}){
+  const {badge='none'} = opts;
+  let bowl, steam, rim;
+  if(surface==='light'){ bowl=green; steam=amber; rim='#0a2618'; }
+  else if(surface==='dark'){ bowl='#ffffff'; steam=amber; rim='#0a2618'; }
+  else { bowl='#ffffff'; steam=amber; rim='#0a2618'; } // green surface = treatment A
+  const steamEl=`<g fill="none" stroke="${steam}" stroke-width="3.4" stroke-linecap="round">
+      <path d="M25 15c2.6 2.4 2.6 5.2 0 7.6"/><path d="M32 12c2.9 3 2.9 6.4 0 9.4"/><path d="M39 15c2.6 2.4 2.6 5.2 0 7.6"/></g>`;
+  const bowlEl=`<path d="M12 33h40a20 18 0 0 1-40 0Z" fill="${bowl}"/>
+      <path d="M15.5 37.5c3.4 5 9.2 8.2 16.5 8.2" stroke="#0a2618" stroke-opacity=".16" stroke-width="2.4" stroke-linecap="round" fill="none"/>`;
+  let badgeEl='';
+  if(badge==='squircle') badgeEl=`<rect x="2" y="2" width="60" height="60" rx="18" fill="${green}"/>`; // white bowl+amber on green tile
+  if(badge==='round') badgeEl=`<circle cx="32" cy="32" r="30" fill="${cream}"/>`; // mint disc → use light treatment inside
+  if(badge==='disc') badgeEl=`<circle cx="32" cy="32" r="31" fill="#ffffff"/>`;
+  // inside a mint/white disc the bowl should be GREEN (light treatment) for contrast
+  let inner;
+  if(badge==='round'||badge==='disc'){
+    inner=`<g fill="none" stroke="${amber}" stroke-width="3.4" stroke-linecap="round">
+        <path d="M25 15c2.6 2.4 2.6 5.2 0 7.6"/><path d="M32 12c2.9 3 2.9 6.4 0 9.4"/><path d="M39 15c2.6 2.4 2.6 5.2 0 7.6"/></g>
+      <path d="M12 33h40a20 18 0 0 1-40 0Z" fill="${green}"/>`;
+  } else { inner=steamEl+bowlEl; }
+  return `<svg width="${size}" height="${size}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">${badgeEl}${inner}</svg>`;
+}
+
+/* cards receive the current surface so marks recolor correctly */
+function cardDefs(surface){
+  const wmInk = surface==='light' ? 'var(--ink)' : '#ffffff';
+  const wmAccent = surface==='green' ? '#fff' : 'var(--green)';
+  const lbl = surface==='green' ? '#eafaf1' : (surface==='dark' ? '#cbd8d1' : 'var(--muted)');
+  const heroStyle = surface==='light' ? 'background:var(--bg)' : surface==='dark' ? 'background:#141a17' : 'background:var(--green)';
+  return [
+   {h:"Primary mark", t:"Recolors to surface — nav, favicon", body:`
+     <div class="hero" style="${heroStyle}">
+       <div class="s">${mark(96,surface)}<span style="color:${lbl}">96</span></div>
+       <div class="s">${mark(48,surface)}<span style="color:${lbl}">48</span></div>
+       <div class="s">${mark(28,surface)}<span style="color:${lbl}">28</span></div>
+       <div class="s">${mark(16,surface)}<span style="color:${lbl}">16</span></div></div>`},
+   {h:"Squircle app icon", t:"Green tile, white bowl + amber steam (fixed value)", body:`
+     <div class="hero" style="${heroStyle}">
+       <div class="s">${mark(96,'green',{badge:'squircle'})}<span style="color:${lbl}">96</span></div>
+       <div class="s">${mark(56,'green',{badge:'squircle'})}<span style="color:${lbl}">56</span></div>
+       <div class="s">${mark(32,'green',{badge:'squircle'})}<span style="color:${lbl}">32</span></div></div>`},
+   {h:"Round badge", t:"Cream disc + green bowl — avatars, chips", body:`
+     <div class="hero" style="${heroStyle}">
+       <div class="s">${mark(96,surface,{badge:'round'})}<span style="color:${lbl}">96</span></div>
+       <div class="s">${mark(48,surface,{badge:'round'})}<span style="color:${lbl}">48</span></div></div>`},
+   {h:"Wordmark lockup", t:"Nav / header", body:`
+     <div class="hero" style="${heroStyle}"><div class="lockup">${mark(40,surface)}<div class="wm" style="color:${wmInk}">just<b style="color:${wmAccent}">cooking</b></div></div></div>`},
+   {h:"Favicon tiles", t:"White / dark / brand-green — each uses its own rule", body:`
+     <div class="hero" style="${heroStyle}"><div class="favs">
+       <div class="fav" style="background:#fff;border:1px solid var(--line)">${mark(26,'light')}</div>
+       <div class="fav" style="background:#141a17">${mark(26,'dark')}</div>
+       <div class="fav" style="background:${green}">${mark(26,'green')}</div>
+       <div class="fav" style="background:#fff;border:1px solid var(--line)">${mark(26,'green',{badge:'squircle'})}</div>
+     </div></div>`},
+  ];
+}
+
+const wrap=document.getElementById('wrap');
+function renderAll(surface){
+  wrap.innerHTML='';
+  cardDefs(surface).forEach(c=>{const el=document.createElement('div');el.className='card';
+    el.innerHTML=`<h3>${c.h}</h3><div class="tag">${c.t}</div>${c.body}`;wrap.appendChild(el);});
+}
+renderAll('light');
+
+document.querySelectorAll('.toolbar button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.toolbar button').forEach(x=>x.classList.remove('active'));b.classList.add('active');
+  renderAll(b.dataset.bg);
+});
+</script>
+</body>
+</html>

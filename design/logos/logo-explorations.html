@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JustCooking — logo & icon explorations</title>
+<style>
+  :root {
+    --green: #30be76; --green-600:#26985e; --green-700:#1d7247;
+    --amber: #f8b449; --ink:#0f1f17; --charcoal:#363837;
+    --bg:#f4f6f5; --card:#ffffff; --muted:#6b7770; --line:#e6eae8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  header.page {
+    padding: 56px 32px 28px; text-align:center;
+    background: radial-gradient(1200px 400px at 50% -120px, rgba(48,190,118,.14), transparent 70%);
+  }
+  header.page h1 { margin:0; font-size: 34px; font-weight: 800; letter-spacing:-.02em; }
+  header.page p { margin:10px 0 0; color: var(--muted); font-size:15px; }
+  .toolbar { display:flex; gap:10px; justify-content:center; margin-top:22px; }
+  .toolbar button {
+    font-family:inherit; font-weight:700; font-size:13px; cursor:pointer;
+    border:1.5px solid var(--line); background:#fff; color:var(--charcoal);
+    padding:8px 16px; border-radius:999px; transition:.15s;
+  }
+  .toolbar button.active { background:var(--green); color:#fff; border-color:var(--green); }
+  .grid {
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(320px,1fr));
+    gap:22px; padding: 12px 32px 64px; max-width:1320px; margin:0 auto;
+  }
+  .card {
+    background:var(--card); border:1px solid var(--line); border-radius:20px;
+    padding:26px; box-shadow: 0 1px 2px rgba(16,31,23,.04), 0 8px 24px rgba(16,31,23,.05);
+    display:flex; flex-direction:column; gap:18px; transition:.2s;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(16,31,23,.10); }
+  .card h3 { margin:0; font-size:15px; font-weight:800; }
+  .card .tag { color:var(--muted); font-size:12.5px; font-weight:600; margin-top:-12px; }
+  .hero { display:flex; align-items:center; justify-content:center; height:150px;
+    border-radius:14px; background:var(--bg); position:relative; overflow:hidden; }
+  .hero.dark { background:#141a17; }
+  .sizes { display:flex; align-items:center; gap:18px; justify-content:center; }
+  .sizes .s { display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .sizes .s span { font-size:10px; color:var(--muted); font-weight:700; }
+  .lockup { display:flex; align-items:center; gap:10px; justify-content:center; }
+  .lockup .wm { font-size:22px; font-weight:800; letter-spacing:-.02em; color:var(--ink); }
+  .lockup .wm b { color:var(--green); }
+  .swatchrow { display:flex; gap:8px; align-items:center; justify-content:center; }
+  .fav { width:40px;height:40px;border-radius:9px; display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.15); }
+  footer { text-align:center; color:var(--muted); font-size:13px; padding:0 0 50px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="page">
+  <h1>JustCooking — logo explorations</h1>
+  <p>Eight directions · brand green #30be76 + amber #f8b449 · flat, modern & pop. Toggle a background to stress-test contrast.</p>
+  <div class="toolbar">
+    <button data-bg="light" class="active">Light</button>
+    <button data-bg="dark">Dark</button>
+  </div>
+</header>
+
+<div class="grid" id="grid"></div>
+<footer>Handmade SVG · scalable to any size · pick a direction and I'll refine + wire it into the app.</footer>
+
+<script>
+/* Each concept: name, tag, and an SVG builder(size) returning markup. viewBox 0 0 64 64. */
+const green="#30be76", green2="#1d7247", amber="#f8b449", ink="#0f1f17";
+
+const concepts = [
+{
+  name:"01 · Sizzle S", tag:"Flat monogram — pan + rising steam forming a J/S",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="${green}"/>
+    <path d="M40 20c-9-4-18 1-18 9 0 9 14 7 14 14 0 5-7 8-14 4" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="44" cy="17" r="3" fill="${amber}"/>
+  </svg>`
+},
+{
+  name:"02 · Steam Leaf", tag:"Modern — a leaf + steam curl, fresh & warm",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="18" fill="#eafaf1"/>
+    <path d="M20 44c0-14 12-24 26-24 0 14-12 24-26 24Z" fill="${green}"/>
+    <path d="M20 44C26 36 32 32 40 28" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+    <path d="M30 16c3 3 3 7 0 10" stroke="${amber}" stroke-width="3.5" stroke-linecap="round"/>
+  </svg>`
+},
+{
+  name:"03 · Pop Pot", tag:"Pop/3D — glossy cooking pot with lid steam",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="pg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4fd894"/><stop offset="1" stop-color="${green2}"/></linearGradient></defs>
+    <path d="M28 12c0-3 8-3 8 0" stroke="${amber}" stroke-width="3.5" stroke-linecap="round"/>
+    <rect x="14" y="22" width="36" height="6" rx="3" fill="${amber}"/>
+    <path d="M16 28h32l-3 22a6 6 0 0 1-6 5H25a6 6 0 0 1-6-5L16 28Z" fill="url(#pg)"/>
+    <rect x="10" y="34" width="8" height="6" rx="3" fill="${green2}"/>
+    <rect x="46" y="34" width="8" height="6" rx="3" fill="${green2}"/>
+    <ellipse cx="27" cy="34" rx="5" ry="2.5" fill="#fff" opacity=".35"/>
+  </svg>`
+},
+{
+  name:"04 · Fork Flame", tag:"Flat — fork tines rising into a flame, energetic",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="${ink}"/>
+    <path d="M32 14c6 6 8 12 4 18-2 3-2 6 0 9 5-2 10-8 10-16 0-6-6-9-14-11Z" fill="${amber}"/>
+    <path d="M24 20v10a4 4 0 0 0 8 0V20M28 20v9" stroke="${green}" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M28 34v14" stroke="${green}" stroke-width="3.5" stroke-linecap="round"/>
+  </svg>`
+},
+{
+  name:"05 · Just Dot", tag:"Minimal wordmark mark — 'J' with a sizzling dot",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="20" fill="#fff" stroke="${green}" stroke-width="3"/>
+    <path d="M38 18v22c0 7-5 11-12 10-5-.7-8-4-8-9" stroke="${green}" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="41" cy="15" r="5" fill="${amber}"/>
+  </svg>`
+},
+{
+  name:"06 · Whisk Bloom", tag:"Modern — whisk wires opening like a flower",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="${green}"/>
+    <g stroke="#fff" stroke-width="3" stroke-linecap="round">
+      <path d="M32 46V30"/>
+      <path d="M32 30c-8-2-12-8-10-16 8-1 13 5 10 16Z" fill="rgba(255,255,255,.14)"/>
+      <path d="M32 30c8-2 12-8 10-16-8-1-13 5-10 16Z" fill="rgba(255,255,255,.14)"/>
+      <path d="M32 30c-3-6-2-12 0-16 2 4 3 10 0 16Z" fill="rgba(255,255,255,.14)"/>
+    </g>
+    <circle cx="32" cy="49" r="4" fill="${amber}"/>
+  </svg>`
+},
+{
+  name:"07 · Plate Pop", tag:"Pop/3D — plate + amber egg-yolk sun, playful",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="rg" cx=".4" cy=".35" r=".8">
+      <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#e9efec"/></radialGradient></defs>
+    <circle cx="32" cy="32" r="26" fill="url(#rg)" stroke="${green}" stroke-width="3"/>
+    <circle cx="32" cy="32" r="17" fill="none" stroke="#dfe7e3" stroke-width="2"/>
+    <circle cx="32" cy="31" r="9" fill="${amber}"/>
+    <circle cx="28.5" cy="27.5" r="3" fill="#fff" opacity=".55"/>
+  </svg>`
+},
+{
+  name:"08 · Ember Bowl", tag:"Modern gradient — bowl cradling a warm gradient sun",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="${amber}"/><stop offset="1" stop-color="${green}"/></linearGradient></defs>
+    <circle cx="32" cy="27" r="11" fill="url(#eg)"/>
+    <path d="M12 34a20 20 0 0 0 40 0Z" fill="${green2}"/>
+    <path d="M12 34h40" stroke="#fff" stroke-width="2.5" stroke-linecap="round" opacity=".5"/>
+  </svg>`
+ },
+{
+  name:"09 · Chef Spark", tag:"Flat — chef-hat silhouette with an amber spark",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="${green}"/>
+    <path d="M20 40h24v-6c5 0 8-4 8-8s-4-8-9-7c-1-5-6-8-11-8s-10 3-11 8c-5-1-9 3-9 7s3 8 8 8v6Z" fill="#fff"/>
+    <rect x="20" y="42" width="24" height="5" rx="2.5" fill="#eafaf1"/>
+    <path d="M44 16l2 4 4 2-4 2-2 4-2-4-4-2 4-2 2-4Z" fill="${amber}"/>
+  </svg>`
+},
+{
+  name:"10 · Orbit Bite", tag:"Modern — a plate 'bite' negative-space orbit",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="18" fill="${ink}"/>
+    <circle cx="32" cy="32" r="16" fill="none" stroke="${green}" stroke-width="6"/>
+    <circle cx="47" cy="20" r="7" fill="${ink}"/>
+    <circle cx="45" cy="21" r="4.5" fill="${amber}"/>
+  </svg>`
+},
+{
+  name:"11 · Spoon Heart", tag:"Flat — two spoons forming a heart, warm & social",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="#fff" stroke="${green}" stroke-width="2.5"/>
+    <path d="M32 46C20 38 16 30 20 24c3-4 9-3 12 2 3-5 9-6 12-2 4 6 0 14-12 22Z" fill="${green}"/>
+    <circle cx="24" cy="22" r="4" fill="${amber}"/>
+    <circle cx="40" cy="22" r="4" fill="${amber}"/>
+  </svg>`
+},
+{
+  name:"12 · Pop Egg", tag:"Pop/3D — cracked egg with a green-yolk sun, glossy",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><radialGradient id="yg" cx=".4" cy=".35" r=".8">
+      <stop offset="0" stop-color="#5fe0a0"/><stop offset="1" stop-color="${green2}"/></radialGradient></defs>
+    <path d="M16 40c0-11 7-24 16-24s16 13 16 24a16 16 0 0 1-32 0Z" fill="${amber}"/>
+    <path d="M22 34l5-4 4 5 5-6 4 5 4-3" stroke="#fff" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+    <circle cx="32" cy="40" r="9" fill="url(#yg)"/>
+    <circle cx="29" cy="37" r="2.5" fill="#fff" opacity=".5"/>
+  </svg>`
+},
+{
+  name:"13 · JC Ligature", tag:"Minimal — J+C ligature monogram, editorial",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="${green}"/>
+    <path d="M34 16v20c0 6-4 10-10 10-5 0-8-3-9-7" stroke="#fff" stroke-width="5.5" stroke-linecap="round"/>
+    <path d="M48 24c-3-3-8-4-12-1-5 4-5 13 0 17 4 3 9 2 12-1" stroke="${amber}" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+  </svg>`
+},
+{
+  name:"14 · Flame Drop", tag:"Modern gradient — flame + water drop duality",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs><linearGradient id="fd" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="${amber}"/><stop offset="1" stop-color="${green}"/></linearGradient></defs>
+    <path d="M32 8c10 12 16 20 16 28a16 16 0 0 1-32 0c0-8 6-16 16-28Z" fill="url(#fd)"/>
+    <path d="M32 26c4 5 6 9 6 12a6 6 0 0 1-12 0c0-3 2-7 6-12Z" fill="#fff" opacity=".85"/>
+  </svg>`
+},
+{
+  name:"15 · Grid Plate", tag:"Flat geometric — 4-dish tasting grid, app-icon vibe",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="4" y="4" width="56" height="56" rx="16" fill="#eafaf1"/>
+    <circle cx="24" cy="24" r="8" fill="${green}"/>
+    <circle cx="40" cy="24" r="8" fill="${amber}"/>
+    <circle cx="24" cy="40" r="8" fill="${amber}"/>
+    <circle cx="40" cy="40" r="8" fill="${green}"/>
+  </svg>`
+},
+{
+  name:"16 · Nest Steam", tag:"Pop — rounded bowl 'nest' with three steam ribbons",
+  svg:s=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="${amber}" stroke-width="3.5" stroke-linecap="round">
+      <path d="M26 16c3 3 3 6 0 9"/>
+      <path d="M32 13c3 4 3 8 0 12"/>
+      <path d="M38 16c3 3 3 6 0 9"/>
+    </g>
+    <path d="M12 34h40a20 20 0 0 1-40 0Z" fill="${green}"/>
+    <ellipse cx="32" cy="35" rx="17" ry="3.5" fill="#fff" opacity=".35"/>
+  </svg>`
+},
+];
+
+const grid = document.getElementById('grid');
+concepts.forEach(c=>{
+  const el=document.createElement('div'); el.className='card';
+  el.innerHTML=`
+    <h3>${c.name}</h3>
+    <div class="tag">${c.tag}</div>
+    <div class="hero">
+      <div class="sizes">
+        <div class="s">${c.svg(84)}<span>84</span></div>
+        <div class="s">${c.svg(48)}<span>48</span></div>
+        <div class="s">${c.svg(28)}<span>28</span></div>
+      </div>
+    </div>
+    <div class="lockup">${c.svg(30)}<div class="wm">just<b>cooking</b></div></div>
+    <div class="swatchrow">
+      <div class="fav" style="background:#fff;border:1px solid var(--line)">${c.svg(24)}</div>
+      <div class="fav" style="background:#141a17">${c.svg(24)}</div>
+      <div class="fav" style="background:${green}">${c.svg(24)}</div>
+    </div>`;
+  grid.appendChild(el);
+});
+
+document.querySelectorAll('.toolbar button').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.toolbar button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const dark=b.dataset.bg==='dark';
+    document.querySelectorAll('.hero').forEach(h=>h.classList.toggle('dark',dark));
+  };
+});
+</script>
+</body>
+</html>

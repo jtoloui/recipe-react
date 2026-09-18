@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Options } from 'react-select';
+import { Options, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
@@ -261,7 +261,7 @@ export const AdditionalInformation = ({
                         border: '1px solid var(--green)',
                         color: 'var(--black)',
                       }),
-                    }}
+                    } as StylesConfig<{ value: string; label: string }, true>}
                   />
                 )}
               />

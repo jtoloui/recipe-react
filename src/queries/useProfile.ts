@@ -6,6 +6,10 @@ type Profile = {
   email: string;
   id: string;
   nickname: string;
+  /** Cognito login handle (cognito:username), e.g. "kirotest". */
+  userName?: string;
+  givenName?: string;
+  familyName?: string;
 };
 const fetchProfile = async (): Promise<Profile> => {
   const response = await axios.get<Profile>(

@@ -64,7 +64,7 @@ export const Profile = () => {
                   Username
                 </dt>
                 <dd className="mt-1 truncate text-sm font-medium text-black-500 dark:text-white-500">
-                  {data?.nickname || '—'}
+                  {data?.userName || data?.nickname || '—'}
                 </dd>
               </div>
             </dl>

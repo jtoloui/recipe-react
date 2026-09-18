@@ -12,7 +12,10 @@
     "build": "tsc && APP_ENV=production vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "APP_ENV=production vite preview",
-    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
+    "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.1.0",
@@ -42,6 +45,10 @@
   "devDependencies": {
     "@netlify/plugin-lighthouse": "^6.0.0",
     "@tailwindcss/forms": "^0.5.3",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/auth0-js": "^9.14.7",
     "@types/node": "^20.1.4",
@@ -50,10 +57,12 @@
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react": "^4.0.0",
+    "@vitest/coverage-v8": "^1.6.1",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.38.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.3.4",
+    "jsdom": "^29.1.1",
     "postcss": "^8.4.23",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0",
@@ -61,6 +70,7 @@
     "tailwindcss": "^3.3.2",
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
-    "vite-plugin-sitemap": "^0.5.3"
+    "vite-plugin-sitemap": "^0.5.3",
+    "vitest": "^1.6.1"
   }
 }

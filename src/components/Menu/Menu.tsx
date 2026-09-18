@@ -113,7 +113,7 @@ export const Menu = () => {
               </MenuLink>
 
               {searchEnabled && (
-                <div className="relative mt-4 md:mt-0 md:mx-4 w-full order-3 md:order-3">
+                <div className="relative mt-4 md:mt-0 md:mx-4 w-full md:max-w-sm md:flex-1 order-3 md:order-3">
                   <SearchBar
                     handleSearch={handleSearch}
                     showRemoveSearch={searchTriggered}

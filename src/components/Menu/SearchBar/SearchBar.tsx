@@ -40,8 +40,7 @@ export const SearchBar = ({
   }, 250);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    debounce(value);
+    debounce(e.target.value);
   };
 
   useEffect(() => {
@@ -53,20 +52,18 @@ export const SearchBar = ({
   return (
     <Fragment>
       {/*
-       * One contained pill: border + bg container, magnifier icon inset-left,
-       * input fills the space, clear-X inset-right. No stray bare <button>.
+       * One rounded search pill. Icon inset-left, input fills the space,
+       * clear-X inset-right. The input carries its OWN focus styling and
+       * `shadow-none`/`ring-0` to override @tailwindcss/forms' default blue
+       * focus ring — the whole pill glows green on focus via focus-within.
        */}
-      <div className="relative flex items-center w-full rounded-lg border border-brownishGrey-300 dark:border-slate-500 bg-white-500 dark:bg-slate-700 shadow-sm focus-within:border-green-500 focus-within:ring-2 focus-within:ring-green-500/20 transition-all">
-        {/* Magnifier — purely decorative, not a button */}
+      <div className="group relative flex items-center w-full h-10 rounded-full border border-gray2-500 dark:border-slate-600 bg-gray2-100 dark:bg-slate-700/60 transition-colors duration-150 focus-within:border-green-500 focus-within:bg-white-500 dark:focus-within:bg-slate-700 focus-within:ring-2 focus-within:ring-green-500/25">
+        {/* Magnifier — decorative */}
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute left-3 flex items-center"
+          className="pointer-events-none absolute left-3.5 flex items-center text-brownishGrey-500 group-focus-within:text-green-500 transition-colors"
         >
-          <svg
-            className="w-4 h-4 text-brownishGrey-600 dark:text-white-700"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
+          <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none">
             <path
               d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
               stroke="currentColor"
@@ -80,7 +77,7 @@ export const SearchBar = ({
         <input
           ref={inputRef}
           type="text"
-          className="w-full py-2 pl-9 pr-9 text-sm text-black-500 dark:text-white-500 placeholder:text-brownishGrey-500 dark:placeholder:text-white-700 bg-transparent focus:outline-none"
+          className="peer w-full h-full rounded-full border-0 bg-transparent pl-10 pr-9 text-sm text-black-500 dark:text-white-500 placeholder:text-brownishGrey-500 dark:placeholder:text-white-700 shadow-none ring-0 outline-none focus:border-0 focus:shadow-none focus:ring-0 focus:outline-none"
           placeholder="Search recipes, ingredients…"
           defaultValue={searchParams.get('search') || ''}
           onChange={handleInputChange}
@@ -94,12 +91,12 @@ export const SearchBar = ({
           }}
         />
 
-        {/* Clear-X — only shown when there is a search value */}
+        {/* Clear-X — only when there is a value */}
         {showRemoveSearch && inputRef.current?.value !== '' && (
           <button
             type="button"
             aria-label="Clear search"
-            className="absolute right-2 flex items-center justify-center w-5 h-5 rounded-full text-brownishGrey-600 hover:text-white-500 hover:bg-green-500 transition-colors"
+            className="absolute right-2.5 flex items-center justify-center w-6 h-6 rounded-full text-brownishGrey-600 hover:text-white-500 hover:bg-green-500 transition-colors"
             onClick={() => {
               setSearchParams((initial) => {
                 handleSearch('');
@@ -111,7 +108,7 @@ export const SearchBar = ({
               if (inputRef.current) inputRef.current.value = '';
             }}
           >
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
               <path
                 d="M6 18L18 6M6 6l12 12"
                 stroke="currentColor"

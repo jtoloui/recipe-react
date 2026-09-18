@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
-import { Options } from 'react-select';
+import { Options, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
@@ -76,7 +76,7 @@ export const Ingredients = () => {
                 control={control}
                 defaultValue=""
                 render={({ field }) => (
-                  <CreatableSelect
+                  <CreatableSelect<{ value: string; label: string }, false>
                     {...field}
                     options={selectedOption}
                     placeholder="Choose or add measurement"
@@ -145,7 +145,7 @@ export const Ingredients = () => {
                             : 'var(--white)',
                         },
                       }),
-                    }}
+                    } as StylesConfig<{ value: string; label: string }, false>}
                     className="mt-[0.18rem] react-select-container "
                     classNamePrefix="react-select"
                     onChange={(option) => field.onChange(option?.value || '')}

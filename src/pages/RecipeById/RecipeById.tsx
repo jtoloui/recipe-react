@@ -1,4 +1,7 @@
+import { faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 import { IngredientIcon } from '@/assets/IngredientIcon';
@@ -8,6 +11,7 @@ import { fetchRecipeByIdQuery } from '@/queries';
 import type { Nutrition } from '@/queries/types';
 
 import { type loader } from '.';
+import { CookMode } from './components/CookMode';
 import { HeaderSection } from './components/HeaderSection';
 
 type RecipeByIdParams = {
@@ -59,6 +63,8 @@ const RecipeById = () => {
     initialData,
   });
 
+  const [cookMode, setCookMode] = useState(false);
+
   if (!data) return null;
 
   const nutrition = data.nutrition;
@@ -68,6 +74,25 @@ const RecipeById = () => {
 
   return (
     <Layout>
+      {cookMode && (
+        <CookMode
+          title={data.name}
+          ingredients={data.ingredients}
+          steps={data.steps}
+          onClose={() => setCookMode(false)}
+        />
+      )}
+
+      <div className="mb-5 flex justify-end">
+        <button
+          onClick={() => setCookMode(true)}
+          className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-white-500 shadow-sm transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/40"
+        >
+          <FontAwesomeIcon icon={faUtensils} />
+          Cook mode
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         {/* Hero image — spans full width on mobile, left rail on desktop */}
         <div className="lg:col-span-1">

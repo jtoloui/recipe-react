@@ -74,9 +74,10 @@ export const Instructions = () => {
   };
 
   return (
-    <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5 md:p-6">
-      <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-4 flex items-center gap-2">
-        <span className="text-green-500">03</span> Method
+    <div className="bg-white-500 dark:bg-slate-700 rounded-xl border border-gray2-400 dark:border-slate-600 shadow-sm p-5 md:p-6">
+      <h2 className="text-xs font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-700 mb-4 flex items-center gap-2">
+        <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500/10 text-green-600 text-[10px] font-bold shrink-0">03</span>
+        Method
       </h2>
 
       <DndContext
@@ -106,7 +107,7 @@ export const Instructions = () => {
                     {...register(`steps.${index}.step`)}
                     placeholder={`Describe step ${index + 1}`}
                     rows={2}
-                    className={`w-full resize-y rounded-md border bg-white-500 dark:bg-slate-700 px-2.5 py-2 text-sm focus:outline-none focus:border-green-500 ${
+                    className={`w-full resize-y rounded-md border bg-white-500 dark:bg-slate-800/60 px-2.5 py-2 text-sm focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/20 transition-all ${
                       errors.steps?.[index]
                         ? 'border-red-500'
                         : 'border-gray2-500 dark:border-slate-600'
@@ -123,9 +124,9 @@ export const Instructions = () => {
                   type="button"
                   aria-label="Remove step"
                   onClick={() => removeStep(index)}
-                  className="shrink-0 self-start px-2.5 py-1 text-lg leading-none text-brownishGrey-600 hover:text-red-500"
+                  className="shrink-0 self-start w-7 h-7 flex items-center justify-center rounded-md text-brownishGrey-500 hover:text-red-500 hover:bg-red-500/10 transition-colors"
                 >
-                  <FontAwesomeIcon icon={faXmark} />
+                  <FontAwesomeIcon icon={faXmark} className="text-sm" />
                 </button>
               </SortableRow>
             ))}
@@ -136,7 +137,7 @@ export const Instructions = () => {
       <button
         type="button"
         onClick={() => appendStep({ step: '' })}
-        className="mt-3 w-full rounded-lg border-2 border-dashed border-green-300 py-2 text-sm font-semibold text-green-600 hover:border-green-500 hover:bg-subtleAccent transition"
+        className="mt-3 w-full rounded-lg border border-dashed border-green-300 dark:border-green-700/50 py-2.5 text-sm font-semibold text-green-600 dark:text-green-400 hover:border-green-500 hover:bg-green-500/5 transition-all"
       >
         + Add step
       </button>

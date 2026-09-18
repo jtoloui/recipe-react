@@ -1,8 +1,7 @@
 import {
-  faCheck,
   faEarthEurope,
+  faLeaf,
   faLock,
-  faX,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
@@ -24,6 +23,39 @@ type HeaderSectionProps = Omit<
   recipeId: string;
 };
 
+/** Small rounded pill for a single meta fact (difficulty, cuisine, a time). */
+const MetaChip = ({
+  label,
+  value,
+}: {
+  label: string;
+  value: React.ReactNode;
+}) => (
+  <div className="inline-flex items-center gap-1.5 rounded-full bg-subtleAccent px-3 py-1.5 text-sm dark:bg-slate-600">
+    <span className="font-semibold text-brownishGrey-600 dark:text-white-600">
+      {label}
+    </span>
+    <span className="font-bold text-black-500 dark:text-white-500">
+      {value}
+    </span>
+  </div>
+);
+
+/** Diet badge — green "Vegan"/"Vegetarian" pill with a leaf icon when true,
+ *  muted "Not …" pill when false, so it reads as a label rather than a bare
+ *  tick/cross. */
+const DietBadge = ({ active, label }: { active?: boolean; label: string }) =>
+  active ? (
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-sm font-semibold text-white-500">
+      <FontAwesomeIcon icon={faLeaf} size="sm" />
+      {label}
+    </span>
+  ) : (
+    <span className="inline-flex items-center gap-1 rounded-full border border-gray2-500 px-3 py-1.5 text-sm font-medium text-brownishGrey-600 dark:border-slate-600 dark:text-white-600">
+      Not {label.toLowerCase()}
+    </span>
+  );
+
 export const HeaderSection = ({
   name,
   recipeAuthor,
@@ -38,111 +70,66 @@ export const HeaderSection = ({
   visibility,
 }: HeaderSectionProps) => {
   return (
-    <div className="border-b border-gray2-500 mb-4">
-      <div className="flex mb-6">
-        <div className="w-full">
-          <div className="flex">
-            <h1 className="text-2xl font-bold text-black-500 dark:text-white-500 flex-2 mb-4">
-              {name}{' '}
-              <span className="text-sm text-gray-500 dark:text-white-500">
-                by {recipeAuthor}
-              </span>{' '}
-            </h1>
-            {isAuthor && (
-              <div className="flex justify-end items-start flex-auto">
-                {/* <button className="text-green-500 text-sm font-semibold flex items-center"> */}
-                <Link
-                  to={`/recipe/${recipeId}/edit`}
-                  className="text-green-500 text-sm font-semibold flex items-center"
-                >
-                  <EditSvg height={24} width={24} className="sm:mr-2" />{' '}
-                  <span className="hidden sm:contents">Edit Recipe</span>
-                </Link>
-                {/* </button> */}
-              </div>
-            )}
-          </div>
-          {/* Visibility */}
-          {isAuthor && (
-            <div className="flex gap-3 mb-2">
-              <p className="text-sm text-black-500 dark:text-white-500">
-                Visibility:
-                <span className="text-green-500 ml-2">
-                  <FontAwesomeIcon
-                    size="lg"
-                    icon={visibility?.public ? faEarthEurope : faLock}
-                    color="var(--green)"
-                  />
-                </span>
-              </p>
-            </div>
-          )}
-          <div className="flex gap-3 mb-2">
-            {/* //info */}
-            <div className="flex-1">
-              <p className="mb-2 text-lg text-black-500 dark:text-white-500">
-                Info
-              </p>
-              <p className="text-sm  mb-2 text-brownGrey-500 dark:text-white-500">
-                Difficulty:
-                <span> {difficulty}</span>
-              </p>
-              <p className="text-sm  mb-2 text-brownGrey-500 dark:text-white-500">
-                Cuisine:
-                <span> {cuisine}</span>
-              </p>
-              <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500 flex gap-1">
-                Vegan:
-                <span className="items-center inline-flex">
-                  {' '}
-                  {vegan ? (
-                    <FontAwesomeIcon
-                      size="xs"
-                      icon={faCheck}
-                      color="var(--green)"
-                    />
-                  ) : (
-                    <FontAwesomeIcon size="xs" icon={faX} color="var(--red)" />
-                  )}
-                </span>
-              </p>
-              <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500 flex gap-1">
-                Vegetarian:
-                <span className="items-center inline-flex">
-                  {' '}
-                  {vegetarian ? (
-                    <FontAwesomeIcon
-                      size="xs"
-                      icon={faCheck}
-                      color="var(--green)"
-                    />
-                  ) : (
-                    <FontAwesomeIcon icon={faX} color="var(--red)" size="xs" />
-                  )}
-                </span>
-              </p>
-            </div>
-
-            {/* //cooking times */}
-            <div className="text-lg text-black-500 dark:text-white-500 flex-1">
-              <p className=" mb-2">Cooking times</p>
-              <p className="text-sm  mb-2 text-brownGrey-500 dark:text-white-500">
-                Preparation Time (±)
-                <span> {formatTime(timeToCook.Prep || 0)}</span>
-              </p>
-              <p className="text-sm  mb-2 text-brownGrey-500 dark:text-white-500">
-                Cooking Time (±)
-                <span> {formatTime(timeToCook.Cook || 0)}</span>
-              </p>
-            </div>
-          </div>
-          {/* // description */}
-          <div className="text-lg text-black-500 dark:text-white-500 ">
-            <h3 className="mb-2 text-xl">Description</h3>
-            <p className="text-sm font-normal">{description}</p>
-          </div>
+    <div className="mb-5 border-b border-gray2-500 pb-5 dark:border-slate-600">
+      {/* Title row */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-extrabold tracking-tight text-black-500 dark:text-white-500 md:text-3xl">
+            {name}
+          </h1>
+          <p className="mt-1 text-sm text-brownishGrey-600 dark:text-white-600">
+            by {recipeAuthor}
+          </p>
         </div>
+        {isAuthor && (
+          <Link
+            to={`/recipe/${recipeId}/edit`}
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-green-500/40 px-3 py-1.5 text-sm font-semibold text-green-600 transition-colors hover:bg-green-500 hover:text-white-500"
+          >
+            <EditSvg height={18} width={18} />
+            <span className="hidden sm:inline">Edit</span>
+          </Link>
+        )}
       </div>
+
+      {/* Diet badges */}
+      <div className="mt-4 flex flex-wrap gap-2">
+        <DietBadge active={vegan} label="Vegan" />
+        <DietBadge active={vegetarian} label="Vegetarian" />
+        {isAuthor && (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-gray2-500 px-3 py-1.5 text-sm font-medium text-brownishGrey-600 dark:border-slate-600 dark:text-white-600">
+            <FontAwesomeIcon
+              icon={visibility?.public ? faEarthEurope : faLock}
+              color="var(--green)"
+            />
+            {visibility?.public ? 'Public' : 'Private'}
+          </span>
+        )}
+      </div>
+
+      {/* Meta chips */}
+      <div className="mt-3 flex flex-wrap gap-2">
+        {difficulty && <MetaChip label="Difficulty" value={difficulty} />}
+        {cuisine && <MetaChip label="Cuisine" value={cuisine} />}
+        {!!timeToCook.Prep && (
+          <MetaChip label="Prep" value={formatTime(timeToCook.Prep)} />
+        )}
+        {!!timeToCook.Cook && (
+          <MetaChip label="Cook" value={formatTime(timeToCook.Cook)} />
+        )}
+      </div>
+
+      {/* Description */}
+      {description && (
+        <div className="mt-5">
+          <h3 className="mb-1.5 text-sm font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-600">
+            Description
+          </h3>
+          <p className="text-sm leading-relaxed text-black-500 dark:text-white-500">
+            {description}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

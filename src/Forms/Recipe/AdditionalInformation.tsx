@@ -116,11 +116,12 @@ export const AdditionalInformation = () => {
   }, [popularLabelsIsFetching, popularLabelsError, popularLabelData]);
 
   return (
-    <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-6">
+    <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-5">
       {/* Labels */}
-      <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5 md:p-6">
-        <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-4 flex items-center gap-2">
-          <span className="text-green-500">04</span> Labels
+      <div className="bg-white-500 dark:bg-slate-700 rounded-xl border border-gray2-400 dark:border-slate-600 shadow-sm p-5 md:p-6">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-700 mb-4 flex items-center gap-2">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500/10 text-green-600 text-[10px] font-bold shrink-0">04</span>
+          Labels
         </h2>
         <Controller
           name="labels"
@@ -158,6 +159,13 @@ export const AdditionalInformation = () => {
                     borderRadius: '0.5rem',
                     boxShadow: 'none',
                     '&:hover': { borderColor: 'var(--green)' },
+                  }),
+                  // Kill the @tailwindcss/forms focus ring on react-select's
+                  // inner <input> (the "blue box" that appeared on focus).
+                  input: (provided) => ({
+                    ...provided,
+                    boxShadow: 'none',
+                    '& input': { boxShadow: 'none !important' },
                   }),
                   menu: (provided) => ({ ...provided, zIndex: 9999 }),
                   menuList: (provided) => ({
@@ -204,12 +212,11 @@ export const AdditionalInformation = () => {
       </div>
 
       {/* Nutrition */}
-      <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5 md:p-6">
-        <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-4 flex items-center gap-2">
-          <span className="text-green-500">05</span> Nutrition
-          <span className="text-xs font-normal text-brownishGrey-600">
-            (per serving)
-          </span>
+      <div className="bg-white-500 dark:bg-slate-700 rounded-xl border border-gray2-400 dark:border-slate-600 shadow-sm p-5 md:p-6">
+        <h2 className="text-xs font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-700 mb-4 flex items-center gap-2">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500/10 text-green-600 text-[10px] font-bold shrink-0">05</span>
+          Nutrition
+          <span className="text-xs font-normal normal-case tracking-normal text-brownishGrey-500">(per serving)</span>
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-2">
           {nutritionFields.map((field) => (

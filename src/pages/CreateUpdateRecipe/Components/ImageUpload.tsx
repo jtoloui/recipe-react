@@ -5,7 +5,6 @@ import { ChangeEvent, DragEvent, Fragment, useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 import {
-  ACCEPTED_IMAGE_TYPES,
   CreateRecipeFormData,
   createRecipeSchema,
 } from '@/Forms';
@@ -101,26 +100,25 @@ export const ImageUpload = ({ existingImage }: Props) => {
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               className={cn(
-                ' hover:cursor-pointer border-dashed border-4 border-gap-4 p-4 rounded-lg flex justify-center flex-col items-center',
-                { 'h-full': true },
-                { 'border-red-500': errors.image },
-                { 'border-gray-300': !errors.image }
+                'hover:cursor-pointer border-2 border-dashed rounded-xl p-6 flex justify-center flex-col items-center gap-2 transition-colors',
+                { 'min-h-[180px] h-full': true },
+                { 'border-red-400 bg-red-500/5': errors.image },
+                { 'border-gray2-500 dark:border-slate-600 hover:border-green-400 hover:bg-green-500/5': !errors.image }
               )}
             >
-              <CloudUpload height={24} width={24} strokeWidth={3} />
-              <span className="text-center">
-                <b>Click to upload</b> or drag and drop
+              <CloudUpload height={28} width={28} strokeWidth={2.5} />
+              <div className="text-center">
+                <p className="text-sm font-semibold text-charcoal-500 dark:text-white-500">
+                  Click to upload <span className="font-normal text-brownishGrey-600">or drag and drop</span>
+                </p>
                 {errorMessage ? (
-                  <p className="mt-4 flex justify-center text-red-500 text-sm ">
-                    {errorMessage}
-                  </p>
+                  <p className="mt-2 text-red-500 text-xs">{errorMessage}</p>
                 ) : (
-                  <p className="mt-4 text-gray-600 text-sm">
-                    Max file size: 5MB | Accepted file types:{' '}
-                    {ACCEPTED_IMAGE_TYPES.join(', ').replace(/image\//gim, '')}
+                  <p className="mt-1 text-brownishGrey-600 dark:text-white-700 text-xs">
+                    PNG, JPG, WEBP · Max 5 MB
                   </p>
                 )}
-              </span>
+              </div>
             </div>
           </Fragment>
         ) : (

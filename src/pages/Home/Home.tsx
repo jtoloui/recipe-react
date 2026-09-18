@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
-import { Card } from '@/components/Card';
+import { Card, FeaturedCard } from '@/components/Card';
 import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Chip } from '@/components/Chip';
 import { Layout } from '@/components/Layout';
@@ -145,20 +145,21 @@ export const Home = () => {
   return (
     <Layout>
       <div>
-        <div className="flex w-full">
-          <h1 className="text-2xl font-bold text-black-500 dark:text-white-500 flex-1 ">
-            Welcome
-          </h1>
-          <div className="flex justify-end items-center  flex-auto">
-            <Link
-              to={'/create-recipe'}
-              className=" border-green-500  border-2 py-1 px-[0.625rem] rounded"
-            >
-              <span className="text-green-500 text-sm font-semibold">
-                + Create Recipe
-              </span>
-            </Link>
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-black-500 dark:text-white-500 tracking-tight">
+              Discover recipes
+            </h1>
+            <p className="mt-1 text-sm text-brownishGrey-600 dark:text-white-600">
+              Browse by label or search for something to cook.
+            </p>
           </div>
+          <Link
+            to={'/create-recipe'}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-white-500 shadow-sm transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/30"
+          >
+            <span className="text-base leading-none">+</span> Create recipe
+          </Link>
         </div>
         <Carousel
           data={carouselData}
@@ -191,17 +192,28 @@ export const Home = () => {
       {size.width < 768 && searchParams.has('label') && (
         <Chip text={`Label: ${selectedCarouselCard}`} />
       )}
-      <div className="mt-4 w-full rounded-lg bg-white-500 p-5 flex gap-7 flex-wrap dark:bg-slate-600 ">
-        {recipeCardData.map((recipe) => (
-          <Card
-            key={recipe.to}
-            image={recipe.image}
-            title={recipe.title}
-            to={recipe.to}
-            ingredientsCount={recipe.ingredientsCount}
-            totalTime={recipe.totalTime}
-          />
-        ))}
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-[220px] gap-5">
+        {recipeCardData.map((recipe, index) =>
+          index === 0 ? (
+            <FeaturedCard
+              key={recipe.to}
+              image={recipe.image}
+              title={recipe.title}
+              to={recipe.to}
+              ingredientsCount={recipe.ingredientsCount}
+              totalTime={recipe.totalTime}
+            />
+          ) : (
+            <Card
+              key={recipe.to}
+              image={recipe.image}
+              title={recipe.title}
+              to={recipe.to}
+              ingredientsCount={recipe.ingredientsCount}
+              totalTime={recipe.totalTime}
+            />
+          )
+        )}
       </div>
     </Layout>
   );

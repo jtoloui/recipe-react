@@ -8,6 +8,7 @@ type Props = {
   setRemoveSearch: Dispatch<React.SetStateAction<boolean>>;
   setIsBurgerMenuOpen: Dispatch<React.SetStateAction<boolean>>;
 };
+
 export const SearchBar = ({
   handleSearch,
   showRemoveSearch,
@@ -39,87 +40,86 @@ export const SearchBar = ({
   }, 250);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    debounce(value); // Debounce side effects, not the input value update
+    debounce(e.target.value);
   };
 
   useEffect(() => {
     if (inputRef.current) {
-      // allows us to use debounce without losing the input value
       inputRef.current.value = searchParams.get('search') || '';
     }
   }, [inputRef, searchParams]);
 
   return (
     <Fragment>
-      <button>
+      {/*
+       * One rounded search pill. Icon inset-left, input fills the space,
+       * clear-X inset-right. The input carries its OWN focus styling and
+       * `shadow-none`/`ring-0` to override @tailwindcss/forms' default blue
+       * focus ring — the whole pill glows green on focus via focus-within.
+       */}
+      <div className="group relative flex items-center w-full h-10 rounded-full border border-gray2-500 dark:border-slate-600 bg-gray2-100 dark:bg-slate-700/60 transition-colors duration-150 focus-within:border-green-500 focus-within:bg-white-500 dark:focus-within:bg-slate-700 focus-within:ring-2 focus-within:ring-green-500/25">
+        {/* Magnifier — decorative */}
         <span
-          className="absolute inset-y-0 left-0 flex items-center pl-3"
-          // onClick={() => handleSearch(inputRef.current?.value || '')}
+          aria-hidden="true"
+          className="pointer-events-none absolute left-3.5 flex items-center text-brownishGrey-500 group-focus-within:text-green-500 transition-colors"
         >
-          <svg
-            className="w-4 h-4 text-gray-600"
-            viewBox="0 0 24 24"
-            fill="none"
-          >
+          <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none">
             <path
               d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
               stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="dark:stroke-white-500"
-            ></path>
+            />
           </svg>
         </span>
-      </button>
 
-      {/* // Search bar */}
-      <input
-        ref={inputRef}
-        type="text"
-        className="text-ellipsis w-full py-1 pl-10 pr-4 text-black-500 dark:text-white-500 dark:placeholder:text-white-600 placeholder:text-black-600 bg-white-500  dark:bg-slate-600 border-b border-brownGrey-500 dark:border-white-500 focus:outline-none dark:focus:border-white-500 focus:border-gray-600"
-        placeholder="Search Recipe, Profile, or Ingredients"
-        defaultValue={searchParams.get('search') || ''}
-        onChange={handleInputChange}
-        onKeyUp={(e) => {
-          if (e.key === 'Enter') {
-            setIsBurgerMenuOpen(false);
-            //     handleSearch(inputRef.current?.value || '');
-            if (e.target instanceof HTMLInputElement) {
-              e.target.blur();
+        <input
+          ref={inputRef}
+          type="text"
+          className="peer w-full h-full rounded-full border-0 bg-transparent pl-10 pr-9 text-sm text-black-500 dark:text-white-500 placeholder:text-brownishGrey-500 dark:placeholder:text-white-700 shadow-none ring-0 outline-none focus:border-0 focus:shadow-none focus:ring-0 focus:outline-none"
+          placeholder="Search recipes, ingredients…"
+          defaultValue={searchParams.get('search') || ''}
+          onChange={handleInputChange}
+          onKeyUp={(e) => {
+            if (e.key === 'Enter') {
+              setIsBurgerMenuOpen(false);
+              if (e.target instanceof HTMLInputElement) {
+                e.target.blur();
+              }
             }
-          }
-        }}
-      />
-      {showRemoveSearch && inputRef.current?.value !== '' && (
-        <button
-          className="absolute inset-y-0 right-0 flex items-center pr-3"
-          onClick={() => {
-            setSearchParams((initial) => {
-              handleSearch('');
-              setRemoveSearch(false);
-              const nextParams = new URLSearchParams(initial);
-              nextParams.delete('search');
-              return nextParams;
-            });
           }}
-        >
-          <svg
-            className="w-4 h-4 text-gray-600"
-            fill="none"
-            viewBox="0 0 24 24"
+        />
+
+        {/* Clear-X — only when there is a value */}
+        {showRemoveSearch && inputRef.current?.value !== '' && (
+          <button
+            type="button"
+            aria-label="Clear search"
+            className="absolute right-2.5 flex items-center justify-center w-6 h-6 rounded-full text-brownishGrey-600 hover:text-white-500 hover:bg-green-500 transition-colors"
+            onClick={() => {
+              setSearchParams((initial) => {
+                handleSearch('');
+                setRemoveSearch(false);
+                const nextParams = new URLSearchParams(initial);
+                nextParams.delete('search');
+                return nextParams;
+              });
+              if (inputRef.current) inputRef.current.value = '';
+            }}
           >
-            <path
-              d="M6 18L18 6M6 6l12 12"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            ></path>
-          </svg>
-        </button>
-      )}
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+              <path
+                d="M6 18L18 6M6 6l12 12"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        )}
+      </div>
     </Fragment>
   );
 };

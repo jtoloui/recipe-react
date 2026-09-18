@@ -1,36 +1,60 @@
 type LogoWithTextProps = {
   className?: string;
+  /**
+   * Surface the lockup sits on:
+   *  - 'light' (default): green bowl + amber steam, ink "just" + green "cooking"
+   *  - 'dark' / 'green': white bowl + amber steam, white wordmark
+   * The mark recolors to stay legible — never green-on-green.
+   */
+  surface?: 'light' | 'dark' | 'green';
 };
-function LogoWithText({ className }: LogoWithTextProps) {
+
+/**
+ * JustCooking horizontal lockup — the "Nest Steam" mark + "justcooking"
+ * wordmark. viewBox sized so the mark sits left of the text baseline.
+ */
+function LogoWithText({ className, surface = 'light' }: LogoWithTextProps) {
+  const bowl = surface === 'light' ? '#30BE76' : '#FFFFFF';
+  const justFill = surface === 'light' ? '#0F1F17' : '#FFFFFF';
+  const cookingFill = surface === 'green' ? '#FFFFFF' : '#30BE76';
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      height="28"
-      viewBox="-4 0 90 28"
+      height="30"
+      viewBox="0 0 210 44"
+      fill="none"
       className={className}
+      role="img"
+      aria-label="JustCooking"
     >
-      <g fill="none" fillRule="evenodd">
-        <text
-          fill="#363837"
-          fontSize="20"
-          fontWeight="bold"
-          letterSpacing="0.4"
-          transform="translate(28 4)"
-          className="dark:fill-white-500"
+      {/* Mark (Nest Steam) scaled into a 44x44 box on the left */}
+      <g transform="translate(0 -10)">
+        <g
+          fill="none"
+          stroke="#F8B449"
+          strokeWidth="3.4"
+          strokeLinecap="round"
         >
-          <tspan x="0" y="16" className="dark:text-whit">
-            toloui
-          </tspan>
-        </text>
-        <path
-          fill="#30BE76"
-          d="M14.657 24C10.571 27.837 4.06 27.726.113 23.753L14.911 9.86c3.946 3.973 3.832 10.304-.254 14.14z"
-        ></path>
-        <path
-          fill="#F8B449"
-          d="M17.685 4.053L2.887 17.947C-1.06 13.974-.946 7.643 3.14 3.807 7.227-.03 13.739.08 17.685 4.053z"
-        ></path>
+          <path d="M25 15c2.6 2.4 2.6 5.2 0 7.6" />
+          <path d="M32 12c2.9 3 2.9 6.4 0 9.4" />
+          <path d="M39 15c2.6 2.4 2.6 5.2 0 7.6" />
+        </g>
+        <path d="M12 33h40a20 18 0 0 1-40 0Z" fill={bowl} />
       </g>
+
+      {/* Wordmark */}
+      <text
+        x="60"
+        y="30"
+        fontFamily="Nunito, ui-sans-serif, system-ui, sans-serif"
+        fontSize="26"
+        fontWeight="800"
+        letterSpacing="-0.5"
+      >
+        <tspan fill={justFill}>just</tspan>
+        <tspan fill={cookingFill}>cooking</tspan>
+      </text>
     </svg>
   );
 }

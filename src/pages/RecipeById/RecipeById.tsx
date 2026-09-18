@@ -1,19 +1,57 @@
+import { faUtensils } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useLoaderData, useParams } from 'react-router-dom';
 
 import { IngredientIcon } from '@/assets/IngredientIcon';
-// import IngredientSVG from '@/assets/images/ingredients-for-cooking-svgrepo-com.svg';
-import { Image } from '@/components/Elements';
+import { Image, LogoLoader } from '@/components/Elements';
 import { Layout } from '@/components/Layout';
 import { fetchRecipeByIdQuery } from '@/queries';
-import { Ingredient } from '@/queries/types';
+import type { Nutrition } from '@/queries/types';
 
 import { type loader } from '.';
+import { CookMode } from './components/CookMode';
 import { HeaderSection } from './components/HeaderSection';
 
 type RecipeByIdParams = {
   recipeId: string;
 };
+
+const NUTRITION_FIELDS: { key: keyof Nutrition; label: string; unit: string }[] = [
+  { key: 'kcal', label: 'Calories', unit: 'kcal' },
+  { key: 'protein', label: 'Protein', unit: 'g' },
+  { key: 'fat', label: 'Fat', unit: 'g' },
+  { key: 'carbs', label: 'Carbs', unit: 'g' },
+  { key: 'fibre', label: 'Fibre', unit: 'g' },
+  { key: 'sugars', label: 'Sugar', unit: 'g' },
+  { key: 'salt', label: 'Salt', unit: 'g' },
+  { key: 'saturates', label: 'Saturates', unit: 'g' },
+];
+
+const Panel = ({
+  title,
+  children,
+  className,
+}: {
+  title?: string;
+  children: React.ReactNode;
+  className?: string;
+}) => (
+  <section
+    className={`rounded-2xl border border-gray2-400 bg-white-500 p-5 shadow-sm dark:border-slate-700 dark:bg-slate-700 ${
+      className ?? ''
+    }`}
+  >
+    {title && (
+      <h2 className="mb-4 text-lg font-bold text-black-500 dark:text-white-500">
+        {title}
+      </h2>
+    )}
+    {children}
+  </section>
+);
+
 const RecipeById = () => {
   const params = useParams<RecipeByIdParams>();
   const initialData = useLoaderData() as Awaited<
@@ -25,201 +63,160 @@ const RecipeById = () => {
     initialData,
   });
 
-  const getMarginClass = (array: Ingredient[], index: number) => {
-    // if the index is the second to last item and the array length is even, it will have no margin bottom on md and above
-    if (index === array.length - 2 && array.length % 2 === 0) {
-      return 'mb-4 md:mb-0';
-    }
-    // if the index is the first item, it will have margin bottom on below md
-    else if (index === 0) {
-      return 'mb-4';
-    }
-    // the last item always have no margin bottom
-    else if (index === array.length - 1) {
-      return 'mb-0';
-    }
-    // all other cases will have margin bottom
-    else {
-      return 'mb-4';
-    }
-  };
+  const [cookMode, setCookMode] = useState(false);
 
   if (!data) return null;
 
+  const nutrition = data.nutrition;
+  const availableNutrition = NUTRITION_FIELDS.filter(
+    (f) => nutrition && Number(nutrition[f.key])
+  );
+
   return (
     <Layout>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        {/* <!-- Box 1 --> */}
-        <div className="md:col-span-1 md:row-span-3 rounded-lg bg-white-500 dark:bg-slate-700 h-80 p-5">
-          <Image
-            src={data.image.src}
-            fallbackSrc={`https://source.unsplash.com/random/800x800/?${data?.name}-food`}
-            className="w-full h-full object-cover rounded"
-            alt={data?.name || ''}
-          />
+      {cookMode && (
+        <CookMode
+          title={data.name}
+          ingredients={data.ingredients}
+          steps={data.steps}
+          onClose={() => setCookMode(false)}
+        />
+      )}
+
+      <div className="mb-5 flex justify-end">
+        <button
+          onClick={() => setCookMode(true)}
+          className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-white-500 shadow-sm transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/40"
+        >
+          <FontAwesomeIcon icon={faUtensils} />
+          Cook mode
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        {/* Hero image — spans full width on mobile, left rail on desktop */}
+        <div className="lg:col-span-1">
+          <div className="relative h-64 overflow-hidden rounded-2xl border border-gray2-400 shadow-sm dark:border-slate-700 lg:sticky lg:top-28 lg:h-80">
+            <Image
+              src={data.image.src}
+              placeholder={<LogoLoader size={80} />}
+              className="h-full w-full object-cover"
+              alt={data?.name || ''}
+            />
+          </div>
         </div>
-        {/* <!-- Box 2 --> */}
-        <div className="md:col-span-2 rounded-lg bg-white-500 dark:bg-slate-700 p-5">
-          {/* <!-- Heading --> */}
-          {/* <!-- Description --> */}
+
+        {/* Header + ingredients */}
+        <Panel className="lg:col-span-2">
           <HeaderSection recipeId={params.recipeId || ''} {...data} />
 
-          {/* <!-- Ingredients --> */}
-          <div>
-            <h1 className="text-base font-bold text-black-500 dark:text-white-500 mb-4">
-              Ingredients
-            </h1>
-            <div className="flex">
-              <div className="flex flex-wrap w-full">
-                {data?.ingredients?.map((ingredient, index, array) => (
-                  <div
-                    className={`flex items-center text-sm text-black-500 dark:text-white-500 w-full md:w-1/2 last:mb-0 ${getMarginClass(
-                      array,
-                      index
-                    )}`}
-                    // className={`flex items-center text-sm text-black-500 dark:text-white-500 w-full md:w-1/2 last:mb-0 ${
-                    //   index === array.length - 2 &&
-                    //   array.length % 2 === 0 &&
-                    //   index !== 0
-                    //     ? 'mb-4 md:mb-0'
-                    //     : 'mb-4'
-                    // }`}
-                    key={index}
-                  >
-                    {/* <Image
-                      src={``}
-                      fallbackSrc={IngredientSVG}
-                      alt={ingredient.item}
-                      className="w-12 h-12 mr-2 rounded-full fill-green-500"
-                    /> */}
-                    <IngredientIcon className="w-8 h-8 mr-2 fill-green-500 dark:fill-white-500" />
-                    {`${ingredient.item} - ${ingredient.quantity} ${ingredient.measurement}`}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-        {/* <!--How to cook--> */}
-        <div className="md:col-start-2 md:col-span-2 rounded-lg h-fit bg-white-500 dark:bg-slate-700 p-5">
-          <h1 className="text-base font-bold mb-7 dark:text-white-500">
-            How to cook
-          </h1>
-          <div className="flex flex-wrap">
-            {data?.steps.map((step, index, array) => (
-              <div
-                className={`flex items-center text-md text-black-500 dark:text-white-500 w-full md:w-1/2 mb-4 last:mb-0 ${
-                  index === array.length - 2 &&
-                  array.length % 2 === 0 &&
-                  index !== 0
-                    ? 'mb-4 md:mb-0'
-                    : 'mb-4'
-                } ${index % 2 == 0 ? 'md:pr-4' : ''}`}
+          <h2 className="mb-4 text-lg font-bold text-black-500 dark:text-white-500">
+            Ingredients
+          </h2>
+          <ul className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2">
+            {data?.ingredients?.map((ingredient, index) => (
+              <li
                 key={index}
+                className="flex items-center gap-3 rounded-lg bg-lightBg-500 px-3 py-2 text-sm text-black-500 dark:bg-slate-600 dark:text-white-500"
               >
-                <div className="flex w-6 h-6 items-center justify-center mr-2 border-green-500 border rounded-full">
-                  <div className="text-green-500 p-2">{index + 1}</div>
-                </div>
-                {step}
-              </div>
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-subtleAccent dark:bg-slate-500">
+                  <IngredientIcon className="h-4 w-4 fill-green-600 dark:fill-white-500" />
+                </span>
+                <span>
+                  <span className="font-semibold">{ingredient.item}</span>
+                  <span className="text-brownishGrey-600 dark:text-white-600">
+                    {' '}
+                    — {ingredient.quantity} {ingredient.measurement}
+                  </span>
+                </span>
+              </li>
             ))}
-          </div>
-        </div>
-        {/* <!-- Additional Information --> */}
-        <div className="md:col-start-2 md:col-span-2 rounded-lg bg-white-500 dark:bg-slate-700 p-5">
-          <>
-            <h1 className="text-base font-bold dark:text-white-500 mb-4">
-              Additional Information
-            </h1>
-            <div className="flex gap-3 mb-2 flex-col md:flex-row">
-              <div className="flex-1">
-                <div className="mb-2 text-black-500 dark:text-white-500">
-                  Nutrition Facts
-                </div>
-                {!data?.nutrition ? (
-                  <div className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                    No nutrition facts available
-                  </div>
-                ) : (
-                  <>
-                    {data?.nutrition.kcal && (
-                      <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                        - Calories: {data?.nutrition.kcal}kcal
-                      </p>
-                    )}
-                    {data?.nutrition.protein && (
-                      <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                        - Protein: {data?.nutrition.protein}g
-                      </p>
-                    )}
-                    {data?.nutrition.fat && (
-                      <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                        - Fat: {data?.nutrition.fat}g
-                      </p>
-                    )}
+          </ul>
+        </Panel>
 
-                    {data?.nutrition.carbs && (
-                      <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                        - Carbs: {data?.nutrition.carbs}g
-                      </p>
-                    )}
+        {/* How to cook — numbered steps */}
+        <Panel title="How to cook" className="lg:col-start-2 lg:col-span-2">
+          <ol className="space-y-3">
+            {data?.steps.map((step, index) => (
+              <li
+                key={index}
+                className="flex gap-3 text-sm text-black-500 dark:text-white-500"
+              >
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green-500 text-xs font-bold text-white-500">
+                  {index + 1}
+                </span>
+                <span className="pt-1 leading-relaxed">{step}</span>
+              </li>
+            ))}
+          </ol>
+        </Panel>
 
-                    {data?.nutrition.fibre && (
-                      <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                        - Fiber: {data?.nutrition.fibre}g
-                      </p>
-                    )}
-
-                    {data?.nutrition.sugars && (
-                      <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                        - Sugar: {data?.nutrition.sugars}g
-                      </p>
-                    )}
-
-                    {data?.nutrition.salt && (
-                      <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                        - Salt: {data?.nutrition.salt}g
-                      </p>
-                    )}
-
-                    {data?.nutrition.saturates && (
-                      <p className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                        - Saturates: {data?.nutrition.saturates}g
-                      </p>
-                    )}
-                  </>
-                )}
-              </div>
-              <div className="flex-1">
-                <div className="mb-2 text-black-500 dark:text-white-500">
-                  Labels
-                </div>
-                {!data?.labels ? (
-                  <div className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                    No labels available
-                  </div>
-                ) : (
-                  <>
-                    {data?.labels.map((label, index) => (
-                      <p
-                        className="text-sm mb-2 text-brownGrey-500 dark:text-white-500"
-                        key={index}
-                      >
-                        - {label}
-                      </p>
-                    ))}
-                  </>
-                )}
-                <div className="mt-2 mb-2 text-black-500 dark:text-white-500">
-                  Portions
-                </div>
-                <div className="text-sm mb-2 text-brownGrey-500 dark:text-white-500">
-                  - Portions size: {data?.portions || 'N/A'}
-                </div>
-              </div>
+        {/* Additional info — nutrition + labels/portions */}
+        <Panel
+          title="Additional information"
+          className="lg:col-start-2 lg:col-span-2"
+        >
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Nutrition */}
+            <div>
+              <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-600">
+                Nutrition facts
+              </h3>
+              {availableNutrition.length === 0 ? (
+                <p className="text-sm text-brownishGrey-600 dark:text-white-600">
+                  No nutrition facts available
+                </p>
+              ) : (
+                <dl className="grid grid-cols-2 gap-2">
+                  {availableNutrition.map((f) => (
+                    <div
+                      key={f.key}
+                      className="rounded-lg bg-lightBg-500 p-3 dark:bg-slate-600"
+                    >
+                      <dt className="text-xs font-medium text-brownishGrey-600 dark:text-white-600">
+                        {f.label}
+                      </dt>
+                      <dd className="text-base font-bold text-black-500 dark:text-white-500">
+                        {String(nutrition![f.key])}
+                        {f.unit}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
             </div>
-          </>
-        </div>
+
+            {/* Labels + portions */}
+            <div>
+              <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-600">
+                Labels
+              </h3>
+              {!data?.labels || data.labels.length === 0 ? (
+                <p className="text-sm text-brownishGrey-600 dark:text-white-600">
+                  No labels available
+                </p>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {data.labels.map((label, index) => (
+                    <span
+                      key={index}
+                      className="rounded-full bg-subtleAccent px-3 py-1 text-sm font-medium text-green-600 dark:bg-slate-600 dark:text-white-500"
+                    >
+                      {label}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <h3 className="mb-2 mt-5 text-sm font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-600">
+                Portions
+              </h3>
+              <p className="text-sm font-medium text-black-500 dark:text-white-500">
+                {data?.portions ? `Serves ${data.portions}` : 'N/A'}
+              </p>
+            </div>
+          </div>
+        </Panel>
       </div>
     </Layout>
   );

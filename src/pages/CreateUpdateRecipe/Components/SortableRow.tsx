@@ -36,21 +36,20 @@ export const SortableRow = ({ id, children, lead }: Props) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-3 rounded-lg border px-3 py-2.5 bg-gray2-300 dark:bg-slate-700/40 ${
+      className={`flex items-center gap-2.5 rounded-lg border px-3 py-2 bg-white-500 dark:bg-slate-800/50 transition-shadow ${
         isDragging
-          ? 'border-green-500 shadow-md'
-          : 'border-brownishGrey-300 dark:border-slate-700'
+          ? 'border-green-400 shadow-lg ring-2 ring-green-500/20 opacity-90'
+          : 'border-gray2-500 dark:border-slate-600 hover:border-brownishGrey-400 dark:hover:border-slate-500 hover:shadow-sm'
       }`}
     >
       <button
         type="button"
-        className="cursor-grab touch-none px-1 min-w-[20px] text-center text-brownishGrey-600 hover:text-green-500 active:cursor-grabbing"
+        className="cursor-grab touch-none flex-shrink-0 w-6 h-6 flex items-center justify-center rounded text-brownishGrey-400 hover:text-green-500 hover:bg-green-500/10 active:cursor-grabbing transition-colors"
         {...attributes}
         {...listeners}
-        // aria-label after the spreads so dnd-kit's own attributes don't clobber it.
         aria-label="Drag to reorder"
       >
-        <FontAwesomeIcon icon={faGripVertical} />
+        <FontAwesomeIcon icon={faGripVertical} className="text-xs" />
       </button>
       {lead}
       {children}

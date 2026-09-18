@@ -1,4 +1,6 @@
-import { useFormContext } from 'react-hook-form';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
 
@@ -7,11 +9,49 @@ const fieldClass = (hasError?: boolean) =>
     hasError ? 'border-red-500' : 'border-gray2-500 dark:border-slate-600'
   }`;
 
-const labelClass = 'block text-xs font-semibold text-brownishGrey-700 dark:text-white-700 mb-1.5 uppercase tracking-wide';
+const labelClass =
+  'block text-xs font-semibold text-brownishGrey-700 dark:text-white-700 mb-1.5 uppercase tracking-wide';
 
-const sectionHeadClass = 'text-xs font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-700 mb-4 flex items-center gap-2';
+const sectionHeadClass =
+  'text-xs font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-700 mb-4 flex items-center gap-2';
 const sectionBadge = (n: string) =>
   `inline-flex items-center justify-center w-5 h-5 rounded-full bg-green-500/10 text-green-600 text-[10px] font-bold shrink-0 ${n}`;
+
+/** Diet toggle rendered as a green pill — the native checkbox is visually
+ *  hidden (sr-only) but still drives RHF + a11y; the pill fills green with a
+ *  check when active. Replaces the browser's default blue checkbox. */
+const DietToggle = ({
+  name,
+  label,
+}: {
+  name: 'vegan' | 'vegetarian';
+  label: string;
+}) => {
+  const { register, control } = useFormContext<CreateRecipeFormData>();
+  const checked = useWatch({ control, name });
+
+  return (
+    <label
+      className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-colors ${
+        checked
+          ? 'border-green-500 bg-green-500 text-white-500'
+          : 'border-gray2-500 bg-white-500 text-brownishGrey-700 hover:border-green-400 dark:border-slate-600 dark:bg-slate-700 dark:text-white-600'
+      }`}
+    >
+      <input type="checkbox" {...register(name)} className="sr-only" />
+      <span
+        className={`flex h-4 w-4 items-center justify-center rounded-full border ${
+          checked
+            ? 'border-white-500 bg-white-500/20'
+            : 'border-gray2-500 dark:border-slate-500'
+        }`}
+      >
+        {checked && <FontAwesomeIcon icon={faCheck} className="text-[9px]" />}
+      </span>
+      {label}
+    </label>
+  );
+};
 
 export const BasicInfo = () => {
   const {
@@ -196,31 +236,12 @@ export const BasicInfo = () => {
         </div>
 
         {/* Dietary flags */}
-        <div className="sm:col-span-2 flex flex-wrap gap-6 pt-1">
-          <label
-            htmlFor="vegetarian"
-            className="flex items-center gap-2 text-sm font-semibold hover:cursor-pointer"
-          >
-            <input
-              id="vegetarian"
-              type="checkbox"
-              {...register('vegetarian')}
-              className="accent-green-500 w-4 h-4"
-            />
-            Vegetarian
-          </label>
-          <label
-            htmlFor="vegan"
-            className="flex items-center gap-2 text-sm font-semibold hover:cursor-pointer"
-          >
-            <input
-              id="vegan"
-              type="checkbox"
-              {...register('vegan')}
-              className="accent-green-500 w-4 h-4"
-            />
-            Vegan
-          </label>
+        <div className="sm:col-span-2">
+          <span className={labelClass}>Dietary</span>
+          <div className="flex flex-wrap gap-3">
+            <DietToggle name="vegetarian" label="Vegetarian" />
+            <DietToggle name="vegan" label="Vegan" />
+          </div>
         </div>
       </div>
     </div>

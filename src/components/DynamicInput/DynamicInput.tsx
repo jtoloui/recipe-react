@@ -56,7 +56,17 @@ export const DynamicInput = <TFormValues extends FieldValues>({
   const errorObj = getNestedError(errors, name);
 
   return (
-    <div className="relative mb-2 mt-4 w-full">
+    <div className="mb-1 w-full">
+      <label
+        htmlFor={id}
+        className={`mb-1 block text-xs font-medium ${
+          errorObj
+            ? 'text-red-500'
+            : 'text-brownishGrey-600 dark:text-white-600'
+        }`}
+      >
+        {label}
+      </label>
       <input
         type={type}
         {...register(name, {
@@ -64,25 +74,18 @@ export const DynamicInput = <TFormValues extends FieldValues>({
         })}
         className={cn(
           inputProps.className,
-          `block w-full rounded-md border px-2.5 py-2 pt-6 text-sm bg-white-500 dark:bg-slate-700 focus:outline-none`,
+          `block w-full rounded-md border bg-white-500 px-2.5 py-2 text-sm text-black-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:bg-slate-700 dark:text-white-500`,
           {
             'border-red-500': errorObj,
-            'border-gray2-500 dark:border-slate-600 focus:border-green-500': !errorObj,
+            'border-gray2-500 focus:border-green-500 dark:border-slate-600':
+              !errorObj,
           }
         )}
         id={id}
         {...inputProps}
       />
-      <label
-        htmlFor={id}
-        className={`absolute top-0 left-2.5 mt-1 text-xs transition-all duration-300 origin-0 text-brownishGrey-600 ${
-          errorObj ? 'text-red-500' : ''
-        }`}
-      >
-        {label}
-      </label>
       {errorObj?.message && (
-        <p className="text-sm text-red-500">{errorObj?.message}</p>
+        <p className="mt-1 text-xs text-red-500">{errorObj?.message}</p>
       )}
     </div>
   );

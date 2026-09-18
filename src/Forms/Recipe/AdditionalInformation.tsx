@@ -160,6 +160,13 @@ export const AdditionalInformation = () => {
                     boxShadow: 'none',
                     '&:hover': { borderColor: 'var(--green)' },
                   }),
+                  // Kill the @tailwindcss/forms focus ring on react-select's
+                  // inner <input> (the "blue box" that appeared on focus).
+                  input: (provided) => ({
+                    ...provided,
+                    boxShadow: 'none',
+                    '& input': { boxShadow: 'none !important' },
+                  }),
                   menu: (provided) => ({ ...provided, zIndex: 9999 }),
                   menuList: (provided) => ({
                     ...provided,

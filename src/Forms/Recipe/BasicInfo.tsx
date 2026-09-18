@@ -2,6 +2,13 @@ import { useFormContext } from 'react-hook-form';
 
 import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
 
+const fieldClass = (hasError?: boolean) =>
+  `w-full rounded-lg border bg-white-500 dark:bg-slate-700 px-3 py-2.5 text-sm focus:outline-none focus:border-green-500 ${
+    hasError ? 'border-red-500' : 'border-gray2-500 dark:border-slate-600'
+  }`;
+
+const labelClass = 'block text-xs font-bold text-brownishGrey-600 mb-1';
+
 export const BasicInfo = () => {
   const {
     register,
@@ -9,235 +16,206 @@ export const BasicInfo = () => {
   } = useFormContext<CreateRecipeFormData>();
 
   return (
-    <div className="border-b border-gray2-500 mb-4">
-      <div className="flex mb-6">
-        <div className="w-full">
-          <div className="flex">
-            <div className="relative mb-2 w-full">
-              <input
-                type="text"
-                {...register('recipeName')}
-                className={`block w-full px-0 pt-4 pb-1 border-0 border-b focus:ring-0 focus:border-black focus:outline-none ${
-                  errors.recipeName ? 'border-red-500' : 'border-green-500'
-                }`}
-                placeholder=" "
-                id="recipeName"
-              />
-              <label
-                htmlFor="recipeName"
-                className={`absolute top-0 transition-all duration-300 origin-0 pt-[.9rem] ${
-                  errors.recipeName ? 'text-red-500' : ''
-                }`}
-              >
-                Recipe Name
-              </label>
-              {errors.recipeName && (
-                <p className="text-sm text-red-500">
-                  {errors.recipeName.message}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="flex gap-3 mb-2 flex-wrap">
-            {/* Visibility */}
-            <div className="w-full md:flex-1">
-              <div className="text-sm mb-6">
-                <div className={`relative ${errors.visibility ? '' : ''}`}>
-                  <select
-                    {...register('visibility')}
-                    id="visibility"
-                    className={`block w-full px-0 pt-4 pb-3 border-0 border-b focus:ring-0 focus:border-black focus:outline-none ${
-                      errors.visibility
-                        ? 'border-red-500 text-red-500'
-                        : 'border-green-500'
-                    }`}
-                  >
-                    <option value="" hidden>
-                      Select Visibility
-                    </option>
-                    <option value="public">Public</option>
-                    <option value="private">Private</option>
-                  </select>
-                  {errors.visibility && (
-                    <p className="text-sm text-red-500">
-                      {errors.visibility.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-3 mb-2 flex-wrap">
-            {/* //info */}
-            <div className="w-full md:flex-1">
-              <p className="mb-2 text-lg text-black-500 dark:text-white-500">
-                Info
-              </p>
-              <div className="text-sm  mb-6 ">
-                <div className={`relative ${errors.difficulty ? '' : ''}`}>
-                  <select
-                    {...register('difficulty')}
-                    id="difficulty"
-                    className={`block w-full px-0 pt-4 pb-3 border-0 border-b focus:ring-0 focus:border-black focus:outline-none ${
-                      errors.difficulty
-                        ? 'border-red-500 text-red-500'
-                        : 'border-green-500'
-                    }`}
-                  >
-                    <option value="" hidden>
-                      Select Difficulty
-                    </option>
-                    <option value="Easy">Easy</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Hard">Hard</option>
-                  </select>
-                  {errors.difficulty && (
-                    <p className="text-sm text-red-500">
-                      {errors.difficulty.message}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div>
-                <div className="relative mb-2">
-                  <input
-                    type="text"
-                    {...register('cuisine')}
-                    className={`block w-full px-0 pt-4 pb-1 border-0 border-b focus:ring-0 focus:border-black focus:outline-none ${
-                      errors.cuisine ? 'border-red-500' : 'border-green-500'
-                    }`}
-                    placeholder=" "
-                    id="cuisine"
-                  />
-                  <label
-                    htmlFor="cuisine"
-                    className={`absolute top-0 transition-all duration-300 origin-0 pt-[.9rem] ${
-                      errors.cuisine ? 'text-red-500' : ''
-                    }`}
-                  >
-                    Cuisine
-                  </label>
-                  {errors.cuisine && (
-                    <p className="text-sm text-red-500">
-                      {errors.cuisine.message}
-                    </p>
-                  )}
-                </div>
-              </div>
+    <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5 md:p-6">
+      <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-4 flex items-center gap-2">
+        <span className="text-green-500">01</span> Basics
+      </h2>
 
-              <div className="flex items-center space-x-4">
-                <label
-                  className="inline-block hover:cursor-pointer w-24"
-                  htmlFor="vegan"
-                >
-                  Vegan
-                </label>
-                <input
-                  {...register('vegan')}
-                  className="relative float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-green-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-green-500 checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
-                  type="checkbox"
-                  value=""
-                  id="vegan"
-                />
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <label
-                  className="inline-block hover:cursor-pointer w-24"
-                  htmlFor="vegetarian"
-                >
-                  Vegetarian
-                </label>
-                <input
-                  {...register('vegetarian')}
-                  className="relative float-left -ml-[1.5rem] mr-[6px] mt-[0.15rem] h-[1.125rem] w-[1.125rem] appearance-none rounded-[0.25rem] border-[0.125rem] border-solid border-green-300 outline-none before:pointer-events-none before:absolute before:h-[0.875rem] before:w-[0.875rem] before:scale-0 before:rounded-full before:bg-transparent before:opacity-0 before:shadow-[0px_0px_0px_13px_transparent] before:content-[''] checked:border-primary checked:bg-primary checked:before:opacity-[0.16] checked:after:absolute checked:after:-mt-px checked:after:ml-[0.25rem] checked:after:block checked:after:h-[0.8125rem] checked:after:w-[0.375rem] checked:after:rotate-45 checked:after:border-[0.125rem] checked:after:border-green-500 checked:after:border-l-0 checked:after:border-t-0 checked:after:border-solid checked:after:border-white checked:after:bg-transparent checked:after:content-[''] hover:cursor-pointer hover:before:opacity-[0.04] hover:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:shadow-none focus:transition-[border-color_0.2s] focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[0px_0px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-[0.875rem] focus:after:w-[0.875rem] focus:after:rounded-[0.125rem] focus:after:content-[''] checked:focus:before:scale-100 checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] checked:focus:after:-mt-px checked:focus:after:ml-[0.25rem] checked:focus:after:h-[0.8125rem] checked:focus:after:w-[0.375rem] checked:focus:after:rotate-45 checked:focus:after:rounded-none checked:focus:after:border-[0.125rem] checked:focus:after:border-l-0 checked:focus:after:border-t-0 checked:focus:after:border-solid checked:focus:after:border-white checked:focus:after:bg-transparent dark:border-neutral-600 dark:checked:border-primary dark:checked:bg-primary dark:focus:before:shadow-[0px_0px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[0px_0px_0px_13px_#3b71ca]"
-                  type="checkbox"
-                  value=""
-                  id="vegetarian"
-                />
-              </div>
-            </div>
-
-            {/* //cooking times */}
-            <div className="text-lg text-black-500 dark:text-white-500 w-full md:flex-1">
-              <p className=" mb-2">Cooking times</p>
-              <div
-                className={`relative mb-6 ${
-                  errors.prepTime ? '' : 'mb-[1.25rem]'
-                }`}
-              >
-                <input
-                  {...register('prepTime', {
-                    setValueAs: (value) => parseFloat(value),
-                  })}
-                  className={`block w-full px-0 pt-4 pb-[.15rem] border-0 border-b focus:ring-0 focus:border-black custom-focus focus:outline-none ${
-                    errors.prepTime ? 'border-red-500' : 'border-green-500'
-                  }`}
-                  type="number"
-                  placeholder=" "
-                  id="prepTime"
-                />
-                <label
-                  htmlFor="prepTime"
-                  className={`absolute top-0 transition-all duration-300 origin-0 mt-4 text-base ${
-                    errors.prepTime ? 'text-red-500' : ''
-                  }`}
-                >
-                  Preparation Time (±)
-                </label>
-                {errors.prepTime && (
-                  <p className="text-sm text-red-500">
-                    {errors.prepTime.message}
-                  </p>
-                )}
-              </div>
-              <div className="relative mb-2">
-                <input
-                  type="number"
-                  {...register('cookTime', {
-                    setValueAs: (value) => parseFloat(value),
-                  })}
-                  className={`block w-full px-0 pt-4 pb-1 border-0 border-b focus:ring-0 focus:border-black focus:outline-none ${
-                    errors.cookTime ? 'border-red-500' : 'border-green-500'
-                  }`}
-                  placeholder=" "
-                  id="cookTime"
-                  style={{ height: '45px' }}
-                />
-                <label
-                  htmlFor="co"
-                  className={`absolute top-0 transition-all duration-300 origin-0 pt-[.9rem] text-base ${
-                    errors.cookTime ? 'text-red-500' : ''
-                  }`}
-                >
-                  Cooking Time (±)
-                </label>
-                {errors.cookTime && (
-                  <p className="text-sm text-red-500">
-                    {errors.cookTime.message}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
-          {/* // description */}
-          <div className="text-lg text-black-500 dark:text-white-500 ">
-            <h3 className="mb-2 text-xl">Description</h3>
-            <p className="text-sm font-normal">
-              <textarea
-                {...register('recipeDescription')}
-                placeholder="Recipe Description"
-                wrap="soft"
-                rows={3}
-                className="border-0 border-b border-green-500 px-3 py-2 w-full focus:outline-none"
-              />
-              {errors.recipeDescription && (
-                <span className="text-red-500 text-sm">
-                  {errors.recipeDescription.message}
-                </span>
-              )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {/* Recipe name */}
+        <div className="sm:col-span-2">
+          <label htmlFor="recipeName" className={labelClass}>
+            Recipe name
+          </label>
+          <input
+            id="recipeName"
+            type="text"
+            {...register('recipeName')}
+            placeholder="e.g. Charred Corn Tacos"
+            className={fieldClass(!!errors.recipeName)}
+          />
+          {errors.recipeName && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.recipeName.message}
             </p>
-          </div>
+          )}
+        </div>
+
+        {/* Description */}
+        <div className="sm:col-span-2">
+          <label htmlFor="recipeDescription" className={labelClass}>
+            Description
+          </label>
+          <textarea
+            id="recipeDescription"
+            {...register('recipeDescription')}
+            placeholder="A short, tempting summary of the dish"
+            rows={2}
+            className={`${fieldClass(!!errors.recipeDescription)} resize-y`}
+          />
+          {errors.recipeDescription && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.recipeDescription.message}
+            </p>
+          )}
+        </div>
+
+        {/* Cuisine */}
+        <div>
+          <label htmlFor="cuisine" className={labelClass}>
+            Cuisine
+          </label>
+          <input
+            id="cuisine"
+            type="text"
+            {...register('cuisine')}
+            placeholder="e.g. Mexican"
+            className={fieldClass(!!errors.cuisine)}
+          />
+          {errors.cuisine && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.cuisine.message}
+            </p>
+          )}
+        </div>
+
+        {/* Portion size */}
+        <div>
+          <label htmlFor="portionSize" className={labelClass}>
+            Portion size (people)
+          </label>
+          <input
+            id="portionSize"
+            type="number"
+            {...register('portionSize', {
+              // Whole-person count; matches the parseInt used on the load path.
+              setValueAs: (value) => parseInt(value, 10),
+            })}
+            placeholder="4"
+            className={fieldClass(!!errors.portionSize)}
+          />
+          {errors.portionSize && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.portionSize.message}
+            </p>
+          )}
+        </div>
+
+        {/* Difficulty */}
+        <div>
+          <label htmlFor="difficulty" className={labelClass}>
+            Difficulty
+          </label>
+          <select
+            id="difficulty"
+            {...register('difficulty')}
+            className={fieldClass(!!errors.difficulty)}
+          >
+            <option value="" hidden>
+              Select difficulty
+            </option>
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+          {errors.difficulty && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.difficulty.message}
+            </p>
+          )}
+        </div>
+
+        {/* Visibility */}
+        <div>
+          <label htmlFor="visibility" className={labelClass}>
+            Visibility
+          </label>
+          <select
+            id="visibility"
+            {...register('visibility')}
+            className={fieldClass(!!errors.visibility)}
+          >
+            <option value="" hidden>
+              Select visibility
+            </option>
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+          </select>
+          {errors.visibility && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.visibility.message}
+            </p>
+          )}
+        </div>
+
+        {/* Prep time */}
+        <div>
+          <label htmlFor="prepTime" className={labelClass}>
+            Prep time (minutes)
+          </label>
+          <input
+            id="prepTime"
+            type="number"
+            {...register('prepTime', {
+              setValueAs: (value) => parseFloat(value),
+            })}
+            placeholder="15"
+            className={fieldClass(!!errors.prepTime)}
+          />
+          {errors.prepTime && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.prepTime.message}
+            </p>
+          )}
+        </div>
+
+        {/* Cook time */}
+        <div>
+          <label htmlFor="cookTime" className={labelClass}>
+            Cook time (minutes)
+          </label>
+          <input
+            id="cookTime"
+            type="number"
+            {...register('cookTime', {
+              setValueAs: (value) => parseFloat(value),
+            })}
+            placeholder="20"
+            className={fieldClass(!!errors.cookTime)}
+          />
+          {errors.cookTime && (
+            <p className="text-xs text-red-500 mt-1">
+              {errors.cookTime.message}
+            </p>
+          )}
+        </div>
+
+        {/* Dietary flags */}
+        <div className="sm:col-span-2 flex flex-wrap gap-6 pt-1">
+          <label
+            htmlFor="vegetarian"
+            className="flex items-center gap-2 text-sm font-semibold hover:cursor-pointer"
+          >
+            <input
+              id="vegetarian"
+              type="checkbox"
+              {...register('vegetarian')}
+              className="accent-green-500 w-4 h-4"
+            />
+            Vegetarian
+          </label>
+          <label
+            htmlFor="vegan"
+            className="flex items-center gap-2 text-sm font-semibold hover:cursor-pointer"
+          >
+            <input
+              id="vegan"
+              type="checkbox"
+              {...register('vegan')}
+              className="accent-green-500 w-4 h-4"
+            />
+            Vegan
+          </label>
         </div>
       </div>
     </div>

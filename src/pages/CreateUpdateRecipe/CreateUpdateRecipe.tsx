@@ -180,6 +180,18 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
   const submitText = formType === 'create' ? 'Create recipe' : 'Update recipe';
   const pageTitle = formType === 'create' ? 'Create recipe' : 'Edit recipe';
 
+  // Back/Cancel must NOT use navigate(-1): right after login the previous
+  // history entry is /login (or /welcome), so history-back kicks the user
+  // back to the auth screen. Go to a stable destination instead — the recipe
+  // detail in edit mode, home in create mode.
+  const handleBack = () => {
+    if (formType === 'update' && params.recipeId) {
+      navigate(`/recipe/${params.recipeId}`);
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <Layout>
       <FormProvider {...methods}>
@@ -193,7 +205,7 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
             <div className="flex items-center gap-3 min-w-0">
               <button
                 type="button"
-                onClick={() => navigate(-1)}
+                onClick={handleBack}
                 className="shrink-0 flex items-center gap-1.5 text-sm font-semibold text-brownishGrey-600 hover:text-green-500 transition-colors"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
@@ -253,7 +265,7 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
               <div className="flex items-center gap-2 ml-auto">
                 <button
                   type="button"
-                  onClick={() => navigate(-1)}
+                  onClick={handleBack}
                   className="px-4 py-2 rounded-lg border border-gray2-500 dark:border-slate-600 text-brownishGrey-700 dark:text-white-600 bg-white-500 dark:bg-slate-700 hover:border-green-400 hover:text-green-600 font-semibold text-sm transition-colors"
                 >
                   Cancel

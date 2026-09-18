@@ -1,4 +1,8 @@
-import { faEarthEurope, faLock } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEarthEurope,
+  faLeaf,
+  faLock,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
@@ -37,12 +41,14 @@ const MetaChip = ({
   </div>
 );
 
-/** Diet badge — green "Vegan"/"Vegetarian" pill when true, muted "Not …" when
- *  false, so it reads as a label rather than a bare tick/cross. */
+/** Diet badge — green "Vegan"/"Vegetarian" pill with a leaf icon when true,
+ *  muted "Not …" pill when false, so it reads as a label rather than a bare
+ *  tick/cross. */
 const DietBadge = ({ active, label }: { active?: boolean; label: string }) =>
   active ? (
-    <span className="inline-flex items-center gap-1 rounded-full bg-green-500 px-3 py-1.5 text-sm font-semibold text-white-500">
-      🌱 {label}
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500 px-3 py-1.5 text-sm font-semibold text-white-500">
+      <FontAwesomeIcon icon={faLeaf} size="sm" />
+      {label}
     </span>
   ) : (
     <span className="inline-flex items-center gap-1 rounded-full border border-gray2-500 px-3 py-1.5 text-sm font-medium text-brownishGrey-600 dark:border-slate-600 dark:text-white-600">

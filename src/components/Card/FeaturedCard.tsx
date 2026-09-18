@@ -1,3 +1,5 @@
+import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
 
 import { Image, LogoLoader } from '@/components/Elements';
@@ -43,8 +45,9 @@ export const FeaturedCard = ({
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
       {/* Featured badge */}
-      <span className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white-500 shadow">
-        ★ Featured
+      <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white-500 shadow">
+        <FontAwesomeIcon icon={faStar} size="sm" />
+        Featured
       </span>
 
       {/* Overlaid content */}

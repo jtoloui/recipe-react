@@ -1,0 +1,239 @@
+@import 'tailwindcss';
+
+/* Form control resets — v4 loads plugins from CSS instead of the JS config. */
+@plugin '@tailwindcss/forms';
+
+/*
+ * Preserve the v3 `darkMode: 'selector'` behaviour: `dark:` utilities activate
+ * only under an ancestor carrying the `.dark` class (not via prefers-color-scheme).
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * CSS-first theme ported from the old tailwind.config.js `theme.extend` block.
+ * v4 keeps its built-in defaults and layers these on top (extend semantics), so
+ * shades we don't redefine (e.g. green-50/950) still fall back to v4 defaults.
+ */
+@theme {
+  /* Brand font — Nunito, faces declared via @font-face below */
+  --font-sans:
+    'Nunito', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* CSS-variable colour aliases (resolve to the :root vars defined below) */
+  --color-subtleAccent: var(--subtle-accent);
+  --color-modalOverlay: var(--modal-overlay);
+  --color-recipeCardHeader: var(--recipe-card-header);
+
+  --color-green-100: #d6f2e4;
+  --color-green-200: #ace5c8;
+  --color-green-300: #83d8ad;
+  --color-green-400: #59cb91;
+  --color-green-500: #30be76;
+  --color-green-600: #26985e;
+  --color-green-700: #1d7247;
+  --color-green-800: #134c2f;
+  --color-green-900: #0a2618;
+
+  --color-mainColor2-100: #fef0db;
+  --color-mainColor2-200: #fce1b6;
+  --color-mainColor2-300: #fbd292;
+  --color-mainColor2-400: #f9c36d;
+  --color-mainColor2-500: #f8b449;
+  --color-mainColor2-600: #c6903a;
+  --color-mainColor2-700: #956c2c;
+  --color-mainColor2-800: #63481d;
+  --color-mainColor2-900: #32240f;
+
+  --color-charcoal-100: #d7d7d7;
+  --color-charcoal-200: #afafaf;
+  --color-charcoal-300: #868887;
+  --color-charcoal-400: #5e605f;
+  --color-charcoal-500: #363837;
+  --color-charcoal-600: #2b2d2c;
+  --color-charcoal-700: #202221;
+  --color-charcoal-800: #161616;
+  --color-charcoal-900: #0b0b0b;
+
+  --color-black2-100: #e4e4e4;
+  --color-black2-200: #c8c8c8;
+  --color-black2-300: #adadad;
+  --color-black2-400: #919191;
+  --color-black2-500: #767676;
+  --color-black2-600: #5e5e5e;
+  --color-black2-700: #474747;
+  --color-black2-800: #2f2f2f;
+  --color-black2-900: #181818;
+
+  --color-brownGrey-100: #eeeeee;
+  --color-brownGrey-200: #dcdcdc;
+  --color-brownGrey-300: #cbcbcb;
+  --color-brownGrey-400: #b9b9b9;
+  --color-brownGrey-500: #a8a8a8;
+  --color-brownGrey-600: #868686;
+  --color-brownGrey-700: #656565;
+  --color-brownGrey-800: #434343;
+  --color-brownGrey-900: #222222;
+
+  --color-gray1-100: #f5f5f5;
+  --color-gray1-200: #ebebeb;
+  --color-gray1-300: #e0e0e0;
+  --color-gray1-400: #d6d6d6;
+  --color-gray1-500: #cccccc;
+  --color-gray1-600: #a3a3a3;
+  --color-gray1-700: #7a7a7a;
+  --color-gray1-800: #525252;
+  --color-gray1-900: #292929;
+
+  --color-gray2-100: #fafafa;
+  --color-gray2-200: #f5f5f5;
+  --color-gray2-300: #f0f0f0;
+  --color-gray2-400: #ebebeb;
+  --color-gray2-500: #e6e6e6;
+  --color-gray2-600: #b8b8b8;
+  --color-gray2-700: #8a8a8a;
+  --color-gray2-800: #5c5c5c;
+  --color-gray2-900: #2e2e2e;
+
+  --color-red-100: #fedbe3;
+  --color-red-200: #fcb6c6;
+  --color-red-300: #fb92aa;
+  --color-red-400: #f96d8d;
+  --color-red-500: #f84971;
+  --color-red-600: #c63a5a;
+  --color-red-700: #952c44;
+  --color-red-800: #631d2d;
+  --color-red-900: #320f17;
+
+  --color-lightBg-100: #fdfefe;
+  --color-lightBg-200: #fcfcfd;
+  --color-lightBg-300: #fafbfc;
+  --color-lightBg-400: #f9f9fb;
+  --color-lightBg-500: #f7f8fa;
+  --color-lightBg-600: #c6c6c8;
+  --color-lightBg-700: #949596;
+  --color-lightBg-800: #636364;
+  --color-lightBg-900: #313232;
+
+  --color-brownishGrey-100: #eeeeee;
+  --color-brownishGrey-200: #dcdcdc;
+  --color-brownishGrey-300: #cbcbcb;
+  --color-brownishGrey-400: #b9b9b9;
+  --color-brownishGrey-500: #a8a8a8;
+  --color-brownishGrey-600: #868686;
+  --color-brownishGrey-700: #656565;
+  --color-brownishGrey-800: #434343;
+  --color-brownishGrey-900: #222222;
+
+  --color-black-100: #cdcfce;
+  --color-black-200: #9a9f9d;
+  --color-black-300: #686f6b;
+  --color-black-400: #353f3a;
+  --color-black-500: #030f09;
+  --color-black-600: #020c07;
+  --color-black-700: #020905;
+  --color-black-800: #010604;
+  --color-black-900: #010302;
+
+  --color-white-100: #ffffff;
+  --color-white-200: #ffffff;
+  --color-white-300: #ffffff;
+  --color-white-400: #ffffff;
+  --color-white-500: #ffffff;
+  --color-white-600: #cccccc;
+  --color-white-700: #999999;
+  --color-white-800: #666666;
+  --color-white-900: #333333;
+
+  /* Custom spacing overrides (v3 kept default scale but redefined 5 and 12) */
+  --spacing-5: 1.313rem;
+  --spacing-12: 3.188rem;
+
+  /* Custom font-size / line-height tokens */
+  --text-custom: 1rem;
+  --leading-custom: 1.31;
+}
+
+:root {
+  --green: #30be76;
+  --main-color-2: #f8b449;
+  --subtle-accent: rgba(48, 190, 118, 0.2);
+  --black: #030f09;
+  --charcoal: #363837;
+  --black-2: #767676;
+  --white: #fff;
+  --brown-grey: #a8a8a8;
+  --gray-1: #ccc;
+  --gray-2: #e6e6e6;
+  --red: #f84971;
+  --light-bg: #f7f8fa;
+  --modal-overlay: rgba(40, 41, 40, 0.4);
+  --recipe-card-header: rgba(255, 255, 255, 0.95);
+  --brownish-grey: #606060;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: local('../assets/fonts/Nunito-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: local('../assets/fonts/Nunito-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: local('../assets/fonts/Nunito-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: local('../assets/fonts/Nunito-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: local('../assets/fonts/Nunito-ExtraLight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: local('../assets/fonts/Nunito-ExtraLight.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-stretch: normal;
+}
+
+input:not(:placeholder-shown) + label,
+input:focus + label {
+  transform: translateY(-100%);
+  font-size: 0.7rem;
+}
+
+input[type='text'] {
+  @apply text-base;
+}
+input[type='number'] {
+  font-size: 16px;
+}
+
+input:focus {
+  outline: none;
+}

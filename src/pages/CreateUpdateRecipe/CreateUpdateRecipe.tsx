@@ -204,12 +204,12 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
           {/* Workspace */}
           <div className="pb-24 space-y-6">
             {/* Cover + Basics */}
-            <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)] gap-6">
+            <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)] gap-6 items-stretch">
               <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5">
-                <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-3">
-                  Cover photo
+                <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-3 flex items-center gap-2">
+                  <span className="text-green-500">00</span> Cover photo
                 </h2>
-                <div className="min-h-72">
+                <div className="h-full">
                   <ImageUpload
                     {...(formType === 'update'
                       ? { existingImage: updatedFormData?.image.src }

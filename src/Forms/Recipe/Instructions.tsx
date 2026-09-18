@@ -1,7 +1,24 @@
+import {
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
-import { Button } from '@/components/Button';
+
+import { SortableRow } from '../../pages/CreateUpdateRecipe/Components/SortableRow';
 
 export const Instructions = () => {
   const {
@@ -14,60 +31,97 @@ export const Instructions = () => {
     fields: stepFields,
     append: appendStep,
     remove: removeStep,
+    move: moveStep,
   } = useFieldArray({ control, name: 'steps' });
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      const oldIndex = stepFields.findIndex((f) => f.id === active.id);
+      const newIndex = stepFields.findIndex((f) => f.id === over.id);
+      if (oldIndex !== -1 && newIndex !== -1) moveStep(oldIndex, newIndex);
+    }
+  };
+
   return (
-    <div className="md:col-start-2 md:col-span-2 rounded-lg h-fit bg-white-500 dark:bg-slate-700 p-5">
-      <h1 className="text-base font-bold mb-7 dark:text-white-500">
-        How to cook
-      </h1>
+    <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5 md:p-6">
+      <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-4 flex items-center gap-2">
+        <span className="text-green-500">03</span> Method
+      </h2>
 
-      <div className="flex flex-col space-y-4 overflow-auto">
-        {stepFields.map((field, index) => (
-          <div
-            key={field.id}
-            className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 flex-wrap"
-          >
-            <div className="flex flex-col flex-grow lg:flex-basis-0">
-              <input
-                {...register(`steps.${index}.step`)}
-                placeholder={`e.g. Step ${index + 1}`}
-                className={`border-b px-3 py-2 ${
-                  errors.steps && errors.steps[index]
-                    ? 'border-red-500'
-                    : 'border-green-500'
-                }`}
-                defaultValue={field.step}
-              />
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext
+          items={stepFields.map((f) => f.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          <div className="space-y-2">
+            {stepFields.map((field, index) => (
+              <SortableRow
+                key={field.id}
+                id={field.id}
+                lead={
+                  <span className="shrink-0 w-6 h-6 rounded-full bg-green-500 text-white-500 text-xs font-bold grid place-items-center">
+                    {index + 1}
+                  </span>
+                }
+              >
+                <div className="flex flex-1 flex-col">
+                  <textarea
+                    {...register(`steps.${index}.step`)}
+                    placeholder={`Describe step ${index + 1}`}
+                    rows={2}
+                    defaultValue={field.step}
+                    className={`w-full resize-y rounded-md border bg-white-500 dark:bg-slate-700 px-2.5 py-2 text-sm focus:outline-none focus:border-green-500 ${
+                      errors.steps?.[index]
+                        ? 'border-red-500'
+                        : 'border-gray2-500 dark:border-slate-600'
+                    }`}
+                  />
+                  {errors.steps?.[index] && (
+                    <span className="text-red-500 text-xs mt-0.5">
+                      {errors.steps[index]?.step?.message}
+                    </span>
+                  )}
+                </div>
 
-              {errors.steps && errors.steps[index] && (
-                <span className="text-red-500 text-sm">
-                  {errors.steps[index]?.step?.message}
-                </span>
-              )}
-            </div>
-
-            <div>
-              <Button
-                variant="cancelOutline"
-                onClick={() => removeStep(index)}
-                text="Remove"
-                type="button"
-              />
-            </div>
+                <button
+                  type="button"
+                  aria-label="Remove step"
+                  onClick={() => removeStep(index)}
+                  className="shrink-0 self-start px-1.5 text-lg leading-none text-brownishGrey-600 hover:text-red-500"
+                >
+                  <FontAwesomeIcon icon={faXmark} />
+                </button>
+              </SortableRow>
+            ))}
           </div>
-        ))}
+        </SortableContext>
+      </DndContext>
 
-        <Button
-          variant="secondary"
-          onClick={() => appendStep({ step: '' })}
-          text="Add Step"
-          type="button"
-        />
+      <button
+        type="button"
+        onClick={() => appendStep({ step: '' })}
+        className="mt-3 w-full rounded-lg border-2 border-dashed border-green-300 py-2 text-sm font-semibold text-green-600 hover:border-green-500 hover:bg-subtleAccent transition"
+      >
+        + Add step
+      </button>
 
-        {errors.steps && (
-          <span className="text-red-500 text-sm">{errors.steps.message}</span>
-        )}
-      </div>
+      {errors.steps && !Array.isArray(errors.steps) && (
+        <span className="text-red-500 text-sm mt-2 block">
+          {errors.steps.message}
+        </span>
+      )}
     </div>
   );
 };

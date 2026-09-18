@@ -80,7 +80,6 @@ const formDefaultValues = (
       setValue('image', file);
     });
 
-  // setValue('image', data.imageSrc);
   setValue('recipeName', data.name);
   setValue('recipeDescription', data.description);
   setValue('vegetarian', data.vegetarian);
@@ -138,7 +137,7 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
     data: createRecipeData,
     isError: createRecipeIsError,
     isSuccess: createRecipeIsSuccess,
-    // isIdle: createRecipeIsIdle,
+    isPending: createRecipeIsPending,
     mutate: createRecipeMutate,
   } = useMutation({
     mutationFn: (data: CreateRecipeFormData) => {
@@ -178,37 +177,78 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
     }
   }, [createRecipeIsSuccess, createRecipeIsError, createRecipeData, navigate]);
 
+  const submitText = formType === 'create' ? 'Create recipe' : 'Update recipe';
+  const pageTitle = formType === 'create' ? 'Create recipe' : 'Edit recipe';
+
   return (
     <Layout>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit, onError)}>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {/* <!-- Box 1 --> */}
-            <div className="md:col-span-1 md:row-span-3 rounded-lg bg-white-500 dark:bg-slate-700 h-80 p-5">
-              <ImageUpload
-                {...(formType === 'update'
-                  ? { existingImage: updatedFormData?.image.src }
-                  : {})}
-              />
+          {/* Sticky header */}
+          <header className="sticky top-0 z-20 -mx-5 md:-mx-8 px-5 md:px-8 py-3 mb-6 bg-white-500/90 dark:bg-slate-800/90 backdrop-blur border-b border-gray2-400 dark:border-slate-700 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="text-brownishGrey-600 hover:text-green-500 flex items-center gap-1 text-sm font-semibold"
+              >
+                ← Back
+              </button>
+              <span className="h-5 w-px bg-gray2-500 dark:bg-slate-600" />
+              <h1 className="text-lg md:text-xl font-bold text-black-500 dark:text-white-500">
+                {pageTitle}
+              </h1>
             </div>
+          </header>
 
-            {/* <!-- Box 2 --> */}
-            <div className="md:col-span-2 rounded-lg bg-white-500 dark:bg-slate-700 p-5">
-              {/* <!-- Heading --> */}
+          {/* Workspace */}
+          <div className="pb-24 space-y-6">
+            {/* Cover + Basics */}
+            <section className="grid grid-cols-1 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,1.85fr)] gap-6">
+              <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5">
+                <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-3">
+                  Cover photo
+                </h2>
+                <div className="min-h-72">
+                  <ImageUpload
+                    {...(formType === 'update'
+                      ? { existingImage: updatedFormData?.image.src }
+                      : {})}
+                  />
+                </div>
+              </div>
+
               <BasicInfo />
+            </section>
 
-              {/* <!-- Ingredients --> */}
+            {/* Ingredients | Method */}
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
               <Ingredients />
-            </div>
-            {/* <!--How to cook--> */}
-            <Instructions />
+              <Instructions />
+            </section>
 
-            {/* <!-- Additional Information --> */}
-            <AdditionalInformation
-              submitText={
-                formType === 'create' ? 'Create Recipe' : 'Update Recipe'
-              }
-            />
+            {/* Labels + Nutrition */}
+            <AdditionalInformation />
+          </div>
+
+          {/* Sticky save bar */}
+          <div className="fixed bottom-0 inset-x-0 z-20 bg-white-500/95 dark:bg-slate-800/95 backdrop-blur border-t border-gray2-400 dark:border-slate-700">
+            <div className="w-full px-5 md:px-8 py-3 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => navigate(-1)}
+                className="px-5 py-2 rounded-lg shadow-md border-2 border-green-500 text-green-600 bg-white-500 dark:bg-slate-700 hover:bg-green-500 hover:text-white-500 font-bold text-sm transition"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={createRecipeIsPending}
+                className="px-5 py-2 rounded-lg shadow-md border-2 border-green-500 bg-green-500 text-white-500 hover:bg-white-500 hover:text-green-600 font-bold text-sm transition disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                {createRecipeIsPending ? 'Saving…' : submitText}
+              </button>
+            </div>
           </div>
         </form>
       </FormProvider>

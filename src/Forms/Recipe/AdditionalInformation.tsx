@@ -4,7 +4,6 @@ import { Options, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
 import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
-import { Button } from '@/components/Button';
 import {
   DynamicInput,
   DynamicInputProps,
@@ -70,23 +69,15 @@ const nutritionFields: DynamicInputProps<CreateRecipeFormData>[] = [
   },
 ];
 
-type Props = {
-  submitText?: string;
-};
-
-export const AdditionalInformation = ({
-  submitText = 'Create Recipe',
-}: Props) => {
+export const AdditionalInformation = () => {
   const [selectedLabelOption, setSelectedLabelOption] = useState<
     Options<{ value: string; label: string }>
   >([]);
 
   const [labelValues, setLabelValues] = useState<
-    Options<{
-      value: string;
-      label: string;
-    }>
+    Options<{ value: string; label: string }>
   >([]);
+
   const {
     formState: { errors },
     control,
@@ -97,11 +88,9 @@ export const AdditionalInformation = ({
 
   useEffect(() => {
     if (formLabels && formLabels.length > 0) {
-      const labels = formLabels.map((label) => ({
-        value: label,
-        label: label,
-      }));
-      setLabelValues(labels);
+      setLabelValues(
+        formLabels.map((label) => ({ value: label, label }))
+      );
     }
   }, [formLabels]);
 
@@ -117,177 +106,117 @@ export const AdditionalInformation = ({
       !popularLabelsError &&
       popularLabelData?.labels
     ) {
-      const options: Options<{
-        value: string;
-        label: string;
-      }> = popularLabelData.labels.map((labels) => ({
-        value: labels,
-        label: labels,
-      }));
-      setSelectedLabelOption(options);
+      setSelectedLabelOption(
+        popularLabelData.labels.map((labels) => ({
+          value: labels,
+          label: labels,
+        }))
+      );
     }
   }, [popularLabelsIsFetching, popularLabelsError, popularLabelData]);
 
   return (
-    <div className="md:col-start-2 md:col-span-2 rounded-lg bg-white-500 dark:bg-slate-700 p-5">
-      <>
-        <h1 className="text-base font-bold dark:text-white-500 mb-4">
-          Additional Information
-        </h1>
-        <div className="flex gap-3 mb-2 flex-col md:flex-row">
-          <div className="flex-1">
-            <div className="mb-4 text-black-500 dark:text-white-500">
-              Nutrition Facts
-            </div>
-
-            {nutritionFields.map((field) => (
-              <DynamicInput<CreateRecipeFormData> key={field.id} {...field} />
-            ))}
-          </div>
-          <div className="flex-1">
-            <div className="mb-[1.41rem] text-black-500 dark:text-white-500">
-              Labels & Portion
-            </div>
-            <div className="relative mb-2 mt-4 w-full">
-              <Controller
-                name={`labels`}
-                control={control}
-                defaultValue={[]}
-                render={({ field }) => (
-                  <CreatableSelect
-                    placeholder="Select or create a label"
-                    isMulti
-                    noOptionsMessage={() =>
-                      'Type to create a label e.g. "Vegan"'
-                    }
-                    options={selectedLabelOption}
-                    onCreateOption={(inputValue) => {
-                      const labelValue =
-                        inputValue.charAt(0).toUpperCase() +
-                        inputValue.slice(1);
-                      const newOption: {
-                        value: string;
-                        label: string;
-                      } = {
-                        value: labelValue,
-                        label: labelValue,
-                      };
-                      setSelectedLabelOption([
-                        ...selectedLabelOption,
-                        newOption,
-                      ]);
-                      field.onChange([...field.value, labelValue]);
-
-                      setLabelValues([...labelValues, newOption]);
-                    }}
-                    onChange={(option) => {
-                      const labels = option.map((label) => label.value);
-                      field.onChange(labels);
-                      setLabelValues(option);
-                    }}
-                    value={labelValues}
-                    styles={{
-                      valueContainer: (provided) => ({
-                        ...provided,
-                        paddingLeft: 0,
-                      }),
-                      placeholder: (provided) => ({
-                        ...provided,
-                        color: 'var(--gray-500)',
-                      }),
-                      control: (provided) => ({
-                        ...provided,
-                        border: 'none',
-                        flexGrow: 1,
-                        minWidth: '10rem',
-                        marginBottom: '0.18rem',
-                        borderBottom: `${
-                          errors.labels
-                            ? '1px solid var(--red)'
-                            : '1px solid var(--green)'
-                        }`,
-                        borderRadius: 'none',
-                        boxShadow: 'none',
-                        overflow: 'visible',
-                        height: 'auto',
-                        zIndex: 999,
-                        '&:hover': {
-                          border: 'none',
-                          borderBottom: `${
-                            errors.labels
-                              ? '1px solid var(--red)'
-                              : '1px solid var(--green)'
-                          }`,
-                          borderRadius: 'none',
-                          boxShadow: 'none',
-                        },
-                      }),
-                      menu: (provided) => ({
-                        ...provided,
-                        zIndex: 9999,
-                      }),
-                      menuList: (provided) => ({
-                        ...provided,
-                        maxHeight: '10rem',
-                        overflow: 'scroll',
-                      }),
-                      option: (provided, state) => ({
-                        ...provided,
-                        backgroundColor: state.isSelected
-                          ? 'var(--green)'
-                          : 'var(--white)',
-                        color: state.isSelected
-                          ? 'var(--white)'
-                          : 'var(--black)',
-                        '&:hover': {
-                          backgroundColor: state.isSelected
-                            ? 'var(--green)'
-                            : 'var(--green)',
-                          color: state.isSelected
-                            ? 'var(--white)'
-                            : 'var(--white)',
-                        },
-                      }),
-                      multiValueRemove: (provided) => ({
-                        ...provided,
-                        backgroundColor: 'var(--white)',
-                        '&:hover': {
-                          backgroundColor: 'var(--white)',
-                        },
-                      }),
-                      multiValue: (provided) => ({
-                        ...provided,
-                        backgroundColor: 'var(--white)',
-                        border: '1px solid var(--green)',
-                        color: 'var(--black)',
-                      }),
-                    } as StylesConfig<{ value: string; label: string }, true>}
-                  />
-                )}
-              />
-              {errors.labels && errors.labels && (
-                <p className="text-sm text-red-500">{errors.labels.message}</p>
-              )}
-            </div>
-
-            <DynamicInput<CreateRecipeFormData>
-              id="portionSize"
-              name="portionSize"
-              label="Portion Size (person)"
-              type="number"
-              setValueAs={(value) => parseFloat(value)}
+    <section className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] gap-6">
+      {/* Labels */}
+      <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5 md:p-6">
+        <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-4 flex items-center gap-2">
+          <span className="text-green-500">04</span> Labels
+        </h2>
+        <Controller
+          name="labels"
+          control={control}
+          defaultValue={[]}
+          render={({ field }) => (
+            <CreatableSelect
+              placeholder="Select or create a label"
+              isMulti
+              noOptionsMessage={() => 'Type to create a label e.g. "Vegan"'}
+              options={selectedLabelOption}
+              onCreateOption={(inputValue) => {
+                const labelValue =
+                  inputValue.charAt(0).toUpperCase() + inputValue.slice(1);
+                const newOption = { value: labelValue, label: labelValue };
+                setSelectedLabelOption([...selectedLabelOption, newOption]);
+                field.onChange([...field.value, labelValue]);
+                setLabelValues([...labelValues, newOption]);
+              }}
+              onChange={(option) => {
+                field.onChange(option.map((label) => label.value));
+                setLabelValues(option);
+              }}
+              value={labelValues}
+              styles={
+                {
+                  control: (provided) => ({
+                    ...provided,
+                    minHeight: '42px',
+                    border: `1px solid ${
+                      errors.labels
+                        ? 'var(--red)'
+                        : 'var(--color-gray2-500)'
+                    }`,
+                    borderRadius: '0.5rem',
+                    boxShadow: 'none',
+                    '&:hover': { borderColor: 'var(--green)' },
+                  }),
+                  menu: (provided) => ({ ...provided, zIndex: 9999 }),
+                  menuList: (provided) => ({
+                    ...provided,
+                    maxHeight: '10rem',
+                    overflow: 'auto',
+                  }),
+                  option: (provided, state) => ({
+                    ...provided,
+                    backgroundColor: state.isSelected
+                      ? 'var(--green)'
+                      : 'var(--white)',
+                    color: state.isSelected ? 'var(--white)' : 'var(--black)',
+                    '&:hover': {
+                      backgroundColor: 'var(--green)',
+                      color: 'var(--white)',
+                    },
+                  }),
+                  multiValue: (provided) => ({
+                    ...provided,
+                    backgroundColor: 'var(--subtle-accent)',
+                    border: '1px solid var(--green)',
+                    borderRadius: '9999px',
+                    color: 'var(--black)',
+                  }),
+                  multiValueRemove: (provided) => ({
+                    ...provided,
+                    '&:hover': {
+                      backgroundColor: 'var(--green)',
+                      color: 'var(--white)',
+                    },
+                  }),
+                } as StylesConfig<{ value: string; label: string }, true>
+              }
             />
-          </div>
+          )}
+        />
+        {errors.labels && (
+          <p className="text-sm text-red-500 mt-1">{errors.labels.message}</p>
+        )}
+        <p className="text-xs text-brownishGrey-600 mt-3">
+          Add tags like "Quick", "Gluten-free", or "Family favourite".
+        </p>
+      </div>
+
+      {/* Nutrition */}
+      <div className="bg-white-500 dark:bg-slate-700 rounded-lg shadow-md p-5 md:p-6">
+        <h2 className="text-sm font-bold text-charcoal-500 dark:text-white-500 mb-4 flex items-center gap-2">
+          <span className="text-green-500">05</span> Nutrition
+          <span className="text-xs font-normal text-brownishGrey-600">
+            (per serving)
+          </span>
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-2">
+          {nutritionFields.map((field) => (
+            <DynamicInput<CreateRecipeFormData> key={field.id} {...field} />
+          ))}
         </div>
-        <div className="flex justify-end w-full">
-          <Button
-            variant="primary"
-            text={submitText}
-            type="submit"
-            buttonClassName="sm:w-auto"
-          />
-        </div>
-      </>
-    </div>
+      </div>
+    </section>
   );
 };

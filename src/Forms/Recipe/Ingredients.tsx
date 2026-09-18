@@ -7,6 +7,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import {
   SortableContext,
   sortableKeyboardCoordinates,
@@ -23,6 +24,31 @@ import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
 import { usePopularMeasurements } from '@/queries';
 
 import { SortableRow } from '../../pages/CreateUpdateRecipe/Components/SortableRow';
+
+const announcements = {
+  onDragStart: ({
+    active,
+  }: {
+    active: { data: { current?: { sortable?: { index: number } } } };
+  }) => `Picked up ingredient ${(active.data.current?.sortable?.index ?? 0) + 1}.`,
+  onDragOver: ({
+    over,
+  }: {
+    over: { data: { current?: { sortable?: { index: number } } } } | null;
+  }) =>
+    over
+      ? `Ingredient moved over position ${(over.data.current?.sortable?.index ?? 0) + 1}.`
+      : undefined,
+  onDragEnd: ({
+    over,
+  }: {
+    over: { data: { current?: { sortable?: { index: number } } } } | null;
+  }) =>
+    over
+      ? `Ingredient dropped at position ${(over.data.current?.sortable?.index ?? 0) + 1}.`
+      : 'Ingredient returned to its original position.',
+  onDragCancel: () => 'Reordering cancelled.',
+};
 
 const selectStyles = (
   hasError?: boolean
@@ -112,6 +138,8 @@ export const Ingredients = () => {
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
+        modifiers={[restrictToVerticalAxis]}
+        accessibility={{ announcements }}
         onDragEnd={handleDragEnd}
       >
         <SortableContext

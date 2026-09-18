@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Controller, useFormContext, useWatch } from 'react-hook-form';
 import { Options, StylesConfig } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 
@@ -81,16 +81,16 @@ export const AdditionalInformation = () => {
   const {
     formState: { errors },
     control,
-    getValues,
   } = useFormContext<CreateRecipeFormData>();
 
-  const formLabels = getValues('labels');
+  // Subscribe to `labels` via useWatch so we get a stable reference between
+  // renders. Using getValues() here returned a fresh array every render and
+  // drove an effect -> setState -> render loop (hung jsdom, thrashed React 19).
+  const formLabels = useWatch({ control, name: 'labels' });
 
   useEffect(() => {
     if (formLabels && formLabels.length > 0) {
-      setLabelValues(
-        formLabels.map((label) => ({ value: label, label }))
-      );
+      setLabelValues(formLabels.map((label) => ({ value: label, label })));
     }
   }, [formLabels]);
 

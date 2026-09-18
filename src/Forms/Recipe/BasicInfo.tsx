@@ -88,7 +88,8 @@ export const BasicInfo = () => {
             id="portionSize"
             type="number"
             {...register('portionSize', {
-              setValueAs: (value) => parseFloat(value),
+              // Whole-person count; matches the parseInt used on the load path.
+              setValueAs: (value) => parseInt(value, 10),
             })}
             placeholder="4"
             className={fieldClass(!!errors.portionSize)}

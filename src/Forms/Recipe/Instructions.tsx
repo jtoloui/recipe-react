@@ -7,6 +7,7 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import {
   SortableContext,
   sortableKeyboardCoordinates,
@@ -19,6 +20,28 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
 
 import { SortableRow } from '../../pages/CreateUpdateRecipe/Components/SortableRow';
+
+const announcements = {
+  onDragStart: ({ active }: { active: { data: { current?: { sortable?: { index: number } } } } }) =>
+    `Picked up step ${(active.data.current?.sortable?.index ?? 0) + 1}.`,
+  onDragOver: ({
+    over,
+  }: {
+    over: { data: { current?: { sortable?: { index: number } } } } | null;
+  }) =>
+    over
+      ? `Step moved over position ${(over.data.current?.sortable?.index ?? 0) + 1}.`
+      : undefined,
+  onDragEnd: ({
+    over,
+  }: {
+    over: { data: { current?: { sortable?: { index: number } } } } | null;
+  }) =>
+    over
+      ? `Step dropped at position ${(over.data.current?.sortable?.index ?? 0) + 1}.`
+      : 'Step returned to its original position.',
+  onDragCancel: () => 'Reordering cancelled.',
+};
 
 export const Instructions = () => {
   const {
@@ -59,6 +82,8 @@ export const Instructions = () => {
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
+        modifiers={[restrictToVerticalAxis]}
+        accessibility={{ announcements }}
         onDragEnd={handleDragEnd}
       >
         <SortableContext
@@ -81,7 +106,6 @@ export const Instructions = () => {
                     {...register(`steps.${index}.step`)}
                     placeholder={`Describe step ${index + 1}`}
                     rows={2}
-                    defaultValue={field.step}
                     className={`w-full resize-y rounded-md border bg-white-500 dark:bg-slate-700 px-2.5 py-2 text-sm focus:outline-none focus:border-green-500 ${
                       errors.steps?.[index]
                         ? 'border-red-500'

@@ -44,10 +44,11 @@ export const SortableRow = ({ id, children, lead }: Props) => {
     >
       <button
         type="button"
-        aria-label="Drag to reorder"
         className="cursor-grab touch-none px-1 text-brownishGrey-600 hover:text-green-500 active:cursor-grabbing"
         {...attributes}
         {...listeners}
+        // aria-label after the spreads so dnd-kit's own attributes don't clobber it.
+        aria-label="Drag to reorder"
       >
         <FontAwesomeIcon icon={faGripVertical} />
       </button>

@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/Layout';
 import { useTheme, type ThemeMode } from '@/hooks';
 import { useProfile } from '@/queries';
+import { apiUrl } from '@/utils';
 
 const THEME_OPTIONS: { value: ThemeMode; label: string; icon: typeof faSun }[] =
   [
@@ -49,7 +50,7 @@ export const Settings = () => {
   const handleLogout = async () => {
     try {
       const res = await axios.get(
-        `${import.meta.env.VITE_API_URI}/api/auth/logout`,
+        apiUrl(`/api/auth/logout`),
         { withCredentials: true }
       );
       if (res.data?.url) {

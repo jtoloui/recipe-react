@@ -1,3 +1,4 @@
+import { apiUrl } from '@/utils';
 import axios from 'axios';
 import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -33,7 +34,7 @@ export const Avatar = ({
   const navigate = useNavigate();
   const handleLogout = async () => {
     await axios
-      .get(`${import.meta.env.VITE_API_URI}/api/auth/logout`, {
+      .get(apiUrl(`/api/auth/logout`), {
         withCredentials: true,
       })
       .then((res) => {

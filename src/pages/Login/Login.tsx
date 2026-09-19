@@ -1,3 +1,4 @@
+import { apiUrl } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
@@ -93,7 +94,7 @@ export const Login = () => {
     setOnSubmitError(undefined);
     axios
       .post(
-        `${import.meta.env.VITE_API_URI}/api/auth/login`,
+        apiUrl(`/api/auth/login`),
         {
           username: data.username,
           password: data.password,
@@ -123,7 +124,7 @@ export const Login = () => {
     setOnSubmitError(undefined);
     axios
       .post(
-        `${import.meta.env.VITE_API_URI}/api/auth/register`,
+        apiUrl(`/api/auth/register`),
         {
           username: data.username,
           password: data.password,
@@ -157,7 +158,7 @@ export const Login = () => {
   const socialLogin = () => {
     axios
       .get(
-        `${import.meta.env.VITE_API_URI}/api/auth/login-social?type=Google`,
+        apiUrl(`/api/auth/login-social?type=Google`),
         {
           withCredentials: true,
         }

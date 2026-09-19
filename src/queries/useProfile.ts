@@ -1,3 +1,4 @@
+import { apiUrl } from '@/utils';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -13,7 +14,7 @@ type Profile = {
 };
 const fetchProfile = async (): Promise<Profile> => {
   const response = await axios.get<Profile>(
-    `${import.meta.env.VITE_API_URI}/api/profile`,
+    apiUrl(`/api/profile`),
     {
       withCredentials: true,
     }

@@ -145,20 +145,21 @@ export const MyRecipes = () => {
   return (
     <Layout>
       <div>
-        <div className="flex w-full">
-          <h1 className="text-2xl font-bold text-black-500 dark:text-white-500 flex-1 ">
-            Welcome
-          </h1>
-          <div className="flex justify-end items-center  flex-auto">
-            <Link
-              to={'/create-recipe'}
-              className=" border-green-500  border-2 py-1 px-[0.625rem] rounded"
-            >
-              <span className="text-green-500 text-sm font-semibold">
-                + Create Recipe
-              </span>
-            </Link>
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl font-extrabold tracking-tight text-black-500 dark:text-white-500 md:text-3xl">
+              My Recipes
+            </h1>
+            <p className="mt-1 text-sm text-brownishGrey-600 dark:text-white-600">
+              Recipes you've created. Browse by label or search.
+            </p>
           </div>
+          <Link
+            to={'/create-recipe'}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-white-500 shadow-sm transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/30"
+          >
+            <span className="text-base leading-none">+</span> Create recipe
+          </Link>
         </div>
         <Carousel
           data={carouselData}

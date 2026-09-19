@@ -10,6 +10,7 @@ import {
 import { ProtectedRouteWithNav } from '@/components/ProtectedRouteWithNav';
 import { Home } from '@/pages/Home';
 import { Profile } from '@/pages/Profile';
+import { Settings } from '@/pages/Settings';
 import RecipeById, { loader as recipeLoader } from '@/pages/RecipeById';
 import { Welcome } from '@/pages/Welcome';
 
@@ -72,7 +73,7 @@ const routes = createBrowserRouter([
       },
       {
         path: '/settings',
-        element: <div>Settings</div>,
+        element: <Settings />,
       },
       {
         path: 'recipe',

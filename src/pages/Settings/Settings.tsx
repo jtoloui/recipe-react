@@ -6,11 +6,12 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout';
 import { useTheme, type ThemeMode } from '@/hooks';
-import { useProfile } from '@/queries';
+import { useProfile, useUpdateProfile } from '@/queries';
 import { apiUrl } from '@/utils';
 
 const THEME_OPTIONS: { value: ThemeMode; label: string; icon: typeof faSun }[] =
@@ -45,6 +46,24 @@ const Panel = ({
 export const Settings = () => {
   const { mode, setMode } = useTheme();
   const { data } = useProfile();
+  const updateProfile = useUpdateProfile();
+  const [name, setName] = useState('');
+  const [savedName, setSavedName] = useState(false);
+
+  // Seed the name field from the loaded profile.
+  useEffect(() => {
+    if (data?.name) setName(data.name);
+  }, [data?.name]);
+
+  const nameChanged = name.trim().length > 0 && name.trim() !== (data?.name ?? '');
+
+  const onSaveName = () => {
+    setSavedName(false);
+    updateProfile.mutate(
+      { name: name.trim() },
+      { onSuccess: () => setSavedName(true) }
+    );
+  };
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -110,6 +129,44 @@ export const Settings = () => {
 
         {/* Account */}
         <Panel title="Account" description="Your sign-in details.">
+          {/* Editable display name */}
+          <div className="mb-4">
+            <label
+              htmlFor="displayName"
+              className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-brownishGrey-600"
+            >
+              Display name
+            </label>
+            <div className="flex gap-2">
+              <input
+                id="displayName"
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setSavedName(false);
+                }}
+                maxLength={100}
+                className="w-full rounded-lg border border-gray2-500 bg-white-500 px-3 py-2 text-sm text-black-500 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-slate-600 dark:bg-slate-700 dark:text-white-500"
+                placeholder="Your name"
+              />
+              <button
+                type="button"
+                onClick={onSaveName}
+                disabled={!nameChanged || updateProfile.isPending}
+                className="shrink-0 rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-white-500 transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/30 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {updateProfile.isPending ? 'Saving…' : 'Save'}
+              </button>
+            </div>
+            {savedName && !updateProfile.isPending && (
+              <p className="mt-1.5 text-sm font-medium text-green-600">Name updated.</p>
+            )}
+            {updateProfile.isError && (
+              <p className="mt-1.5 text-sm font-medium text-red-500">Could not update name.</p>
+            )}
+          </div>
+
           <dl className="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-gray2-400 bg-gray2-400 sm:grid-cols-2 dark:border-slate-600 dark:bg-slate-600">
             <div className="bg-white-500 p-4 dark:bg-slate-700">
               <dt className="text-xs font-bold uppercase tracking-wider text-brownishGrey-600">

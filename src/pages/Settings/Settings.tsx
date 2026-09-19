@@ -130,7 +130,7 @@ export const Settings = () => {
           </dl>
           <button
             type="button"
-            onClick={() => navigate('/reset-password')}
+            onClick={() => navigate('/settings/change-password')}
             className="mt-4 inline-flex items-center gap-2 rounded-lg border border-gray2-500 px-4 py-2 text-sm font-semibold text-brownishGrey-700 transition-colors hover:border-green-400 hover:text-green-600 dark:border-slate-600 dark:text-white-600"
           >
             Change password

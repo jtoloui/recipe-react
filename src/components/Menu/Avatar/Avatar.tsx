@@ -52,7 +52,7 @@ export const Avatar = ({
   const menuItems: MenuItem = [
     {
       to: '/profile',
-      text: 'view profile',
+      text: 'View profile',
       onClick: () => setIsOpen(false),
     },
     {
@@ -62,7 +62,7 @@ export const Avatar = ({
     },
     {
       to: '/',
-      text: 'Sign Out',
+      text: 'Sign out',
       onClick: () => handleLogout(),
     },
   ];
@@ -75,7 +75,7 @@ export const Avatar = ({
             to={item.to}
             key={item.text.replace(' ', '-')}
             onClick={item.onClick}
-            className="block px-4 py-3 text-sm text-gray-600 dark:text-white-500 capitalize transition-colors duration-300 transform hover:bg-gray-100 dark:hover:bg-slate-500 hover:text-gray-800 dark:hover:text-white-500"
+            className="block px-4 py-3 text-sm text-gray-600 dark:text-white-500 transition-colors duration-300 transform hover:bg-gray-100 dark:hover:bg-slate-500 hover:text-gray-800 dark:hover:text-white-500"
           >
             {item.text}
           </Link>

@@ -86,6 +86,12 @@ export interface RecipeById {
   portions: string;
   description: string;
   nutrition: Nutrition;
+  nutritionPerRecipe?: Nutrition | null;
+  nutritionMeta?: {
+    servings?: number | null;
+    source?: string | null;
+    estimatedAt?: string | null;
+  } | null;
   ingredients: Ingredient[];
   steps: string[];
   vegan: boolean;

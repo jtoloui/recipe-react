@@ -1,8 +1,0 @@
-[build]
-  command = "npm run build"
-  publish = "dist"
-
-[build.environment]
-  # Vite 8 / rolldown requires Node >= 20.19 (uses node:util styleText, added in
-  # Node 20.12). Netlify defaulted to Node 18 (EOL) which broke the build.
-  NODE_VERSION = "22"

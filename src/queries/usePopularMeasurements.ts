@@ -1,3 +1,4 @@
+import { apiUrl } from '@/utils';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -6,7 +7,7 @@ import { measurementsTypeResponse } from './types';
 export const fetchPopularMeasurements =
   async (): Promise<measurementsTypeResponse> => {
     const response = await axios.get<measurementsTypeResponse>(
-      `${import.meta.env.VITE_API_URI}/api/measurements/popular`,
+      apiUrl(`/api/measurements/popular`),
       { withCredentials: true }
     );
 

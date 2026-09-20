@@ -1,3 +1,4 @@
+import { apiUrl } from '@/utils';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
@@ -9,7 +10,7 @@ export const useIsAuthenticated = () => {
     const checkAuth = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_API_URI}/api/auth/authenticated`,
+          apiUrl(`/api/auth/authenticated`),
           {
             withCredentials: true,
           }

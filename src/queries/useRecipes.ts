@@ -1,3 +1,4 @@
+import { apiUrl } from '@/utils';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -7,7 +8,7 @@ export const fetchRecipeById = async (
   id: string
 ): Promise<RecipeByIdResponse> => {
   const response = await axios.get<RecipeByIdResponse>(
-    `${import.meta.env.VITE_API_URI}/api/recipes/${id}`,
+    apiUrl(`/api/recipes/${id}`),
     { withCredentials: true }
   );
 
@@ -19,7 +20,7 @@ export const fetchRecipes = async (
   label?: string
 ): Promise<RecipesResponse> => {
   const response = await axios.get<RecipesResponse>(
-    `${import.meta.env.VITE_API_URI}/api/recipes`,
+    apiUrl(`/api/recipes`),
     {
       withCredentials: true,
       params: {
@@ -36,7 +37,7 @@ export const fetchMyRecipes = async (
   label?: string
 ): Promise<RecipesResponse> => {
   const response = await axios.get<RecipesResponse>(
-    `${import.meta.env.VITE_API_URI}/api/recipes/user`,
+    apiUrl(`/api/recipes/user`),
     {
       withCredentials: true,
       params: {

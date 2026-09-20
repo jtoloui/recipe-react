@@ -1,3 +1,4 @@
+import { apiUrl } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios, { isAxiosError } from 'axios';
 import { useState } from 'react';
@@ -60,7 +61,7 @@ export const VerifyEmailSignUp = () => {
     setOnSubmitError(undefined);
     axios
       .post(
-        `${import.meta.env.VITE_API_URI}/api/auth/verify/email`,
+        apiUrl(`/api/auth/verify/email`),
         {
           username: data.username,
           code: `${data.verificationCode}`,
@@ -88,7 +89,7 @@ export const VerifyEmailSignUp = () => {
     setOnSubmitError(undefined);
     axios
       .post(
-        `${import.meta.env.VITE_API_URI}/api/auth/resend/verification-code`,
+        apiUrl(`/api/auth/resend/verification-code`),
         {
           username: data.username,
         },

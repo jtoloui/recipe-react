@@ -1,3 +1,4 @@
+import { apiUrl } from '@/utils';
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -12,7 +13,7 @@ type RecipeByLabel = RecipesByLabelResponse;
 
 const fetchRecipeLabels = async (): Promise<Labels> => {
   const response = await axios.get<RecipeLabelsResponse>(
-    `${import.meta.env.VITE_API_URI}/api/labels`,
+    apiUrl(`/api/labels`),
     {
       withCredentials: true,
     }
@@ -29,7 +30,7 @@ export const useRecipeLabels = (): UseQueryResult<Labels, Error> => {
 
 const fetchRecipesByLabel = async (label: string): Promise<RecipeByLabel> => {
   const response = await axios.get<RecipeByLabel>(
-    `${import.meta.env.VITE_API_URI}/api/labels/${label}`,
+    apiUrl(`/api/labels/${label}`),
     {
       withCredentials: true,
     }
@@ -49,7 +50,7 @@ export const useRecipesByLabel = (
 
 export const fetchPopularLabels = async (): Promise<popularLabelsResponse> => {
   const response = await axios.get<popularLabelsResponse>(
-    `${import.meta.env.VITE_API_URI}/api/labels/popular`,
+    apiUrl(`/api/labels/popular`),
     { withCredentials: true }
   );
 

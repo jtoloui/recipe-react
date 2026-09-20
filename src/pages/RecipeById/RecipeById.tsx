@@ -67,7 +67,14 @@ const RecipeById = () => {
 
   if (!data) return null;
 
-  const nutrition = data.nutrition;
+  const [nutritionBasis, setNutritionBasis] = useState<'serving' | 'recipe'>(
+    'serving'
+  );
+  const hasPerRecipe = !!data.nutritionPerRecipe;
+  const nutrition =
+    nutritionBasis === 'recipe' && data.nutritionPerRecipe
+      ? data.nutritionPerRecipe
+      : data.nutrition;
   const availableNutrition = NUTRITION_FIELDS.filter(
     (f) => nutrition && Number(nutrition[f.key])
   );
@@ -159,9 +166,40 @@ const RecipeById = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {/* Nutrition */}
             <div>
-              <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-600">
-                Nutrition facts
-              </h3>
+              <div className="mb-3 flex items-center justify-between gap-2">
+                <h3 className="text-sm font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-600">
+                  Nutrition facts
+                  <span className="ml-2 text-xs font-normal normal-case tracking-normal text-brownishGrey-500">
+                    ({nutritionBasis === 'serving' ? 'per serving' : 'whole recipe'})
+                  </span>
+                </h3>
+                {hasPerRecipe && (
+                  <div className="inline-flex rounded-lg border border-gray2-400 dark:border-slate-600 overflow-hidden text-xs">
+                    <button
+                      type="button"
+                      onClick={() => setNutritionBasis('serving')}
+                      className={`px-2 py-1 font-medium ${
+                        nutritionBasis === 'serving'
+                          ? 'bg-green-500 text-white-500'
+                          : 'bg-transparent text-brownishGrey-600 dark:text-white-600'
+                      }`}
+                    >
+                      Per serving
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setNutritionBasis('recipe')}
+                      className={`px-2 py-1 font-medium ${
+                        nutritionBasis === 'recipe'
+                          ? 'bg-green-500 text-white-500'
+                          : 'bg-transparent text-brownishGrey-600 dark:text-white-600'
+                      }`}
+                    >
+                      Whole recipe
+                    </button>
+                  </div>
+                )}
+              </div>
               {availableNutrition.length === 0 ? (
                 <p className="text-sm text-brownishGrey-600 dark:text-white-600">
                   No nutrition facts available

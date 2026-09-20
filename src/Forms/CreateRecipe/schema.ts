@@ -74,6 +74,25 @@ export const createRecipeSchema = z.object({
       fibre: z.number().optional().nullable().nullish(),
     })
   ),
+  nutritionFactsPerRecipe: z.optional(
+    z.object({
+      kcal: z.number().optional().nullable().nullish(),
+      sugars: z.number().optional().nullable().nullish(),
+      salt: z.number().optional().nullable().nullish(),
+      carbs: z.number().optional().nullable().nullish(),
+      protein: z.number().optional().nullable().nullish(),
+      fat: z.number().optional().nullable().nullish(),
+      saturates: z.number().optional().nullable().nullish(),
+      fibre: z.number().optional().nullable().nullish(),
+    })
+  ),
+  nutritionMeta: z.optional(
+    z.object({
+      servings: z.number().optional().nullable().nullish(),
+      source: z.string().optional().nullable().nullish(),
+      estimatedAt: z.string().optional().nullable().nullish(),
+    })
+  ),
   labels: z
     .array(z.string().min(1, 'Must have at least one label'))
     .min(1, 'Must have at least one label'),
@@ -124,6 +143,8 @@ export function createRecipeFormToPostObject(
     portions: formData.portionSize.toString(),
     description: formData.recipeDescription,
     nutrition: formData.nutritionFacts,
+    nutritionPerRecipe: formData.nutritionFactsPerRecipe,
+    nutritionMeta: formData.nutritionMeta,
     ingredients: formData.ingredients,
     steps: formData.steps.map((step) => step.step),
     vegan: formData.vegan,
@@ -141,6 +162,8 @@ export type CreateRecipePostObject = {
   portions: string;
   description: string;
   nutrition: Nutrition | undefined;
+  nutritionPerRecipe?: Nutrition;
+  nutritionMeta?: { servings?: number | null; source?: string | null; estimatedAt?: string | null };
   ingredients: Ingredient[];
   steps: string[];
   vegan: boolean;

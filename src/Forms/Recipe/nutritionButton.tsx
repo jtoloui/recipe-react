@@ -52,12 +52,25 @@ export const NutritionButton = () => {
         onSuccess: (estimate) => {
           const ps = estimate.perServing;
           (Object.keys(ps) as (keyof NutritionValues)[]).forEach((k) => {
-            // form field names: nutritionFacts.kcal, .sugars, etc.
+            // visible, editable per-serving fields
             setValue(`nutritionFacts.${k}` as never, Math.round(ps[k]) as never, {
               shouldValidate: true,
               shouldDirty: true,
             });
           });
+          // Stash whole-recipe totals + meta so both bases persist on save
+          // (the recipe view can then toggle per-serving / whole-recipe).
+          const pr = estimate.perRecipe;
+          (Object.keys(pr) as (keyof NutritionValues)[]).forEach((k) => {
+            setValue(`nutritionFactsPerRecipe.${k}` as never, Math.round(pr[k]) as never, {
+              shouldDirty: true,
+            });
+          });
+          setValue('nutritionMeta' as never, {
+            servings: estimate.servings,
+            source: 'ai-haiku',
+            estimatedAt: new Date().toISOString(),
+          } as never, { shouldDirty: true });
         },
       },
     );

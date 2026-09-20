@@ -10,6 +10,8 @@ import {
 } from '@/components/DynamicInput/DynamicInput';
 import { usePopularLabels } from '@/queries';
 
+import { NutritionButton } from './nutritionButton';
+
 const nutritionFields: DynamicInputProps<CreateRecipeFormData>[] = [
   {
     id: 'nutritionFacts.kcal',
@@ -218,6 +220,7 @@ export const AdditionalInformation = () => {
           Nutrition
           <span className="text-xs font-normal normal-case tracking-normal text-brownishGrey-500">(per serving)</span>
         </h2>
+        <NutritionButton />
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-2">
           {nutritionFields.map((field) => (
             <DynamicInput<CreateRecipeFormData> key={field.id} {...field} />

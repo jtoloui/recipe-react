@@ -12,6 +12,9 @@ export interface EstimateNutritionInput {
   name?: string;
   servings: number;
   ingredients: EstimateNutritionIngredient[];
+  steps?: string[];
+  vegan?: boolean;
+  vegetarian?: boolean;
 }
 
 export interface NutritionValues {

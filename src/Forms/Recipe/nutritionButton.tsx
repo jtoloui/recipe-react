@@ -31,13 +31,23 @@ export const NutritionButton = () => {
         measurement: i.measurement,
       }));
     const servings = Number(values.portionSize);
+    const steps = (values.steps || [])
+      .map((s) => (typeof s === 'string' ? s : s?.step))
+      .filter((x): x is string => !!x);
 
     if (ingredients.length === 0 || !Number.isFinite(servings) || servings <= 0) {
       return;
     }
 
     mutate(
-      { name: values.recipeName, servings, ingredients },
+      {
+        name: values.recipeName,
+        servings,
+        ingredients,
+        steps,
+        vegan: values.vegan,
+        vegetarian: values.vegetarian,
+      },
       {
         onSuccess: (estimate) => {
           const ps = estimate.perServing;

@@ -1,0 +1,78 @@
+name: Deploy Frontend (prod)
+
+# Auto-deploy the SPA to prod on every push to main. Uses GitHub OIDC to assume
+# a scoped IAM role (no static AWS keys stored in GitHub). The bundle is built
+# with the prod API URI baked in, then CDK ships the dist to S3 + CloudFront.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: deploy-fe-prod
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: eu-west-2
+  ACCOUNT: '276663280738'
+  CERT_ARN: arn:aws:acm:us-east-1:276663280738:certificate/88daa777-0a83-42f3-af53-0e496af88cf7
+  # Baked into the bundle at build time — the SPA calls this API origin.
+  VITE_API_URI: https://api.justcook.ing
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Configure AWS credentials (OIDC, no static keys)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::276663280738:role/github-deploy-react
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install app deps
+        run: npm ci || npm install
+
+      - name: Build SPA (prod API URI baked in)
+        run: npm run build
+
+      - name: Guard against a localhost API leak in the bundle
+        run: |
+          set -euo pipefail
+          if grep -rq "localhost:3001" dist/assets/*.js 2>/dev/null; then
+            echo "::error::built bundle references localhost:3001 — VITE_API_URI not applied"
+            exit 1
+          fi
+          grep -rq "api.justcook.ing" dist/assets/*.js || {
+            echo "::error::built bundle does not reference api.justcook.ing"; exit 1; }
+
+      - name: Install infra deps
+        working-directory: infra
+        run: npm ci || npm install
+
+      - name: CDK deploy SiteProd
+        working-directory: infra
+        run: |
+          set -euo pipefail
+          npx cdk deploy JustCookingSiteProd --require-approval never \
+            -c account="$ACCOUNT" -c env=prod \
+            -c domainName=www.justcook.ing \
+            -c certArn="$CERT_ARN" \
+            -c distPath=../dist
+
+      - name: Smoke test www
+        run: |
+          set -euo pipefail
+          code=$(curl -s -o /dev/null -w "%{http_code}" https://www.justcook.ing/)
+          echo "www -> $code"
+          test "$code" = "200"

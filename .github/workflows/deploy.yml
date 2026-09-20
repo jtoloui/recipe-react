@@ -33,6 +33,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
+          # Cache npm downloads, keyed on both lockfiles (app root + infra).
+          cache: 'npm'
+          cache-dependency-path: |
+            package-lock.json
+            infra/package-lock.json
 
       - name: Configure AWS credentials (OIDC, no static keys)
         uses: aws-actions/configure-aws-credentials@v4

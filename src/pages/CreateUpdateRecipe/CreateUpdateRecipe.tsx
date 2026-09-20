@@ -104,6 +104,21 @@ const formDefaultValues = (
 
   setValue('labels', data.labels);
   setValue('portionSize', parseInt(data.portions));
+
+  // Prefill existing nutrition so editing a recipe that already has stats does
+  // not show blank fields. The stored `nutrition` is per-serving.
+  if (data.nutrition) {
+    setValue('nutritionFacts', {
+      kcal: data.nutrition.kcal ?? undefined,
+      sugars: data.nutrition.sugars ?? undefined,
+      salt: data.nutrition.salt ?? undefined,
+      carbs: data.nutrition.carbs ?? undefined,
+      protein: data.nutrition.protein ?? undefined,
+      fat: data.nutrition.fat ?? undefined,
+      saturates: data.nutrition.saturates ?? undefined,
+      fibre: data.nutrition.fibre ?? undefined,
+    });
+  }
 };
 
 export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {

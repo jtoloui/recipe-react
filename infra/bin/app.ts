@@ -22,7 +22,12 @@ if (env !== 'dev' && env !== 'prod') {
 }
 const Env = env === 'prod' ? 'Prod' : 'Dev';
 
-const domainName = app.node.tryGetContext('domainName') as string | undefined;
+// Per-env custom-domain default so a plain `cdk deploy` can't silently drop the
+// alias + ACM cert (which reverts CloudFront to the default cert and breaks www
+// TLS). Still overridable with -c domainName.
+const domainDefault = env === 'prod' ? 'www.justcook.ing' : 'dev.justcook.ing';
+const domainName =
+  (app.node.tryGetContext('domainName') as string | undefined) ?? domainDefault;
 const certArn = app.node.tryGetContext('certArn') as string | undefined;
 const distPath =
   (app.node.tryGetContext('distPath') as string | undefined) ?? defaultDistPath;

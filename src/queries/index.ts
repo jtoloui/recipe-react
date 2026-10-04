@@ -7,3 +7,4 @@ export * from './useRecipes';
 export * from './usePopularMeasurements';
 export * from './useUpdateProfile';
 export * from './useEstimateNutrition';
+export * from './useFavourites';

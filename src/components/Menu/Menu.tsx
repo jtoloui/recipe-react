@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
@@ -21,6 +21,25 @@ export const Menu = () => {
 
   const size = useWindowSize();
   const location = useLocation();
+  const navRef = useRef<HTMLElement>(null);
+
+  // Publish the nav's real height as --nav-h so sticky page headers sit flush
+  // under it at every breakpoint (it grows when the search bar is shown).
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+    const root = document.documentElement;
+    const update = () =>
+      root.style.setProperty(
+        '--nav-h',
+        `${Math.round(nav.getBoundingClientRect().height)}px`
+      );
+    update();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(update);
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, []);
 
   const handleSearch = (search: string) => {
     setSearchTriggered(true);
@@ -57,7 +76,10 @@ export const Menu = () => {
   if (location.pathname === '/login') return null;
 
   return (
-    <nav className="bg-white-500 shadow-md dark:shadow-white-500 dark:bg-slate-600 rounded-b-lg fixed w-full z-[9999]">
+    <nav
+      ref={navRef}
+      className="bg-white-500 shadow-md dark:shadow-white-500 dark:bg-slate-600 rounded-b-lg fixed w-full z-[9999]"
+    >
       <div className="px-6 py-4 mx-auto">
         <div className="md:flex md:items-center">
           {/* // logo and burger menu */}
@@ -110,6 +132,15 @@ export const Menu = () => {
                 }}
               >
                 My Recipes
+              </MenuLink>
+              <MenuLink
+                to="/favourites"
+                className="order-2 md:order-2 whitespace-nowrap"
+                onClick={() => {
+                  setIsBurgerMenuOpen(false);
+                }}
+              >
+                Favourites
               </MenuLink>
 
               {searchEnabled && (

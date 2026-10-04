@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 
 import EditSvg from '@/assets/EditSvg';
+import { FavouriteButton } from '@/components/FavouriteButton';
 import { type RecipeById } from '@/queries/types';
 import { formatTime } from '@/utils';
 
@@ -105,21 +106,32 @@ export const HeaderSection = ({
                 className="inline-flex items-center gap-1 font-semibold text-green-600 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40 dark:text-green-400"
               >
                 {source.name}
-                <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="xs" aria-hidden="true" />
+                <FontAwesomeIcon
+                  icon={faArrowUpRightFromSquare}
+                  size="xs"
+                  aria-hidden="true"
+                />
                 <span className="sr-only">(opens in a new tab)</span>
               </a>
             </p>
           )}
         </div>
-        {isAuthor && (
-          <Link
-            to={`/recipe/${recipeId}/edit`}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-green-500/40 px-3 py-1.5 text-sm font-semibold text-green-600 transition-colors hover:bg-green-500 hover:text-white-500"
-          >
-            <EditSvg height={18} width={18} />
-            <span className="hidden sm:inline">Edit</span>
-          </Link>
-        )}
+        <div className="flex shrink-0 items-center gap-2">
+          <FavouriteButton
+            recipeId={recipeId}
+            recipeName={name}
+            variant="inline"
+          />
+          {isAuthor && (
+            <Link
+              to={`/recipe/${recipeId}/edit`}
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-green-500/40 px-3 py-1.5 text-sm font-semibold text-green-600 transition-colors hover:bg-green-500 hover:text-white-500"
+            >
+              <EditSvg height={18} width={18} />
+              <span className="hidden sm:inline">Edit</span>
+            </Link>
+          )}
+        </div>
       </div>
 
       {/* Diet badges */}

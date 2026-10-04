@@ -1,9 +1,10 @@
-import { apiUrl } from '@/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useProfile } from '@/queries';
+import { apiUrl } from '@/utils';
 
 type AvatarProps = {
   isOpen: boolean;
@@ -32,7 +33,10 @@ export const Avatar = ({
   }[];
 
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const handleLogout = async () => {
+    // Drop the previous user's cached data (e.g. favourites) before leaving.
+    queryClient.clear();
     await axios
       .get(apiUrl(`/api/auth/logout`), {
         withCredentials: true,

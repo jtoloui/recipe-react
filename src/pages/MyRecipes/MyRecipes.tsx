@@ -34,6 +34,7 @@ export const MyRecipes = () => {
         to: string;
         totalTime: string;
         ingredientsCount: number;
+        recipeId: string;
       }[]
   >([]);
 
@@ -130,6 +131,7 @@ export const MyRecipes = () => {
         to: `/recipe/${recipe._id}`,
         totalTime: recipe.timeToCook.totalTime,
         ingredientsCount: recipe.ingredients?.length || 0,
+        recipeId: recipe._id,
       }));
       setRecipeCardData(newData);
     }
@@ -201,6 +203,7 @@ export const MyRecipes = () => {
             to={recipe.to}
             ingredientsCount={recipe.ingredientsCount}
             totalTime={recipe.totalTime}
+            recipeId={recipe.recipeId}
           />
         ))}
       </div>

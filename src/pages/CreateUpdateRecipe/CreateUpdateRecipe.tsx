@@ -218,13 +218,12 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit, onError)}>
           {/*
-           * Sticky header — sits just below the fixed nav.
-           * nav is ~72 px tall, so top-[72px] keeps it pinned beneath it.
-           * -mx offsets cancel the Layout padding so the bar bleeds full-width.
-           * -mt-12 cancels the Layout pt-28 breathing room so the bar sits flush
-           * under the nav instead of leaving a ~40px gap below it.
+           * Sticky page toolbar, pinned flush under the fixed nav using the
+           * nav's measured height (--nav-h, set by Menu). Rendered as a
+           * floating card aligned to the page column rather than a second
+           * full-bleed bar, so it never leaves a gap or a doubled shadow.
            */}
-          <header className="sticky top-[72px] z-20 -mt-12 -mx-5 md:-mx-8 px-5 md:px-8 py-3 mb-8 bg-white-500/95 dark:bg-slate-800/95 backdrop-blur-sm border-b border-gray2-400 dark:border-slate-700 flex items-center justify-between shadow-sm">
+          <header className="sticky top-[calc(var(--nav-h,72px)+0.75rem)] z-20 mb-6 flex items-center justify-between rounded-xl border border-gray2-400 bg-white-500/90 px-4 py-2.5 shadow-sm backdrop-blur-md supports-[backdrop-filter]:bg-white-500/75 dark:border-slate-700 dark:bg-slate-800/90">
             <div className="flex items-center gap-3 min-w-0">
               <button
                 type="button"

@@ -5,12 +5,13 @@ import {
   faSun,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Layout } from '@/components/Layout';
-import { useTheme, type ThemeMode } from '@/hooks';
+import { type ThemeMode, useTheme } from '@/hooks';
 import { useProfile, useUpdateProfile } from '@/queries';
 import { apiUrl } from '@/utils';
 
@@ -55,7 +56,8 @@ export const Settings = () => {
     if (data?.name) setName(data.name);
   }, [data?.name]);
 
-  const nameChanged = name.trim().length > 0 && name.trim() !== (data?.name ?? '');
+  const nameChanged =
+    name.trim().length > 0 && name.trim() !== (data?.name ?? '');
 
   const onSaveName = () => {
     setSavedName(false);
@@ -65,13 +67,15 @@ export const Settings = () => {
     );
   };
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleLogout = async () => {
+    // Drop the previous user's cached data (e.g. favourites) before leaving.
+    queryClient.clear();
     try {
-      const res = await axios.get(
-        apiUrl(`/api/auth/logout`),
-        { withCredentials: true }
-      );
+      const res = await axios.get(apiUrl(`/api/auth/logout`), {
+        withCredentials: true,
+      });
       if (res.data?.url) {
         window.location.href = `https://${res.data.url}`;
         return;
@@ -160,10 +164,14 @@ export const Settings = () => {
               </button>
             </div>
             {savedName && !updateProfile.isPending && (
-              <p className="mt-1.5 text-sm font-medium text-green-600">Name updated.</p>
+              <p className="mt-1.5 text-sm font-medium text-green-600">
+                Name updated.
+              </p>
             )}
             {updateProfile.isError && (
-              <p className="mt-1.5 text-sm font-medium text-red-500">Could not update name.</p>
+              <p className="mt-1.5 text-sm font-medium text-red-500">
+                Could not update name.
+              </p>
             )}
           </div>
 

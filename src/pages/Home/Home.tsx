@@ -34,6 +34,7 @@ export const Home = () => {
         to: string;
         totalTime: string;
         ingredientsCount: number;
+        recipeId: string;
       }[]
   >([]);
 
@@ -130,6 +131,7 @@ export const Home = () => {
         to: `/recipe/${recipe._id}`,
         totalTime: recipe.timeToCook.totalTime,
         ingredientsCount: recipe.ingredients?.length || 0,
+        recipeId: recipe._id,
       }));
       setRecipeCardData(newData);
     }
@@ -202,6 +204,7 @@ export const Home = () => {
               to={recipe.to}
               ingredientsCount={recipe.ingredientsCount}
               totalTime={recipe.totalTime}
+              recipeId={recipe.recipeId}
             />
           ) : (
             <Card
@@ -211,6 +214,7 @@ export const Home = () => {
               to={recipe.to}
               ingredientsCount={recipe.ingredientsCount}
               totalTime={recipe.totalTime}
+              recipeId={recipe.recipeId}
             />
           )
         )}

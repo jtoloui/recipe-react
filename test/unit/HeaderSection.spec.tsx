@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import type { ComponentProps } from 'react';
 import { MemoryRouter } from 'react-router-dom';
@@ -23,19 +24,31 @@ const baseProps = {
 
 const renderHeader = (props: Partial<Props>) =>
   render(
-    <MemoryRouter>
-      <HeaderSection {...baseProps} {...props} />
-    </MemoryRouter>
+    <QueryClientProvider
+      client={
+        new QueryClient({ defaultOptions: { queries: { enabled: false } } })
+      }
+    >
+      <MemoryRouter>
+        <HeaderSection {...baseProps} {...props} />
+      </MemoryRouter>
+    </QueryClientProvider>
   );
 
 describe('HeaderSection source credit', () => {
   it('links to the source in a new tab', () => {
     renderHeader({
-      source: { name: 'BBC Food', url: 'https://www.bbc.co.uk/food/recipes/hashbrowns_12454' },
+      source: {
+        name: 'BBC Food',
+        url: 'https://www.bbc.co.uk/food/recipes/hashbrowns_12454',
+      },
     });
 
     const link = screen.getByRole('link', { name: /BBC Food/ });
-    expect(link).toHaveAttribute('href', 'https://www.bbc.co.uk/food/recipes/hashbrowns_12454');
+    expect(link).toHaveAttribute(
+      'href',
+      'https://www.bbc.co.uk/food/recipes/hashbrowns_12454'
+    );
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });

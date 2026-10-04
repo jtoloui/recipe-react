@@ -96,6 +96,9 @@ export const createRecipeSchema = z.object({
   labels: z
     .array(z.string().min(1, 'Must have at least one label'))
     .min(1, 'Must have at least one label'),
+  // Optional credit for recipes adapted from elsewhere (validated together below).
+  sourceName: z.string().trim().max(120, 'Keep the source name under 120 characters').optional(),
+  sourceUrl: z.string().trim().max(2048, 'Source link is too long').optional(),
   portionSize: z
     .number({
       invalid_type_error: 'Portion size must be a number',
@@ -127,6 +130,50 @@ export const createRecipeSchema = z.object({
     },
   }),
 });
+
+/** True for absolute http(s) URLs only. */
+export const isHttpUrl = (value?: string) => {
+  try {
+    const url = new URL(value ?? '');
+    return url.protocol === 'http:' || url.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
+
+/**
+ * Form-level schema used by the resolver. `createRecipeSchema` stays a plain
+ * object (its `.shape` is used for per-field checks); this adds the
+ * "both or neither" rule for the recipe source.
+ */
+export const createRecipeFormSchema = createRecipeSchema.superRefine((data, ctx) => {
+  const name = data.sourceName?.trim() ?? '';
+  const url = data.sourceUrl?.trim() ?? '';
+  if (!name && !url) return;
+  if (!name) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['sourceName'], message: 'Add a name for the source' });
+  }
+  if (!url) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['sourceUrl'], message: 'Add a link to the original recipe' });
+  } else if (!isHttpUrl(url)) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['sourceUrl'],
+      message: 'Enter a full link starting with https://',
+    });
+  }
+});
+
+/**
+ * Shape sent to the API: the flat source fields become `source`, or `null`
+ * when both are empty so clearing them in the form removes the credit.
+ */
+export function toRecipePayload(formData: CreateRecipeFormData) {
+  const { sourceName, sourceUrl, ...rest } = formData;
+  const name = sourceName?.trim() ?? '';
+  const url = sourceUrl?.trim() ?? '';
+  return { ...rest, source: name && url ? { name, url } : null };
+}
 
 export function createRecipeFormToPostObject(
   formData: CreateRecipeFormData

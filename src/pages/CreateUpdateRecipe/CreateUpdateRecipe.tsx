@@ -10,7 +10,11 @@ import {
 } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { CreateRecipeFormData, createRecipeSchema } from '@/Forms';
+import {
+  CreateRecipeFormData,
+  createRecipeFormSchema,
+  toRecipePayload,
+} from '@/Forms';
 import {
   AdditionalInformation,
   BasicInfo,
@@ -28,7 +32,7 @@ const createRecipe = async (newRecipe: CreateRecipeFormData) => {
   const formData = new FormData();
 
   formData.append('imageSrc', newRecipe.image);
-  formData.append('jsonData', JSON.stringify(newRecipe));
+  formData.append('jsonData', JSON.stringify(toRecipePayload(newRecipe)));
   const { data } = await axiosInstanceFormData.post<CreateRecipeResponse>(
     `/api/recipes`,
     formData,
@@ -46,7 +50,7 @@ const updateRecipe = async (newRecipe: CreateRecipeFormData, id: string) => {
   const formData = new FormData();
 
   formData.append('imageSrc', newRecipe.image);
-  formData.append('jsonData', JSON.stringify(newRecipe));
+  formData.append('jsonData', JSON.stringify(toRecipePayload(newRecipe)));
   const { data } = await axiosInstanceFormData.put<CreateRecipeResponse>(
     `/api/recipes/${id}`,
     formData,
@@ -103,6 +107,8 @@ const formDefaultValues = (
   );
 
   setValue('labels', data.labels);
+  setValue('sourceName', data.source?.name ?? '');
+  setValue('sourceUrl', data.source?.url ?? '');
   setValue('portionSize', parseInt(data.portions));
 
   // Prefill existing nutrition so editing a recipe that already has stats does
@@ -164,7 +170,7 @@ export const CreateUpdateRecipe = ({ formType = 'create' }: Props) => {
   });
 
   const methods = useForm<CreateRecipeFormData>({
-    resolver: zodResolver(createRecipeSchema),
+    resolver: zodResolver(createRecipeFormSchema),
   });
 
   const { handleSubmit, setValue } = methods;

@@ -1,8 +1,11 @@
-import { faCheck } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowUpRightFromSquare,
+  faCheck,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import { CreateRecipeFormData } from '@/Forms/CreateRecipe';
+import { CreateRecipeFormData, isHttpUrl } from '@/Forms/CreateRecipe';
 
 const fieldClass = (hasError?: boolean) =>
   `w-full rounded-lg border bg-white-500 dark:bg-slate-800/60 px-3 py-2.5 text-sm text-black-500 dark:text-white-500 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all ${
@@ -50,6 +53,88 @@ const DietToggle = ({
       </span>
       {label}
     </label>
+  );
+};
+
+/** Optional credit for recipes adapted from a website, book or person. */
+const SourceFields = () => {
+  const {
+    register,
+    control,
+    formState: { errors },
+  } = useFormContext<CreateRecipeFormData>();
+  const [name, url] = useWatch({ control, name: ['sourceName', 'sourceUrl'] });
+  const previewUrl = url?.trim();
+  const showPreview = !!name?.trim() && isHttpUrl(previewUrl);
+
+  return (
+    <fieldset className="sm:col-span-2 rounded-lg border border-dashed border-gray2-500 dark:border-slate-600 p-4">
+      <legend className="px-1 text-xs font-semibold uppercase tracking-wide text-brownishGrey-700 dark:text-white-700">
+        Recipe source <span className="font-normal normal-case tracking-normal text-brownishGrey-500">(optional)</span>
+      </legend>
+      <p className="mb-3 text-xs text-brownishGrey-600 dark:text-white-600">
+        Adapted this from somewhere? Credit the original — it's shown on the recipe as a link that opens in a new tab.
+        Clear both fields to remove it.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] gap-4">
+        <div>
+          <label htmlFor="sourceName" className={labelClass}>
+            Source name
+          </label>
+          <input
+            id="sourceName"
+            type="text"
+            autoComplete="off"
+            {...register('sourceName')}
+            placeholder="e.g. BBC Food"
+            aria-invalid={!!errors.sourceName}
+            aria-describedby={errors.sourceName ? 'sourceName-error' : undefined}
+            className={fieldClass(!!errors.sourceName)}
+          />
+          {errors.sourceName && (
+            <p id="sourceName-error" className="text-xs text-red-500 mt-1">
+              {errors.sourceName.message}
+            </p>
+          )}
+        </div>
+        <div>
+          <label htmlFor="sourceUrl" className={labelClass}>
+            Link to original recipe
+          </label>
+          <input
+            id="sourceUrl"
+            type="url"
+            inputMode="url"
+            autoComplete="off"
+            {...register('sourceUrl')}
+            placeholder="https://www.example.com/recipe"
+            aria-invalid={!!errors.sourceUrl}
+            aria-describedby={errors.sourceUrl ? 'sourceUrl-error' : undefined}
+            className={fieldClass(!!errors.sourceUrl)}
+          />
+          {errors.sourceUrl && (
+            <p id="sourceUrl-error" className="text-xs text-red-500 mt-1">
+              {errors.sourceUrl.message}
+            </p>
+          )}
+        </div>
+      </div>
+      {showPreview && (
+        <p className="mt-3 text-sm text-brownishGrey-600 dark:text-white-600">
+          Shown as: Recipe source:{' '}
+          <a
+            href={previewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-semibold text-green-600 underline-offset-2 hover:underline dark:text-green-400"
+          >
+            {name?.trim()}
+            <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="xs" aria-hidden="true" />
+            <span className="sr-only">(opens in a new tab)</span>
+          </a>
+        </p>
+      )}
+    </fieldset>
   );
 };
 
@@ -243,6 +328,8 @@ export const BasicInfo = () => {
             <DietToggle name="vegan" label="Vegan" />
           </div>
         </div>
+
+        <SourceFields />
       </div>
     </div>
   );

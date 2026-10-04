@@ -2,7 +2,12 @@ import { faUtensils } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useLoaderData, useParams } from 'react-router-dom';
+import {
+  useLoaderData,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 
 import { IngredientIcon } from '@/assets/IngredientIcon';
 import { Image, LogoLoader } from '@/components/Elements';
@@ -18,7 +23,11 @@ type RecipeByIdParams = {
   recipeId: string;
 };
 
-const NUTRITION_FIELDS: { key: keyof Nutrition; label: string; unit: string }[] = [
+const NUTRITION_FIELDS: {
+  key: keyof Nutrition;
+  label: string;
+  unit: string;
+}[] = [
   { key: 'kcal', label: 'Calories', unit: 'kcal' },
   { key: 'protein', label: 'Protein', unit: 'g' },
   { key: 'fat', label: 'Fat', unit: 'g' },
@@ -52,8 +61,21 @@ const Panel = ({
   </section>
 );
 
+/** Friendly name for the page the user arrived from. */
+const backLabel = (from?: string) => {
+  const path = from?.split('?')[0];
+  if (path === '/my-recipes') return 'My Recipes';
+  if (path === '/favourites') return 'Favourites';
+  return 'Home';
+};
+
 const RecipeById = () => {
   const params = useParams<RecipeByIdParams>();
+  const navigate = useNavigate();
+  const from = (useLocation().state as { from?: string } | null)?.from;
+  // Came from a list in the app: real browser back (keeps scroll + filters).
+  // Shared/direct link: no in-app history, so go Home instead of off-site.
+  const handleBack = () => (from ? navigate(-1) : navigate('/'));
   const initialData = useLoaderData() as Awaited<
     ReturnType<ReturnType<typeof loader>>
   >;
@@ -65,11 +87,12 @@ const RecipeById = () => {
 
   const [cookMode, setCookMode] = useState(false);
 
-  if (!data) return null;
-
   const [nutritionBasis, setNutritionBasis] = useState<'serving' | 'recipe'>(
     'serving'
   );
+
+  if (!data) return null;
+
   const hasPerRecipe = !!data.nutritionPerRecipe;
   const nutrition =
     nutritionBasis === 'recipe' && data.nutritionPerRecipe
@@ -90,7 +113,28 @@ const RecipeById = () => {
         />
       )}
 
-      <div className="mb-5 flex justify-end">
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <button
+          type="button"
+          onClick={handleBack}
+          className="inline-flex items-center gap-1.5 rounded-lg px-2 py-2 text-sm font-semibold text-brownishGrey-600 transition-colors hover:text-green-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40 dark:text-white-600"
+        >
+          <svg
+            className="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth="2"
+            aria-hidden="true"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+          Back to {backLabel(from)}
+        </button>
         <button
           onClick={() => setCookMode(true)}
           className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-white-500 shadow-sm transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/40"
@@ -172,7 +216,11 @@ const RecipeById = () => {
                 <h3 className="text-sm font-bold uppercase tracking-wider text-brownishGrey-600 dark:text-white-600">
                   Nutrition facts
                   <span className="ml-2 text-xs font-normal normal-case tracking-normal text-brownishGrey-500">
-                    ({nutritionBasis === 'serving' ? 'per serving' : 'whole recipe'})
+                    (
+                    {nutritionBasis === 'serving'
+                      ? 'per serving'
+                      : 'whole recipe'}
+                    )
                   </span>
                 </h3>
                 {hasPerRecipe && (

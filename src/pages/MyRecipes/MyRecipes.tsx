@@ -3,8 +3,12 @@ import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
 import { Card } from '@/components/Card';
-import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Chip } from '@/components/Chip';
+import { LogoLoader } from '@/components/Elements';
+import {
+  LabelCarousel,
+  type LabelCarouselItem,
+} from '@/components/LabelCarousel';
 import { Layout } from '@/components/Layout';
 import { useMyRecipes } from '@/queries';
 import { Labels } from '@/queries/types';
@@ -20,7 +24,7 @@ export const MyRecipes = () => {
   const [selectedCarouselCard, setSelectedCarouselCard] = useState<string>(
     searchParams.get('label') || 'All'
   );
-  const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
+  const [carouselData, setCarouselData] = useState<LabelCarouselItem[]>([]);
 
   const search = searchParams.get('search') || '';
   const labels = searchParams.get('label') || '';
@@ -90,7 +94,9 @@ export const MyRecipes = () => {
   };
 
   const carouselDataCallback = useCallback(() => {
-    if (recipesMeta?.meta && recipesMeta.recipes?.length > 0) {
+    // Rebuild even when nothing matches, so counts drop to 0 instead of
+    // showing the previous search's numbers.
+    if (recipesMeta?.meta && recipesMeta.meta.allLabels?.length > 0) {
       const initialCount = initializeLabelCounts(recipesMeta.meta.allLabels);
 
       const updatedCount = updateAvailableLabelCounts(
@@ -108,7 +114,7 @@ export const MyRecipes = () => {
 
       setCarouselData(() => [
         {
-          image: Object.values(updatedCount)[0].image,
+          image: Object.values(updatedCount)[0]?.image,
           title: 'All',
           count: recipesMeta.meta.totalRecipesMatching,
         }, // Ensure the default object is always the first item
@@ -163,19 +169,19 @@ export const MyRecipes = () => {
             <span className="text-base leading-none">+</span> Create recipe
           </Link>
         </div>
-        <Carousel
-          data={carouselData}
-          defaultIndex={carouselData.findIndex(
-            (card) => card.title === selectedCarouselCard
-          )}
-          onCardClick={(title) => {
-            setSearchParams((params) => {
-              params.set('label', title);
-              return params;
-            });
-            setSelectedCarouselCard(title);
-          }}
-        />
+        {recipesMeta?.meta.totalRecipes !== 0 && (
+          <LabelCarousel
+            data={carouselData}
+            selected={selectedCarouselCard}
+            onSelect={(title) => {
+              setSearchParams((params) => {
+                params.set('label', title);
+                return params;
+              });
+              setSelectedCarouselCard(title);
+            }}
+          />
+        )}
       </div>
       {size.width < 768 && searchParams.has('search') && (
         <Chip
@@ -194,19 +200,47 @@ export const MyRecipes = () => {
       {size.width < 768 && searchParams.has('label') && (
         <Chip text={`Label: ${selectedCarouselCard}`} />
       )}
-      <div className="mt-4 w-full rounded-lg bg-white-500 p-5 flex gap-7 flex-wrap dark:bg-slate-600 ">
-        {recipeCardData.map((recipe) => (
-          <Card
-            key={recipe.to}
-            image={recipe.image}
-            title={recipe.title}
-            to={recipe.to}
-            ingredientsCount={recipe.ingredientsCount}
-            totalTime={recipe.totalTime}
-            recipeId={recipe.recipeId}
-          />
-        ))}
-      </div>
+      {recipesMeta && recipesMeta.meta.totalRecipes === 0 ? (
+        // No recipes at all yet: a friendly first-run state instead of an empty box.
+        <div className="mt-6 flex flex-col items-center rounded-2xl border border-dashed border-gray2-500 bg-white-500 px-6 py-14 text-center dark:border-slate-600 dark:bg-slate-700">
+          <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-subtleAccent dark:bg-slate-600">
+            <LogoLoader size={36} />
+          </span>
+          <h2 className="text-lg font-bold text-black-500 dark:text-white-500">
+            You haven't created any recipes yet
+          </h2>
+          <p className="mt-1 max-w-sm text-sm text-brownishGrey-600 dark:text-white-600">
+            Add your first recipe and it will show up here, ready to cook, share
+            and favourite.
+          </p>
+          <Link
+            to="/create-recipe"
+            className="mt-5 inline-flex items-center gap-1.5 rounded-lg bg-green-500 px-4 py-2 text-sm font-semibold text-white-500 shadow-sm transition-colors hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500/30"
+          >
+            <span className="text-base leading-none">+</span> Create your first
+            recipe
+          </Link>
+        </div>
+      ) : recipesMeta && recipesMeta.recipes.length === 0 ? (
+        <p className="mt-6 rounded-xl border border-dashed border-gray2-500 bg-white-500 p-6 text-center text-sm text-brownishGrey-600 dark:border-slate-600 dark:bg-slate-700 dark:text-white-600">
+          None of your recipes match{search ? ` “${search}”` : ''}. Try a
+          different search or label.
+        </p>
+      ) : (
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-[220px] gap-5">
+          {recipeCardData.map((recipe) => (
+            <Card
+              key={recipe.to}
+              image={recipe.image}
+              title={recipe.title}
+              to={recipe.to}
+              ingredientsCount={recipe.ingredientsCount}
+              totalTime={recipe.totalTime}
+              recipeId={recipe.recipeId}
+            />
+          ))}
+        </div>
+      )}
     </Layout>
   );
 };

@@ -3,8 +3,11 @@ import { Link, createSearchParams, useSearchParams } from 'react-router-dom';
 import { useWindowSize } from 'usehooks-ts';
 
 import { Card, FeaturedCard } from '@/components/Card';
-import { Carousel, type CarouselData } from '@/components/Carousel';
 import { Chip } from '@/components/Chip';
+import {
+  LabelCarousel,
+  type LabelCarouselItem,
+} from '@/components/LabelCarousel';
 import { Layout } from '@/components/Layout';
 import { useRecipes } from '@/queries';
 import { Labels } from '@/queries/types';
@@ -20,7 +23,7 @@ export const Home = () => {
   const [selectedCarouselCard, setSelectedCarouselCard] = useState<string>(
     searchParams.get('label') || 'All'
   );
-  const [carouselData, setCarouselData] = useState<[] | CarouselData[]>([]);
+  const [carouselData, setCarouselData] = useState<LabelCarouselItem[]>([]);
 
   const search = searchParams.get('search') || '';
   const labels = searchParams.get('label') || '';
@@ -90,7 +93,9 @@ export const Home = () => {
   };
 
   const carouselDataCallback = useCallback(() => {
-    if (recipesMeta?.meta && recipesMeta.recipes?.length > 0) {
+    // Rebuild even when nothing matches, so counts drop to 0 instead of
+    // showing the previous search's numbers.
+    if (recipesMeta?.meta && recipesMeta.meta.allLabels?.length > 0) {
       const initialCount = initializeLabelCounts(recipesMeta.meta.allLabels);
 
       const updatedCount = updateAvailableLabelCounts(
@@ -108,7 +113,7 @@ export const Home = () => {
 
       setCarouselData(() => [
         {
-          image: Object.values(updatedCount)[0].image,
+          image: Object.values(updatedCount)[0]?.image,
           title: 'All',
           count: recipesMeta.meta.totalRecipesMatching,
         }, // Ensure the default object is always the first item
@@ -163,12 +168,10 @@ export const Home = () => {
             <span className="text-base leading-none">+</span> Create recipe
           </Link>
         </div>
-        <Carousel
+        <LabelCarousel
           data={carouselData}
-          defaultIndex={carouselData.findIndex(
-            (card) => card.title === selectedCarouselCard
-          )}
-          onCardClick={(title) => {
+          selected={selectedCarouselCard}
+          onSelect={(title) => {
             setSearchParams((params) => {
               params.set('label', title);
               return params;
@@ -193,6 +196,12 @@ export const Home = () => {
       )}
       {size.width < 768 && searchParams.has('label') && (
         <Chip text={`Label: ${selectedCarouselCard}`} />
+      )}
+      {recipesMeta && recipesMeta.recipes.length === 0 && (
+        <p className="mt-6 rounded-xl border border-dashed border-gray2-500 bg-white-500 p-6 text-center text-sm text-brownishGrey-600 dark:border-slate-600 dark:bg-slate-700 dark:text-white-600">
+          No recipes match{search ? ` “${search}”` : ''}. Try a different search
+          or label.
+        </p>
       )}
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 auto-rows-[220px] gap-5">
         {recipeCardData.map((recipe, index) =>

@@ -1,6 +1,6 @@
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import { Image, LogoLoader } from '@/components/Elements';
 import { FavouriteButton } from '@/components/FavouriteButton';
@@ -29,10 +29,14 @@ export const FeaturedCard = ({
   ingredientsCount,
   recipeId,
 }: FeaturedCardProps) => {
+  // Remember where the user came from so the recipe page can send them back.
+  const location = useLocation();
+
   return (
     <div className="group relative row-span-2 sm:col-span-2">
       <NavLink
         to={to}
+        state={{ from: `${location.pathname}${location.search}` }}
         className="relative flex h-full flex-col justify-end overflow-hidden rounded-2xl border border-gray2-400 shadow-sm transition-all duration-200 group-hover:shadow-lg dark:border-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40"
       >
         {/* Image / placeholder fills the whole tile */}

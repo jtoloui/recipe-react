@@ -1,5 +1,5 @@
 import 'react-loading-skeleton/dist/skeleton.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 import { Image, LogoLoader } from '@/components/Elements';
 import { FavouriteButton } from '@/components/FavouriteButton';
@@ -24,10 +24,14 @@ export const Card = ({
   ingredientsCount = 4,
   recipeId,
 }: CardProps) => {
+  // Remember where the user came from so the recipe page can send them back.
+  const location = useLocation();
+
   return (
     <div className="group relative h-full transition-transform duration-200 hover:-translate-y-1">
       <NavLink
         to={to}
+        state={{ from: `${location.pathname}${location.search}` }}
         className="flex h-full flex-col overflow-hidden rounded-xl border border-gray2-400 bg-white-500 shadow-sm transition-shadow duration-200 group-hover:shadow-md dark:border-slate-700 dark:bg-slate-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40"
       >
         <div className="relative min-h-0 flex-1 overflow-hidden">

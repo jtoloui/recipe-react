@@ -58,7 +58,7 @@ export const createRecipeSchema = z.object({
           .number({
             invalid_type_error: 'Quantity must be a number',
           })
-          .min(1, 'Quantity must be at least 1'),
+          .positive('Quantity must be greater than 0'),
       })
     )
     .min(1, 'You must have at least one ingredient'),

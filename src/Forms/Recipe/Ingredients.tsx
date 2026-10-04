@@ -203,6 +203,9 @@ export const Ingredients = () => {
                       setValueAs: (value) => parseFloat(value),
                     })}
                     type="number"
+                    step="any"
+                    min="0"
+                    inputMode="decimal"
                     placeholder="Qty"
                     className={`w-full rounded-md border bg-white-500 dark:bg-slate-800/60 px-2.5 py-2 text-sm appearance-none focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/20 transition-all ${
                       errors.ingredients?.[index]?.quantity

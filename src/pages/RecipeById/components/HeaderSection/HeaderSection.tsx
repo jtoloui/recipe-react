@@ -1,4 +1,5 @@
 import {
+  faArrowUpRightFromSquare,
   faEarthEurope,
   faLeaf,
   faLock,
@@ -56,6 +57,18 @@ const DietBadge = ({ active, label }: { active?: boolean; label: string }) =>
     </span>
   );
 
+/** Only render http(s) links so stored data can never inject javascript: URLs. */
+const safeSourceUrl = (url?: string) => {
+  try {
+    const parsed = new URL(url ?? '');
+    return parsed.protocol === 'https:' || parsed.protocol === 'http:'
+      ? parsed.href
+      : null;
+  } catch {
+    return null;
+  }
+};
+
 export const HeaderSection = ({
   name,
   recipeAuthor,
@@ -68,7 +81,9 @@ export const HeaderSection = ({
   description,
   recipeId,
   visibility,
+  source,
 }: HeaderSectionProps) => {
+  const sourceUrl = safeSourceUrl(source?.url);
   return (
     <div className="mb-5 border-b border-gray2-500 pb-5 dark:border-slate-600">
       {/* Title row */}
@@ -80,6 +95,21 @@ export const HeaderSection = ({
           <p className="mt-1 text-sm text-brownishGrey-600 dark:text-white-600">
             by {recipeAuthor}
           </p>
+          {source?.name && sourceUrl && (
+            <p className="mt-1 text-sm text-brownishGrey-600 dark:text-white-600">
+              Recipe source:{' '}
+              <a
+                href={sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 font-semibold text-green-600 underline-offset-2 hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500/40 dark:text-green-400"
+              >
+                {source.name}
+                <FontAwesomeIcon icon={faArrowUpRightFromSquare} size="xs" aria-hidden="true" />
+                <span className="sr-only">(opens in a new tab)</span>
+              </a>
+            </p>
+          )}
         </div>
         {isAuthor && (
           <Link

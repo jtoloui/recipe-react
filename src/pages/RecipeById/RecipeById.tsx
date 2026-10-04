@@ -103,11 +103,13 @@ const RecipeById = () => {
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-3">
         {/* Hero image — spans full width on mobile, left rail on desktop */}
         <div className="lg:col-span-1">
-          <div className="relative h-64 overflow-hidden rounded-2xl border border-gray2-400 shadow-sm dark:border-slate-700 lg:sticky lg:top-28 lg:h-80">
+          {/* aspect-ratio (not a fixed height) keeps crops close to the photo's
+              shape; object-cover + object-center fills the frame from the middle. */}
+          <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-gray2-400 shadow-sm dark:border-slate-700 lg:sticky lg:top-28 lg:aspect-square">
             <Image
               src={data.image.src}
               placeholder={<LogoLoader size={80} />}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-center"
               alt={data?.name || ''}
             />
           </div>

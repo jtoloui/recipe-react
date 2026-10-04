@@ -104,6 +104,12 @@ export interface RecipeById {
     private: boolean;
     groups: string[];
   };
+  source?: RecipeSource | null;
+}
+
+export interface RecipeSource {
+  name: string;
+  url: string;
 }
 
 export interface TimeToCook {

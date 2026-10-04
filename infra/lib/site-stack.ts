@@ -24,6 +24,12 @@ export interface SiteStackProps extends StackProps {
    * distribution serves on its *.cloudfront.net domain.
    */
   readonly certArn?: string;
+  /**
+   * API host (e.g. "api.justcook.ing"). When set, /recipe/* is served by the
+   * API's share route (per-recipe social preview tags) with automatic
+   * failover to the static SPA, and /api/og/* serves preview images.
+   */
+  readonly apiDomain?: string;
 }
 
 /**
@@ -52,9 +58,65 @@ export class SiteStack extends Stack {
       ? acm.Certificate.fromCertificateArn(this, 'SiteCert', props.certArn)
       : undefined;
 
+    const siteOrigin = origins.S3BucketOrigin.withOriginAccessControl(bucket);
+
+    // Link previews: WhatsApp/Slack/X crawlers don't run JS, so /recipe/* goes
+    // to the API, which returns the same SPA HTML with that recipe's OG tags.
+    // If the API errors, CloudFront fails over to the static index.html so the
+    // app always loads. Only HTML is cached here (5 min at the edge).
+    const additionalBehaviors: Record<string, cloudfront.BehaviorOptions> = {};
+    if (props.apiDomain) {
+      const apiOrigin = new origins.HttpOrigin(props.apiDomain, {
+        protocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY,
+        // Fail over to the static SPA quickly if the API is slow or cold.
+        readTimeout: Duration.seconds(4),
+        connectionAttempts: 1,
+      });
+      const shareCache = new cloudfront.CachePolicy(this, 'SharePageCache', {
+        comment: 'Recipe share pages: path-only key, no cookies/headers',
+        defaultTtl: Duration.minutes(5),
+        maxTtl: Duration.hours(1),
+        minTtl: Duration.seconds(0),
+        cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+        headerBehavior: cloudfront.CacheHeaderBehavior.none(),
+        queryStringBehavior: cloudfront.CacheQueryStringBehavior.none(),
+        enableAcceptEncodingGzip: true,
+        enableAcceptEncodingBrotli: true,
+      });
+      additionalBehaviors['/recipe/*'] = {
+        origin: new origins.OriginGroup({
+          primaryOrigin: apiOrigin,
+          fallbackOrigin: siteOrigin,
+          // 404 covers deeper SPA paths (e.g. /recipe/:id/edit) the API doesn't serve.
+          fallbackStatusCodes: [404, 500, 502, 503, 504],
+        }),
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+        cachePolicy: shareCache,
+        compress: true,
+      };
+      additionalBehaviors['/api/og/*'] = {
+        origin: apiOrigin,
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+        // Versioned (?v=updatedAt) so a new photo busts the edge cache.
+        cachePolicy: new cloudfront.CachePolicy(this, 'OgImageCache', {
+          comment: 'Recipe preview images: keyed on path + v query',
+          defaultTtl: Duration.days(1),
+          maxTtl: Duration.days(30),
+          minTtl: Duration.seconds(0),
+          cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+          headerBehavior: cloudfront.CacheHeaderBehavior.none(),
+          queryStringBehavior: cloudfront.CacheQueryStringBehavior.allowList('v'),
+        }),
+        compress: false,
+      };
+    }
+
     const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
+      additionalBehaviors,
       defaultBehavior: {
-        origin: origins.S3BucketOrigin.withOriginAccessControl(bucket),
+        origin: siteOrigin,
         viewerProtocolPolicy:
           cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
@@ -90,7 +152,9 @@ export class SiteStack extends Stack {
       destinationBucket: bucket,
       distribution,
       distributionPaths: ['/*'],
-      prune: true,
+      // Keep previous hashed assets: share pages are cached up to 5 min at the
+      // edge and may still reference the prior build's JS/CSS bundles.
+      prune: false,
     });
 
     new CfnOutput(this, 'BucketName', { value: bucket.bucketName });

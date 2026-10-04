@@ -29,6 +29,12 @@ const domainDefault = env === 'prod' ? 'www.justcook.ing' : 'dev.justcook.ing';
 const domainName =
   (app.node.tryGetContext('domainName') as string | undefined) ?? domainDefault;
 const certArn = app.node.tryGetContext('certArn') as string | undefined;
+// API host for recipe share previews. Defaults per env; pass -c apiDomain=none to disable.
+const apiDomainCtx = app.node.tryGetContext('apiDomain') as string | undefined;
+const apiDomain =
+  apiDomainCtx === 'none'
+    ? undefined
+    : apiDomainCtx ?? (env === 'prod' ? 'api.justcook.ing' : 'api-dev.justcook.ing');
 const distPath =
   (app.node.tryGetContext('distPath') as string | undefined) ?? defaultDistPath;
 
@@ -37,5 +43,6 @@ new SiteStack(app, `JustCookingSite${Env}`, {
   distPath,
   domainName,
   certArn,
+  apiDomain,
   description: `JustCooking frontend (${env}) — S3 + CloudFront static hosting`,
 });

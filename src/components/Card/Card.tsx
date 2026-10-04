@@ -61,11 +61,11 @@ export const Card = ({
       </NavLink>
       {/* Sibling of the link (not nested) so it is a valid, separately focusable control. */}
       {recipeId && (
-        <FavouriteButton
-          recipeId={recipeId}
-          recipeName={title}
-          className="absolute right-3 top-3 z-10"
-        />
+        // The wrapper owns positioning: the button keeps `relative` for its burst
+        // animation, which would override an `absolute` class on the button itself.
+        <div className="absolute right-3 top-3 z-10">
+          <FavouriteButton recipeId={recipeId} recipeName={title} />
+        </div>
       )}
     </div>
   );

@@ -70,11 +70,11 @@ export const FeaturedCard = ({
         </div>
       </NavLink>
       {recipeId && (
-        <FavouriteButton
-          recipeId={recipeId}
-          recipeName={title}
-          className="absolute right-4 top-4 z-20"
-        />
+        // The wrapper owns positioning: the button keeps `relative` for its burst
+        // animation, which would override an `absolute` class on the button itself.
+        <div className="absolute right-4 top-4 z-20">
+          <FavouriteButton recipeId={recipeId} recipeName={title} />
+        </div>
       )}
     </div>
   );

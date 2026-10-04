@@ -71,6 +71,11 @@ export const FavouriteButton = ({
     }
   };
 
+  // `relative` anchors the burst; skip it if the caller positions the button,
+  // otherwise the two position utilities fight and `relative` wins.
+  const position = /\b(absolute|fixed|sticky)\b/.test(className)
+    ? ''
+    : 'relative';
   const base =
     variant === 'overlay'
       ? 'h-10 w-10 bg-white-500/90 shadow-md backdrop-blur-sm hover:bg-white-500 dark:bg-slate-800/85'
@@ -85,7 +90,7 @@ export const FavouriteButton = ({
       whileHover={reduceMotion ? undefined : { scale: 1.08 }}
       whileTap={reduceMotion ? undefined : { scale: 0.88 }}
       transition={{ type: 'spring', stiffness: 500, damping: 28 }}
-      className={`relative inline-flex shrink-0 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/60 ${base} ${className}`}
+      className={`${position} inline-flex shrink-0 items-center justify-center rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400/60 ${base} ${className}`}
     >
       {/* Particle burst + ring, only after a click that saves */}
       <AnimatePresence>
